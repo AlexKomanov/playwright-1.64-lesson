@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PW Shop — Settings</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PW<span>Shop</span></div>
+    <nav>
+      <a href="/">Shop</a>
+      <a href="/settings">Settings</a>
+      <a href="/widgets">Widgets</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Two "Save" buttons on one page: the classic case for locator.within() -->
+    <section class="card">
+      <h2>Profile</h2>
+      <label>Display name <input id="display-name" value="Alex"></label>
+      <div class="row">
+        <button class="primary" id="save-profile">Save</button>
+        <button id="open-settings">Open store settings</button>
+        <span id="profile-status" class="muted"></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Current theme</h2>
+      <p>Theme stored on the server: <span id="theme" class="badge">…</span></p>
+    </section>
+  </main>
+
+  <dialog data-testid="settings-dialog" aria-labelledby="dlg-title">
+    <h2 id="dlg-title">Store settings</h2>
+    <label>Theme
+      <select id="theme-select" aria-label="Theme">
+        <option value="light">light</option>
+        <option value="dark">dark</option>
+      </select>
+    </label>
+    <div class="row">
+      <button class="primary" id="save-settings">Save</button>
+      <button id="cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const dialog = $('dialog');
+
+    async function refreshTheme() {
+      const s = await (await fetch('/api/settings')).json();
+      $('#theme').textContent = s.theme;
+      $('#theme-select').value = s.theme;
+    }
+
+    $('#save-profile').addEventListener('click', () => {
+      $('#profile-status').textContent = 'Profile saved';
+    });
+    $('#open-settings').addEventListener('click', () => dialog.showModal());
+    $('#cancel').addEventListener('click', () => dialog.close());
+    $('#save-settings').addEventListener('click', async () => {
+      await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme: $('#theme-select').value }),
+      });
+      dialog.close();
+      refreshTheme();
+    });
+
+    refreshTheme();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playwright 1.64 — מה חדש</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #0b1110;
+  --deep: #101a17;
+  --card: rgba(18, 30, 26, .86);
+  --card-2: rgba(26, 42, 36, .9);
+  --accent: #45e06f;           /* Playwright green, neon-ified */
+  --accent-2: #2ead4b;
+  --glow: rgba(69, 224, 111, .32);
+  --warn: #ffb547;
+  --bad: #ff5c6c;
+  --info: #5cc8ff;
+  --text: #e4efe9;
+  --dim: #8fa89c;
+  --line: rgba(69, 224, 111, .16);
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--void); color: var(--text); font-family: 'Heebo', system-ui, sans-serif; overflow: hidden; }
+
+/* ---------- deck ---------- */
+.slides { direction: rtl; display: flex; height: 100vh; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+.slides::-webkit-scrollbar { display: none; }
+.slide { position: relative; flex: 0 0 100vw; height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; padding: 64px 7vw 92px; overflow: hidden; }
+.slide::before { content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(1100px 600px at 85% -10%, rgba(69,224,111,.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 110%, rgba(92,200,255,.07), transparent 60%),
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 48px 48px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+  opacity: .55; }
+
+.eyebrow { font-family: var(--mono); font-size: 14px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; direction: ltr; text-align: right; }
+h1 { font-size: clamp(44px, 6.4vw, 96px); font-weight: 900; line-height: 1.02; margin: 0; letter-spacing: -1px; }
+h2 { font-size: clamp(30px, 3.4vw, 50px); font-weight: 800; margin: 0 0 22px; line-height: 1.12; }
+h3 { font-size: 22px; margin: 0 0 8px; font-weight: 700; }
+p, li { font-size: 20px; line-height: 1.6; }
+.lead { font-size: 24px; color: var(--dim); max-width: 900px; }
+.accent { color: var(--accent); text-shadow: 0 0 24px var(--glow); }
+.dim { color: var(--dim); }
+code, .ic { font-family: var(--mono); font-size: .86em; background: rgba(69,224,111,.10); color: #b9f7c9; padding: 2px 8px; border-radius: 6px; direction: ltr; unicode-bidi: isolate; white-space: nowrap; font-variant-ligatures: none; }
+.ltr { direction: ltr; unicode-bidi: embed; display: inline-block; }
+
+.grid { display: grid; gap: 20px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.split { display: grid; grid-template-columns: 1fr 1.15fr; gap: 34px; align-items: center; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; backdrop-filter: blur(8px); box-shadow: 0 10px 40px rgba(0,0,0,.35); }
+.card p, .card li { font-size: 17px; margin: 0; color: #c9d8d0; }
+.card .ico { font-size: 30px; margin-bottom: 8px; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 12px; padding: 3px 10px; border-radius: 99px; border: 1px solid var(--accent); color: var(--accent); margin-bottom: 10px; direction: ltr; }
+.tag.he { direction: rtl; font-family: 'Heebo', sans-serif; font-size: 14px; font-weight: 600; }
+.tag.warn { border-color: var(--warn); color: var(--warn); }
+.tag.bad { border-color: var(--bad); color: var(--bad); }
+.tag.info { border-color: var(--info); color: var(--info); }
+ul.clean { list-style: none; padding: 0; margin: 0; }
+ul.clean li { position: relative; padding-inline-start: 28px; margin-bottom: 10px; }
+ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0; color: var(--accent); }
+
+/* ---------- fragments ---------- */
+.frag { opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; }
+.frag.on { opacity: 1; transform: none; }
+.frag.fade-only { transform: none; }
+
+/* ---------- code ---------- */
+.code { direction: ltr; text-align: left; margin: 0; background: #07100d; border: 1px solid rgba(69,224,111,.22); border-radius: 16px; padding: 18px 0; font-family: var(--mono); font-size: 16.5px; line-height: 1.62; overflow: auto; position: relative; box-shadow: 0 0 0 1px rgba(0,0,0,.4), 0 20px 60px rgba(0,0,0,.45); }
+.code[data-title] { padding-top: 36px; }
+.code code { background: none; padding: 0; color: inherit; font-size: inherit; border-radius: 0; white-space: normal; display: block; }
+.code .title { position: absolute; top: 8px; right: 14px; font-size: 12px; color: var(--dim); letter-spacing: 1px; }
+.code .ln { display: block; padding: 0 22px; border-inline-start: 3px solid transparent; transition: background .35s, opacity .35s, border-color .35s; white-space: pre; }
+.code.has-hl .ln { opacity: .32; }
+.code.has-hl .ln.hl { opacity: 1; background: rgba(69,224,111,.09); border-inline-start-color: var(--accent); }
+.hl-cap { margin-top: 14px; padding: 12px 18px; border-radius: 12px; background: rgba(69,224,111,.07); border: 1px solid var(--line); border-inline-start: 4px solid var(--accent); font-size: 19px; line-height: 1.55; min-height: 54px; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; }
+.hl-cap.on { opacity: 1; transform: none; }
+@media (max-height: 900px) { .hl-cap { font-size: 16.5px; padding: 10px 16px; } }
+.code .copy { position: absolute; top: 8px; left: 10px; font: 600 11px var(--mono); color: var(--dim); background: transparent; border: 1px solid rgba(255,255,255,.12); border-radius: 6px; padding: 3px 8px; cursor: pointer; opacity: 0; transition: opacity .2s; }
+.code:hover .copy { opacity: 1; }
+.tk-k { color: #c792ea; } .tk-s { color: #c3e88d; } .tk-c { color: #5f7a6d; font-style: italic; }
+.tk-n { color: #f78c6c; } .tk-f { color: #82aaff; } .tk-p { color: #89ddff; }
+.term { direction: ltr; text-align: left; white-space: pre-wrap; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; font-family: var(--mono); font-size: 16px; padding: 38px 22px 16px; position: relative; line-height: 1.7; }
+.term::before { content: '● ● ●'; position: absolute; top: 9px; left: 14px; font-size: 11px; letter-spacing: 2px; color: #3b4a44; }
+.term .pr { color: var(--accent); } .term .out { color: var(--dim); } .term .cm { color: #5f7a6d; }
+
+/* ---------- cover ---------- */
+.cover { align-items: flex-start; }
+.cover .ver { font-family: var(--mono); font-size: clamp(120px, 17vw, 260px); font-weight: 700; line-height: .9; direction: ltr; background: linear-gradient(120deg, #fff 10%, var(--accent) 60%, #0f6e2a); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 40px rgba(69,224,111,.25)); }
+.masks { position: absolute; left: 6vw; top: 50%; transform: translateY(-50%); width: min(34vw, 460px); opacity: .95; }
+.masks { animation: bob 6s ease-in-out infinite; filter: drop-shadow(0 0 40px rgba(69,224,111,.22)); }
+@keyframes bob { 50% { transform: translateY(calc(-50% - 14px)); } }
+.chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+.chip { font-family: var(--mono); font-size: 14px; padding: 6px 14px; border-radius: 99px; background: rgba(69,224,111,.08); border: 1px solid var(--line); color: #bfe9cc; direction: ltr; }
+
+/* ---------- agenda timeline ---------- */
+.agenda { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.agenda .card { padding: 18px; }
+.agenda .t { font-family: var(--mono); color: var(--accent); font-size: 14px; direction: ltr; text-align: right; }
+.agenda h3 { font-size: 20px; margin: 6px 0; }
+.bar { height: 6px; border-radius: 9px; background: rgba(255,255,255,.06); margin-top: 26px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+.slide.active .bar i { width: 100%; }
+
+/* ---------- mock browser ---------- */
+.mock { background: #f6f8fb; color: #1d2433; border-radius: 14px; overflow: hidden; direction: ltr; text-align: left; font-family: system-ui, sans-serif; box-shadow: 0 30px 70px rgba(0,0,0,.5); position: relative; }
+.mock .bar-top { background: #10151f; color: #fff; padding: 9px 14px; font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.mock .bar-top b { color: var(--accent-2); }
+.mock .bar-top .url { margin-left: auto; font-family: var(--mono); font-size: 12px; color: #8fa0bb; }
+.mock .body { padding: 18px; position: relative; min-height: 250px; }
+.mock .btn { display: inline-block; padding: 7px 14px; border-radius: 8px; border: 1px solid #d9dee8; background: #fff; font-size: 14px; transition: box-shadow .3s, transform .3s; }
+.mock .btn.pri { background: #2ead4b; border-color: #2ead4b; color: #fff; font-weight: 600; }
+.mock .dlg { position: absolute; right: 18px; bottom: 18px; width: 230px; background: #fff; border: 1px solid #d9dee8; border-radius: 12px; padding: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+.mock .dlg h4 { margin: 0 0 10px; font-size: 15px; }
+.mock .field { height: 30px; border: 1px solid #d9dee8; border-radius: 7px; margin-bottom: 10px; font-size: 13px; padding: 6px 9px; color: #6b7489; }
+.ring { box-shadow: 0 0 0 4px rgba(255,181,71,.9), 0 0 24px rgba(255,181,71,.7) !important; }
+.ring-g { box-shadow: 0 0 0 4px rgba(69,224,111,1), 0 0 26px rgba(69,224,111,.85) !important; transform: scale(1.06); }
+.dlg-outline { outline: 3px dashed transparent; outline-offset: 5px; transition: outline-color .3s; }
+.slide[data-k="1"] .save, .slide[data-k="2"] .save { box-shadow: 0 0 0 4px rgba(255,181,71,.9), 0 0 24px rgba(255,181,71,.7); }
+.slide[data-k="3"] .dlg-outline, .slide[data-k="4"] .dlg-outline { outline-color: var(--info); }
+.slide[data-k="4"] .dlg .save { box-shadow: 0 0 0 4px rgba(69,224,111,1), 0 0 26px rgba(69,224,111,.85); transform: scale(1.08); }
+.term.strict-out { font-size: 13px; line-height: 1.55; padding-top: 30px; margin: 4px 0 14px; }
+.term .bad-t { color: var(--bad); }
+.count-badge { position: absolute; top: 12px; right: 12px; font-family: var(--mono); font-size: 13px; padding: 4px 10px; border-radius: 8px; background: #10151f; color: #fff; opacity: 0; transition: opacity .3s; }
+.slide[data-k="1"] .count-badge.c2, .slide[data-k="2"] .count-badge.c2, .slide[data-k="4"] .count-badge.c1 { opacity: 1; }
+
+/* table column demo */
+.mtable { width: 100%; border-collapse: collapse; font-size: 15px; }
+.mtable th, .mtable td { padding: 9px 10px; border-bottom: 1px solid #e3e7ef; text-align: left; transition: background .35s, box-shadow .35s; }
+.mtable th { font-size: 11px; color: #6b7489; letter-spacing: .6px; }
+.mtable tr.rowhl td { background: rgba(92,200,255,.10); }
+.mtable td.cellhl { background: rgba(69,224,111,.28) !important; box-shadow: inset 0 0 0 2px #2ead4b; font-weight: 700; }
+.mtable td.wrong { background: rgba(255,92,108,.25) !important; box-shadow: inset 0 0 0 2px #ff5c6c; }
+
+.col-step { margin-bottom: 18px; }
+.col-step .code { font-size: 15.5px; padding: 12px 0; margin: 4px 0 8px; }
+.col-step p { font-size: 18px; margin: 0; }
+.col-slide[data-k="1"] #colTable tr:nth-child(2) td:nth-child(3) { background: rgba(255,92,108,.25); box-shadow: inset 0 0 0 2px #ff5c6c; font-weight: 700; }
+.col-slide[data-k="2"] #colTable tr td:nth-child(3) { background: rgba(69,224,111,.28); box-shadow: inset 0 0 0 2px #2ead4b; font-weight: 700; }
+.col-slide[data-k="2"] #colTable tr:nth-child(3) td:nth-child(3) { transition-delay: .25s; }
+.col-slide[data-k="2"] #colTable tr:nth-child(4) td:nth-child(3) { transition-delay: .5s; }
+@media (max-height: 900px) { .col-step p { font-size: 16px; } .col-step .code { font-size: 14px; } }
+/* ---------- shuffle widget ---------- */
+.shuf { display: flex; gap: 14px; direction: ltr; justify-content: center; margin: 10px 0 18px; position: relative; height: 120px; }
+.tc { position: absolute; width: 190px; height: 104px; border-radius: 14px; background: var(--card-2); border: 1px solid var(--line); padding: 14px; font-family: var(--mono); font-size: 14px; transition: left .7s cubic-bezier(.3,1.3,.5,1), border-color .3s, background .3s; text-align: left; }
+.tc b { display: block; font-size: 13px; color: var(--dim); margin-bottom: 6px; font-weight: 400; }
+.tc.fail { border-color: var(--bad); background: rgba(255,92,108,.14); }
+.tc.pass { border-color: var(--accent); }
+.tc .st { position: absolute; bottom: 10px; right: 12px; font-size: 18px; }
+.seed { font-family: var(--mono); text-align: center; direction: ltr; color: var(--dim); font-size: 16px; }
+.seed b { color: var(--warn); }
+.btn-ui { font: 600 16px 'Heebo', sans-serif; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(69,224,111,.12); color: var(--text); cursor: pointer; transition: background .2s, transform .1s; }
+.btn-ui:hover { background: rgba(69,224,111,.25); }
+.btn-ui:active { transform: scale(.97); }
+.btn-ui.ghost { border-color: rgba(255,255,255,.18); background: transparent; }
+.btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ---------- locks widget ---------- */
+.lanes { direction: ltr; display: grid; gap: 10px; margin: 14px 0; }
+.lane { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 12px; font-family: var(--mono); font-size: 14px; color: var(--dim); }
+.track { position: relative; height: 42px; background: rgba(255,255,255,.03); border-radius: 10px; border: 1px dashed rgba(255,255,255,.07); }
+.blk { position: absolute; top: 5px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12.5px; color: #071; font-weight: 700; transition: left .8s cubic-bezier(.3,1.2,.5,1), width .8s, background .4s; white-space: nowrap; overflow: hidden; }
+.blk.settings { background: var(--warn); color: #3a2400; }
+.blk.free { background: #5cc8ff; color: #04263a; }
+.blk.clash { background: var(--bad); color: #fff; }
+.legend { direction: rtl; display: flex; gap: 22px; justify-content: center; font-size: 15px; color: var(--dim); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-inline-end: 6px; }
+
+/* ---------- fps widget ---------- */
+.fps { direction: ltr; display: grid; gap: 16px; }
+.fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
+.fps .rail { height: 46px; border-radius: 12px; background: rgba(255,255,255,.04); position: relative; overflow: hidden; }
+.fps .dot { position: absolute; top: 11px; left: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--bad); box-shadow: 0 0 18px rgba(255,92,108,.8); }
+.fps .r25 .dot { animation: slide25 2.4s steps(60) infinite alternate; }
+.fps .r60 .dot { animation: slide25 2.4s steps(144) infinite alternate; }
+@keyframes slide25 { to { left: calc(100% - 34px); } }
+
+/* ---------- WebMCP diagram ---------- */
+.flow { width: 100%; height: auto; direction: ltr; }
+.flow .box { fill: rgba(18,30,26,.95); stroke: rgba(69,224,111,.4); stroke-width: 1.5; }
+.flow .lbl { fill: var(--text); font: 700 20px 'Heebo', sans-serif; }
+.flow .sub { fill: var(--dim); font: 400 14px 'JetBrains Mono', monospace; }
+.flow .wire { stroke: rgba(143,168,156,.4); stroke-width: 2; fill: none; stroke-dasharray: 6 7; }
+.flow .pkt { fill: var(--accent); filter: drop-shadow(0 0 6px var(--accent)); }
+
+/* ---------- aria ref widget ---------- */
+.yaml { direction: ltr; text-align: left; font-family: var(--mono); font-size: 16px; background: #07100d; border-radius: 14px; padding: 18px 22px; border: 1px solid var(--line); line-height: 1.8; }
+.yaml .ref { color: var(--warn); transition: background .3s; border-radius: 4px; padding: 0 3px; }
+.slide[data-k="1"] .yaml .target, .slide[data-k="2"] .yaml .target { background: rgba(255,181,71,.15); outline: 1px solid rgba(255,181,71,.5); border-radius: 6px; }
+.slide[data-k="2"] .sub-btn { box-shadow: 0 0 0 4px rgba(69,224,111,1), 0 0 26px rgba(69,224,111,.85); }
+.slide[data-k="2"] .sub-done { opacity: 1; }
+.sub-done { opacity: 0; transition: opacity .4s .4s; color: #1b7a33; font-weight: 700; font-size: 14px; }
+
+/* ---------- breaking ---------- */
+.brk .card { border-color: rgba(255,181,71,.25); }
+.brk .card h3 { color: var(--warn); }
+
+/* ---------- checklist ---------- */
+.steps { counter-reset: s; display: grid; gap: 14px; }
+.steps .card { display: grid; grid-template-columns: 54px 1fr; align-items: center; gap: 16px; padding: 16px 20px; }
+.run-steps { grid-template-columns: 1fr 1fr; }
+.run-steps .card { align-items: start; }
+.run-steps .term { font-size: 14.5px; padding: 30px 16px 12px; margin-top: 6px; }
+.run-steps h3 { font-size: 19px; }
+.run-steps p { font-size: 15px; }
+.repo-link { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: .8em; border-bottom: 1px dashed var(--accent); }
+.steps .card::before { counter-increment: s; content: counter(s); width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center; font: 800 26px var(--mono); color: #062; background: var(--accent); box-shadow: 0 0 22px var(--glow); }
+
+/* ---------- section divider ---------- */
+.divider { align-items: center; text-align: center; }
+.divider .num { font-family: var(--mono); font-size: 18px; color: var(--accent); letter-spacing: 4px; direction: ltr; }
+.divider h1 { font-size: clamp(54px, 7vw, 110px); }
+.divider .big-ico { font-size: 92px; margin-bottom: 10px; filter: drop-shadow(0 0 30px var(--glow)); }
+
+.src-list { columns: 2; column-gap: 40px; font-size: 15px; }
+.src-list li { font-size: 15px; break-inside: avoid; margin-bottom: 8px; }
+.src-list a { color: #9fe8b5; text-decoration: none; direction: ltr; unicode-bidi: embed; }
+.src-list a:hover { text-decoration: underline; }
+
+/* ---------- chrome UI ---------- */
+.nav { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; z-index: 50; background: rgba(10,18,15,.75); border: 1px solid var(--line); padding: 8px 14px; border-radius: 99px; backdrop-filter: blur(10px); }
+.nav button { background: none; border: 0; color: var(--text); font-size: 20px; cursor: pointer; padding: 2px 8px; border-radius: 8px; }
+.nav button:hover { background: rgba(69,224,111,.15); }
+.dots { display: flex; gap: 6px; direction: rtl; }
+.dots i { width: 7px; height: 7px; border-radius: 9px; background: rgba(255,255,255,.2); cursor: pointer; transition: width .3s, background .3s; }
+.dots i.on { width: 24px; background: var(--accent); box-shadow: 0 0 10px var(--glow); }
+.counter { font-family: var(--mono); font-size: 13px; color: var(--dim); min-width: 56px; text-align: center; direction: ltr; }
+.progress { position: fixed; top: 0; right: 0; height: 3px; background: linear-gradient(270deg, var(--accent), var(--accent-2)); box-shadow: 0 0 12px var(--glow); z-index: 60; transition: width .4s; }
+.edge { position: fixed; top: 0; bottom: 90px; width: 6vw; z-index: 40; cursor: pointer; background: transparent; border: 0; }
+.edge.prev { right: 0; } .edge.next { left: 0; }
+.tools { position: fixed; top: 16px; left: 18px; z-index: 55; display: flex; gap: 8px; }
+.tools button { background: rgba(10,18,15,.7); border: 1px solid var(--line); color: var(--text); width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 17px; display: grid; place-items: center; }
+.tools button:hover { border-color: var(--accent); }
+.notes-panel { position: fixed; bottom: 82px; right: 22px; width: min(560px, 90vw); max-height: 42vh; overflow: auto; z-index: 70; background: rgba(8,14,12,.96); border: 1px solid var(--accent); border-radius: 16px; padding: 18px 22px; font-size: 17px; line-height: 1.65; display: none; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.notes-panel.open { display: block; }
+.notes-panel .t { font-family: var(--mono); color: var(--accent); font-size: 13px; }
+aside.notes { display: none; }
+
+@media (max-height: 900px) {
+  .slide { padding: 46px 6vw 84px; }
+  h2 { font-size: clamp(26px, 3vw, 40px); margin-bottom: 16px; }
+  p, li { font-size: 17px; }
+  .lead { font-size: 20px; }
+  .card { padding: 16px 18px; }
+  .card p, .card li { font-size: 15px; }
+  .code { font-size: 14.5px; padding: 14px 0; }
+  .term { font-size: 14.5px; }
+  .mock .body { min-height: 210px; }
+}
+@media (max-width: 900px) {
+  .g2, .g3, .g4, .split, .agenda { grid-template-columns: 1fr; }
+  .masks { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="tools">
+  <button id="fs" title="מסך מלא (F)">⛶</button>
+  <button id="notesBtn" title="הערות מנחה (N)">✎</button>
+</div>
+<button class="edge prev" aria-label="שקופית קודמת"></button>
+<button class="edge next" aria-label="שקופית הבאה"></button>
+<div class="notes-panel" id="notesPanel"></div>
+
+<main class="slides" id="slides">
+
+<!-- 1 · COVER -->
+<section class="slide cover">
+  <div class="eyebrow">PLAYWRIGHT RELEASE · OCT 2026</div>
+  <div class="ver">1.64</div>
+  <h1 style="font-size:clamp(34px,4.2vw,60px);margin-top:10px">מה <span class="accent">חדש</span> ב-Playwright</h1>
+  <p class="lead" style="margin-top:14px"><span dir="ltr">WebMCP</span>, <span dir="ltr">locator.within()</span>, הרצת טסטים בסדר אקראי, <span dir="ltr">Test Locks</span>, שיפורים בהקלטת וידאו — וגם 4 <span dir="ltr">Breaking Changes</span> שחשוב להכיר לפני שמשדרגים.</p>
+  <div class="chips">
+    <span class="chip">v1.64.0 · 07 Oct 2026</span>
+    <span class="chip">v1.64.1 · 14 Oct 2026</span>
+    <span class="chip">Chromium 156 · Firefox 157 · WebKit 27.2</span>
+  </div>
+  <svg class="masks" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Playwright logo">
+<path d="M136.444 221.556C123.558 225.213 115.104 231.625 109.535 238.032C114.869 233.364 122.014 229.08 131.652 226.348C141.51 223.554 149.92 223.574 156.869 224.915V219.481C150.941 218.939 144.145 219.371 136.444 221.556ZM108.946 175.876L61.0895 188.484C61.0895 188.484 61.9617 189.716 63.5767 191.36L104.153 180.668C104.153 180.668 103.578 188.077 98.5847 194.705C108.03 187.559 108.946 175.876 108.946 175.876ZM149.005 288.347C81.6582 306.486 46.0272 228.438 35.2396 187.928C30.2556 169.229 28.0799 155.067 27.5 145.928C27.4377 144.979 27.4665 144.179 27.5336 143.446C24.04 143.657 22.3674 145.473 22.7077 150.721C23.2876 159.855 25.4633 174.016 30.4473 192.721C41.2301 233.225 76.8659 311.273 144.213 293.134C158.872 289.185 169.885 281.992 178.152 272.81C170.532 279.692 160.995 285.112 149.005 288.347ZM161.661 128.11V132.903H188.077C187.535 131.206 186.989 129.677 186.447 128.11H161.661Z" fill="#2D4552"/>
+<path d="M193.981 167.584C205.861 170.958 212.144 179.287 215.465 186.658L228.711 190.42C228.711 190.42 226.904 164.623 203.57 157.995C181.741 151.793 168.308 170.124 166.674 172.496C173.024 167.972 182.297 164.268 193.981 167.584ZM299.422 186.777C277.573 180.547 264.145 198.916 262.535 201.255C268.89 196.736 278.158 193.031 289.837 196.362C301.698 199.741 307.976 208.06 311.307 215.436L324.572 219.212C324.572 219.212 322.736 193.41 299.422 186.777ZM286.262 254.795L176.072 223.99C176.072 223.99 177.265 230.038 181.842 237.869L274.617 263.805C282.255 259.386 286.262 254.795 286.262 254.795ZM209.867 321.102C122.618 297.71 133.166 186.543 147.284 133.865C153.097 112.156 159.073 96.0203 164.029 85.204C161.072 84.5953 158.623 86.1529 156.203 91.0746C150.941 101.747 144.212 119.124 137.7 143.45C123.586 196.127 113.038 307.29 200.283 330.682C241.406 341.699 273.442 324.955 297.323 298.659C274.655 319.19 245.714 330.701 209.867 321.102Z" fill="#2D4552"/>
+<path d="M161.661 262.296V239.863L99.3324 257.537C99.3324 257.537 103.938 230.777 136.444 221.556C146.302 218.762 154.713 218.781 161.661 220.123V128.11H192.869C189.471 117.61 186.184 109.526 183.423 103.909C178.856 94.612 174.174 100.775 163.545 109.665C156.059 115.919 137.139 129.261 108.668 136.933C80.1966 144.61 57.179 142.574 47.5752 140.911C33.9601 138.562 26.8387 135.572 27.5049 145.928C28.0847 155.062 30.2605 169.224 35.2445 187.928C46.0272 228.433 81.663 306.481 149.01 288.342C166.602 283.602 179.019 274.233 187.626 262.291H161.661V262.296ZM61.0848 188.484L108.946 175.876C108.946 175.876 107.551 194.288 89.6087 199.018C71.6614 203.743 61.0848 188.484 61.0848 188.484Z" fill="#E2574C"/>
+<path d="M341.786 129.174C329.345 131.355 299.498 134.072 262.612 124.185C225.716 114.304 201.236 97.0224 191.537 88.8994C177.788 77.3834 171.74 69.3802 165.788 81.4857C160.526 92.163 153.797 109.54 147.284 133.866C133.171 186.543 122.623 297.706 209.867 321.098C297.093 344.47 343.53 242.92 357.644 190.238C364.157 165.917 367.013 147.5 367.799 135.625C368.695 122.173 359.455 126.078 341.786 129.174ZM166.497 172.756C166.497 172.756 180.246 151.372 203.565 158C226.899 164.628 228.706 190.425 228.706 190.425L166.497 172.756ZM223.42 268.713C182.403 256.698 176.077 223.99 176.077 223.99L286.262 254.796C286.262 254.791 264.021 280.578 223.42 268.713ZM262.377 201.495C262.377 201.495 276.107 180.126 299.422 186.773C322.736 193.411 324.572 219.208 324.572 219.208L262.377 201.495Z" fill="#2EAD33"/>
+<path d="M139.88 246.04L99.3324 257.532C99.3324 257.532 103.737 232.44 133.607 222.496L110.647 136.33L108.663 136.933C80.1918 144.611 57.1742 142.574 47.5704 140.911C33.9554 138.563 26.834 135.572 27.5001 145.929C28.08 155.063 30.2557 169.224 35.2397 187.929C46.0225 228.433 81.6583 306.481 149.005 288.342L150.989 287.719L139.88 246.04ZM61.0848 188.485L108.946 175.876C108.946 175.876 107.551 194.288 89.6087 199.018C71.6615 203.743 61.0848 188.485 61.0848 188.485Z" fill="#D65348"/>
+<path d="M225.27 269.163L223.415 268.712C182.398 256.698 176.072 223.99 176.072 223.99L232.89 239.872L262.971 124.281L262.607 124.185C225.711 114.304 201.232 97.0224 191.532 88.8994C177.783 77.3834 171.735 69.3802 165.783 81.4857C160.526 92.163 153.797 109.54 147.284 133.866C133.171 186.543 122.623 297.706 209.867 321.097L211.655 321.5L225.27 269.163ZM166.497 172.756C166.497 172.756 180.246 151.372 203.565 158C226.899 164.628 228.706 190.425 228.706 190.425L166.497 172.756Z" fill="#1D8D22"/>
+<path d="M141.946 245.451L131.072 248.537C133.641 263.019 138.169 276.917 145.276 289.195C146.513 288.922 147.74 288.687 149 288.342C152.302 287.451 155.364 286.348 158.312 285.145C150.371 273.361 145.118 259.789 141.946 245.451ZM137.7 143.451C132.112 164.307 127.113 194.326 128.489 224.436C130.952 223.367 133.554 222.371 136.444 221.551L138.457 221.101C136.003 188.939 141.308 156.165 147.284 133.866C148.799 128.225 150.318 122.978 151.832 118.085C149.393 119.637 146.767 121.228 143.776 122.867C141.759 129.093 139.722 135.898 137.7 143.451Z" fill="#C04B41"/>
+</svg>
+  <aside class="notes" data-t="0:00 – 0:45">פתיחה. "גרסה 1.64 של Playwright יצאה ב-7 באוקטובר 2026, ותיקון 1.64.1 שבוע אחריה. היום נעבור על כל החידושים — עם קוד שרץ על אפליקציית דמו שבנינו." להזכיר שכל הקוד בתיאור הסרטון.</aside>
+</section>
+
+<!-- 2 · AGENDA -->
+<section class="slide">
+  <div class="eyebrow">AGENDA</div>
+  <h2>מה נעבור היום</h2>
+  <div class="agenda">
+    <div class="card frag"><div class="t">01</div><h3>🪆 <span dir="ltr">within()</span></h3><p>מחפשים אלמנט רק בתוך אלמנט אחר</p></div>
+    <div class="card frag"><div class="t">02</div><h3>🎯 Test Runner</h3><p>default, shuffle, locks, WebP</p></div>
+    <div class="card frag"><div class="t">03</div><h3>🎬 הקלטת וידאו</h3><p>fps, CSS, VP9</p></div>
+    <div class="card frag"><div class="t">04</div><h3>🧰 WebMCP</h3><p>בודקים את הכלים שהאתר חושף לסוכני AI</p></div>
+    <div class="card frag"><div class="t">05</div><h3>✨ <span dir="ltr">APIs</span> חדשים</h3><p><span dir="ltr">Breaking Changes</span>, ואיך משדרגים בלי הפתעות</p></div>
+  </div>
+  <div class="bar"><i></i></div>
+  <aside class="notes" data-t="0:45 – 1:30">מעבר מהיר על המבנה. חמישה חלקים, כל אחד עם דמו חי. להדגיש: "נריץ הכל על PW Shop — חנות קטנה שבנינו בדיוק בשביל השיעור."</aside>
+</section>
+
+<!-- 2b · GET THE CODE -->
+<section class="slide">
+  <div class="eyebrow">GET THE CODE</div>
+  <h2>מורידים את הקוד <span class="accent">ומריצים</span></h2>
+  <p class="lead" style="margin:-8px 0 22px">כל הקוד מהשיעור, כולל אפליקציית הדמו, נמצא בריפו: <a class="repo-link" href="https://github.com/AlexKomanov/playwright-1.64-lesson" target="_blank" rel="noopener" dir="ltr">github.com/AlexKomanov/playwright-1.64-lesson</a></p>
+  <div class="steps run-steps">
+    <div class="card frag"><div><h3>מורידים את הריפו</h3><div class="term"><span class="pr">$</span> git clone https://github.com/AlexKomanov/playwright-1.64-lesson.git</div></div></div>
+    <div class="card frag"><div><h3>נכנסים לתיקייה ומתקינים</h3><div class="term"><span class="pr">$</span> cd playwright-1.64-lesson
+<span class="pr">$</span> npm install
+<span class="pr">$</span> npx playwright install chromium</div></div></div>
+    <div class="card frag"><div><h3>מרימים את השרת של אפליקציית הדמו</h3><div class="term"><span class="pr">$</span> npm run demo
+<span class="out">PW Shop running at http://localhost:3164</span></div><p class="dim" style="margin-top:8px">ופותחים בדפדפן את <span dir="ltr">http://localhost:3164</span></p></div></div>
+    <div class="card frag"><div><h3>מריצים את הטסטים, בטרמינל נוסף</h3><div class="term"><span class="pr">$</span> npx playwright test
+<span class="out">17 passed</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
+  </div>
+  <aside class="notes" data-t="">להראות את הריפו ב-GitHub. להדגיש: npm run demo רק בשביל לראות את האפליקציה בדפדפן — הטסטים מרימים את השרת לבד.</aside>
+</section>
+
+<!-- 3 · DEMO APP -->
+<section class="slide">
+  <div class="eyebrow">SETUP</div>
+  <h2>אפליקציית הדמו: <span class="accent">PW Shop</span></h2>
+  <div class="split">
+    <div>
+      <ul class="clean">
+        <li class="frag">שרת Node פשוט, בלי ספריות חיצוניות — <code>demo-app/server.js</code></li>
+        <li class="frag">3 עמודים: חנות <code>/</code>, דיאלוג הגדרות <code>/settings</code>, ווידג'טים <code>/widgets</code></li>
+        <li class="frag">API עם עגלת קניות, הגדרות והתחברות (cookie)</li>
+        <li class="frag">העמוד הראשי חושף כלי WebMCP</li>
+      </ul>
+    </div>
+    <div class="term frag"><span class="pr">$</span> npm run demo
+<span class="out">PW Shop running at http://localhost:3164</span>
+<span class="pr">$</span> npx playwright test
+<span class="out">[global-setup] projects selected: chromium, webmcp</span>
+<span class="out">  17 passed (3.2s)</span></div>
+  </div>
+  <aside class="notes" data-t="1:30 – 2:30">להראות את התיקייה. הקונפיג מרים את השרת לבד (webServer), אז לא חייבים להריץ npm run demo — זה רק כדי לראות את האפליקציה בדפדפן.</aside>
+</section>
+
+<!-- 4 · DIVIDER within -->
+<section class="slide divider">
+  <div class="big-ico">🪆</div>
+  <div class="num">01 / LOCATORS</div>
+  <h1 dir="ltr">locator.within()</h1>
+  <p class="lead">למצוא את הכפתור — אבל רק בתוך הדיאלוג</p>
+  <aside class="notes" data-t="2:30 – 2:45">כניסה לחלק הראשון.</aside>
+</section>
+
+<!-- 5 · within: the problem -->
+<section class="slide">
+  <div class="eyebrow">THE PROBLEM</div>
+  <h2>שני כפתורי <span dir="ltr">Save</span> באותו עמוד</h2>
+  <div class="split">
+    <div>
+      <p class="frag">אם נחפש <code>getByRole('button', { name: 'Save' })</code>, נקבל <b class="accent">2</b> תוצאות — והטסט ייכשל בגלל <span dir="ltr">strict mode</span>.</p>
+      <div class="term frag strict-out"><span class="pr">$</span> npx playwright test
+<span class="bad-t">✘ click Save</span>
+
+<span class="bad-t">Error: locator.click: Error: strict mode violation:</span>
+<span class="bad-t">getByRole('button', { name: 'Save' }) resolved to 2 elements:</span>
+  1) &lt;button class="primary" id="save-profile"&gt;Save&lt;/button&gt;
+     <span class="out">aka locator('#save-profile')</span>
+  2) &lt;button class="primary" id="save-settings"&gt;Save&lt;/button&gt;
+     <span class="out">aka getByTestId('settings-dialog').getByRole('button', { name: 'Save' })</span></div>
+      <p class="frag">כבר יש לנו לוקייטור לכפתור ולוקייטור לדיאלוג.</p>
+      <p class="frag">מ-1.64 אפשר לחבר ביניהם בדיוק כמו שהיינו אומרים את זה במילים: <b>הכפתור</b>, <b>בתוך</b> הדיאלוג.</p>
+    </div>
+    <div class="mock">
+      <div class="bar-top"><b>PW</b>Shop<span class="url">localhost:3164/settings</span></div>
+      <div class="body">
+        <div style="font-weight:700;margin-bottom:8px">Profile</div>
+        <div class="field" style="width:200px">Alex</div>
+        <span class="btn pri save">Save</span>
+        <span class="btn" style="margin-left:6px">Open store settings</span>
+        <div class="dlg dlg-outline">
+          <h4>Store settings</h4>
+          <div class="field">Theme: light ▾</div>
+          <span class="btn pri save">Save</span> <span class="btn">Cancel</span>
+        </div>
+        <span class="count-badge c2">2 matches</span>
+        <span class="count-badge c1">1 match ✓</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes" data-t="2:45 – 3:45">שלב 1: שני הכפתורים נצבעים — זו הבעיה. שלב 2: השגיאה האמיתית ש-Playwright מחזיר (צילמנו אותה מהרצה על הדמו). שלב 3: הדיאלוג מסומן. שלב 4: רק ה-Save שבתוך הדיאלוג. הדוגמה לקוחה ישירות מה-release notes הרשמיים.</aside>
+</section>
+
+<!-- 6 · within: code -->
+<section class="slide">
+  <div class="eyebrow">tests/01-within.spec.ts</div>
+  <h2>הקוד: <span dir="ltr">saveButton.within(dialog)</span></h2>
+  <pre class="code" data-title="01-within.spec.ts"><code>test('save the store settings', async ({ page }) => {
+  await page.goto('/settings');
+  await page.getByRole('button', { name: 'Open store settings' }).click();
+
+  const saveButton = page.getByRole('button', { name: 'Save' }); // 2 matches!
+  const dialog = page.getByTestId('settings-dialog');
+
+  await expect(saveButton).toHaveCount(2);
+  await expect(saveButton.within(dialog)).toHaveCount(1);
+
+  await saveButton.within(dialog).click();
+  await expect(dialog).toBeHidden();
+});</code></pre>
+  <span class="frag" data-hl="5-6" data-cap='שני לוקייטורים נפרדים: אחד לכל כפתורי ה-<span dir="ltr">Save</span> בעמוד, ואחד לדיאלוג. עדיין לא לחצנו על כלום.'></span>
+  <span class="frag" data-hl="8-9" data-cap='בכל העמוד יש 2 כפתורי <span dir="ltr">Save</span>, אבל בתוך הדיאלוג יש רק אחד.'></span>
+  <span class="frag" data-hl="11-12" data-cap='לוחצים על ה-<span dir="ltr">Save</span> שבתוך הדיאלוג, ומוודאים שהדיאלוג נסגר.'></span>
+  <p class="frag dim" style="margin-top:16px">עד עכשיו כתבנו <code>dialog.getByRole(...)</code>. זה עובד, אבל צריך לבנות את הלוקייטור מחדש מתוך הדיאלוג. עם <code>within()</code> פשוט משתמשים בשני הלוקייטורים שכבר יש לנו.</p>
+  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות. בסוף להריץ: npx playwright test 01-within --headed.</aside>
+</section>
+
+<!-- 7 · within: table column -->
+<section class="slide col-slide">
+  <div class="eyebrow">RELATIVE LOCATORS · PER PARENT</div>
+  <h2>עוד דוגמה: עמודה שלמה בטבלה</h2>
+  <div class="split">
+    <div>
+      <div class="col-step frag">
+        <span class="tag bad he">בלי <span dir="ltr">within</span></span>
+        <pre class="code"><code>page.getByRole('cell').nth(2)
+// → ['Apple']</code></pre>
+        <p>כאן <code>nth(2)</code> רץ על כל התאים בטבלה ביחד, ולכן מקבלים תא אחד בלבד: התא השלישי בטבלה כולה.</p>
+      </div>
+      <div class="col-step frag">
+        <span class="tag he">עם <span dir="ltr">within</span></span>
+        <pre class="code"><code>page.getByRole('cell').nth(2)
+  .within(page.getByRole('row'))
+// → ['Apple', 'Banana', 'Cherry']</code></pre>
+        <p>עכשיו <code>nth(2)</code> רץ בתוך כל שורה בנפרד, ומקבלים את התא השלישי של כל שורה. עמודה שלמה, בלי לולאה.</p>
+      </div>
+    </div>
+    <div class="mock">
+      <div class="bar-top"><b>PW</b>Shop<span class="url">localhost:3164/</span></div>
+      <div class="body">
+        <table class="mtable" id="colTable">
+          <tr><th>ID</th><th>CATEGORY</th><th>NAME</th><th>PRICE</th></tr>
+          <tr><td>1</td><td>Fruit</td><td>Apple</td><td>$5</td></tr>
+          <tr><td>2</td><td>Fruit</td><td>Banana</td><td>$7.5</td></tr>
+          <tr><td>3</td><td>Fruit</td><td>Cherry</td><td>$12.5</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <aside class="notes" data-t="4:45 – 6:00">שלב 1: בלי within — רק Apple מסומן באדום, כי nth(2) נספר על כל התאים בטבלה. שלב 2: עם within — כל עמודת NAME מסומנת בירוק, תא אחד מכל שורה. התוצאות בשקופית הן מהרצה אמיתית על הדמו (allTextContents). בקוד יש גם טסט "לפני 1.64" עם לולאה להשוואה.</aside>
+</section>
+
+<!-- 8 · DIVIDER runner -->
+<section class="slide divider">
+  <div class="big-ico">🎯</div>
+  <div class="num">02 / TEST RUNNER</div>
+  <h1>ה-<span dir="ltr">Test Runner</span></h1>
+  <p class="lead"><span dir="ltr">default projects · --shuffle · locks · WebP</span></p>
+  <aside class="notes" data-t="6:00 – 6:15">החלק עם הכי הרבה חידושים בגרסה.</aside>
+</section>
+
+<!-- 9 · default projects -->
+<section class="slide">
+  <div class="eyebrow">testProject.default</div>
+  <h2>פרויקט שמוגדר בקונפיג — אבל <span class="accent">לא רץ</span> אוטומטית</h2>
+  <div class="split">
+    <pre class="code" data-title="playwright.config.ts"><code>export default defineConfig({
+  projects: [
+    { name: 'chromium', use: devices['Desktop Chrome'] },
+    { name: 'firefox', use: devices['Desktop Firefox'],
+      default: false },
+    { name: 'webkit', use: devices['Desktop Safari'],
+      default: false },
+  ],
+});</code></pre>
+    <div>
+      <div class="term frag"><span class="pr">$</span> npx playwright test
+<span class="cm"># chromium only</span>
+<span class="pr">$</span> npx playwright test --project=firefox
+<span class="cm"># firefox</span>
+<span class="pr">$</span> npx playwright test --project="*"
+<span class="cm"># all of them — e.g. on CI</span></div>
+      <div class="card frag" style="margin-top:16px;border-color:rgba(255,181,71,.35)">
+        <span class="tag warn">CI TIP · currents.dev</span>
+        <p>ב-CI כדאי לציין את הפרויקטים במפורש עם <code>--project</code>, ולבדוק ב-<span dir="ltr">global setup</span> את <code>config.filteredProjects</code> — כדי שהריצה תיכשל אם דפדפן נפל ממנה בלי שאף אחד שם לב.</p>
+      </div>
+    </div>
+  </div>
+  <span class="frag" data-hl="4-7" data-cap='firefox ו-webkit מוגדרים בקונפיג, אבל <code>default: false</code> מוציא אותם מהרצה רגילה. הם ירוצו רק כשנבקש אותם עם <code>--project</code>.'></span>
+  <aside class="notes" data-t="6:15 – 7:30">בדמו שלנו: firefox, webkit, order-demo ו-video הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
+</section>
+
+<!-- 10 · shuffle -->
+<section class="slide">
+  <div class="eyebrow">--shuffle [seed]</div>
+  <h2>סדר אקראי — תופס טסטים <span class="accent">שתלויים זה בזה</span></h2>
+  <div class="shuf" id="shuf">
+    <div class="tc" data-id="add"><b>test #1</b>add an apple<br>to the cart<span class="st"></span></div>
+    <div class="tc" data-id="show"><b>test #2 · needs #1</b>cart shows<br>one item<span class="st"></span></div>
+    <div class="tc" data-id="within"><b>test #3</b>within()<br>dialog<span class="st"></span></div>
+    <div class="tc" data-id="cookies"><b>test #4</b>request<br>cookies<span class="st"></span></div>
+  </div>
+  <div class="seed" id="seedOut">declaration order · no seed</div>
+  <div class="btn-row" style="margin:16px 0 18px">
+    <button class="btn-ui" id="shufBtn">🔀 npx playwright test --shuffle</button>
+    <button class="btn-ui ghost" id="replayBtn">↺ replay same seed</button>
+    <button class="btn-ui ghost" id="resetBtn">reset</button>
+  </div>
+  <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npx playwright test --project=order-demo --workers=1 --shuffle
+<span class="out">Running 2 tests using 1 worker, shuffle seed 476438802</span>
+<span class="out">  ✘ cart shows one item · ✓ add an apple to the cart</span>
+<span class="pr">$</span> npx playwright test --project=order-demo --workers=1 --shuffle 476438802 <span class="cm"># same order again</span></div>
+  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle עד שטסט 2 מגיע לפני 1 ונהיה אדום. ואז replay — אותו seed, אותו סדר. הפלט בטרמינל הוא ריצה אמיתית מהדמו שלנו (seed 476438802 שחזר את הכישלון).</aside>
+</section>
+
+<!-- 11 · shuffle gotchas -->
+<section class="slide">
+  <div class="eyebrow">SHUFFLE · IN PRACTICE</div>
+  <h2>איך משתמשים ב-shuffle נכון</h2>
+  <div class="grid g3">
+    <div class="card frag"><div class="ico">🌙</div><h3>בריצת הלילה</h3><p>נריץ shuffle בריצת הלילה ולא בבדיקות של ה-PR, כדי שכישלון אקראי לא יחסום merge של משהו אחר. את ה-seed נשמור בלוג.</p><span class="tag info" style="margin-top:10px">currents.dev</span></div>
+    <div class="card frag"><div class="ico">🧩</div><h3>רק במצב parallel</h3><p>סדר הקבצים תמיד מתערבב. טסטים בתוך אותו קובץ מתערבבים רק במצב parallel — במצב default הם רצים לפי הסדר שבו נכתבו.</p><span class="tag" style="margin-top:10px">Playwright CLI help</span></div>
+    <div class="card frag"><div class="ico">🔗</div><h3><span dir="ltr">beforeAll</span> מחזיק אותם יחד</h3><p>גילינו את זה בדמו: טסטים שחולקים <code>beforeAll</code> רצים כקבוצה אחת, ולכן לא מתערבבים. ברגע שהורדנו את ה-hook, ה-shuffle תפס את הבאג.</p><span class="tag warn he" style="margin-top:10px">נבדק בדמו</span></div>
+  </div>
+  <aside class="notes" data-t="9:00 – 9:45">הנקודה השלישית היא משהו שגילינו בפועל כשבנינו את הדמו — בקוד של Playwright, קבוצות עם beforeAll/afterAll במצב parallel נשארות יחד. זה מוסבר בהערה בקובץ order-demo.</aside>
+</section>
+
+<!-- 12 · locks visual -->
+<section class="slide">
+  <div class="eyebrow">TEST LOCKS</div>
+  <h2><span dir="ltr">Test Locks</span>: טסטים שמשתמשים <span class="accent">באותו משאב</span> מחכים לתורם</h2>
+  <div class="lanes" id="lanes">
+    <div class="lane">worker 1<div class="track"><div class="blk settings" data-b="a">locks-a: theme→dark</div></div></div>
+    <div class="lane">worker 2<div class="track"><div class="blk settings" data-b="b">locks-b: theme→light</div></div></div>
+    <div class="lane">worker 3<div class="track"><div class="blk free" data-b="c">within()</div><div class="blk free" data-b="d">cookies</div></div></div>
+    <div class="lane">worker 4<div class="track"><div class="blk free" data-b="e">webmcp</div><div class="blk free" data-b="f">shadow</div></div></div>
+  </div>
+  <div class="legend"><span><i style="background:var(--warn)"></i><span dir="ltr">lock: 'store-settings'</span></span><span><i style="background:var(--info)"></i>טסטים בלי lock — ממשיכים לרוץ במקביל</span><span><i style="background:var(--bad)"></i>התנגשות</span></div>
+  <div class="btn-row" style="margin-top:18px">
+    <button class="btn-ui ghost" id="noLock">בלי lock</button>
+    <button class="btn-ui" id="withLock">עם lock</button>
+  </div>
+  <p class="dim" style="text-align:center;margin-top:12px;font-size:16px">בדמו: בלי ה-lock כל 3 הריצות נכשלו. עם ה-lock — כל 3 עברו.</p>
+  <aside class="notes" data-t="9:45 – 11:00">ללחוץ "בלי lock" — שני הבלוקים הכתומים חופפים ונהיים אדומים. "עם lock" — אחד זז אחרי השני, והשאר ממשיכים במקביל. Test Locks הגיעו ב-1.63. ב-1.64 אפשר להגדיר lock לקובץ שלם או ל-describe שלם.</aside>
+</section>
+
+<!-- 13 · locks code -->
+<section class="slide">
+  <div class="eyebrow">test.describe.configure({ lock })</div>
+  <h2>חדש ב-1.64: lock לקובץ שלם או ל-describe שלם</h2>
+  <div class="grid g2">
+    <pre class="code" data-title="02-locks-a.spec.ts"><code>// every test in this file takes the lock
+test.describe.configure({ lock: 'store-settings' });
+
+test('switch theme to dark', async ({ page }) => {
+  // ...changes the shared server setting
+});</code></pre>
+    <pre class="code" data-title="02-locks-b.spec.ts"><code>test.describe.configure({ lock: 'store-settings' });
+
+test('switch theme to light', async ({ request }) => {
+  // never runs together with locks-a
+});
+
+// built-in: nothing else runs meanwhile
+test('reset', { lock: 'exclusive' }, async () => {});</code></pre>
+  </div>
+  <ul class="clean" style="margin-top:20px">
+    <li class="frag">ה-lock תקף בין קבצים, workers ו-projects. אם קוראים ל-configure שוב, ה-locks <b>מצטברים</b> ולא מחליפים זה את זה.</li>
+    <li class="frag">במצב default או serial ה-lock תפוס לאורך <b>כל הקובץ</b>, אז כדאי שקבצים עם lock יהיו קטנים.</li>
+    <li class="frag">עדיף לתת לכל worker משאב משלו (למשל משתמש נפרד), ולהשתמש ב-lock רק כשאין ברירה.</li>
+  </ul>
+  <aside class="notes" data-t="11:00 – 12:00">ה-lock 'exclusive' הוא מובנה (מ-1.63). המלצות 2-3 מ-currents.dev ומהתיעוד הרשמי.</aside>
+</section>
+
+<!-- 14 · snapshots -->
+<section class="slide">
+  <div class="eyebrow">SNAPSHOTS</div>
+  <h2>צילומי מסך: פורמט WebP, ושינוי ב-<span dir="ltr">missing</span></h2>
+  <div class="grid g2">
+    <div>
+      <span class="tag">NEW</span>
+      <pre class="code" data-title="playwright.config.ts"><code>export default defineConfig({
+  expect: {
+    toHaveScreenshot: { type: 'webp' },
+  },
+});</code></pre>
+      <p class="frag" style="font-size:17px">בדמו: <code>promo-banner-looks-right-1-chromium-darwin.webp</code></p>
+    </div>
+    <div>
+      <span class="tag warn">BREAKING</span>
+      <div class="term"><span class="pr">$</span> npx playwright test --update-snapshots=missing
+<span class="out">  ✓ promo banner looks right</span>
+<span class="cm"># 1.64: tests that only CREATE missing</span>
+<span class="cm"># snapshots now PASS</span></div>
+      <p class="frag" style="font-size:17px">המצב הרגיל קיבל שם: <code>'default'</code>. הוא מתנהג כמו קודם — יוצר את ה-snapshot החסר ו<b>מכשיל</b> את הטסט. טיפ: נוסיף ב-CI בדיקה שמתריעה על קבצי תמונה חדשים, כי ריצה ירוקה כבר לא מבטיחה שלא נוספו כאלה.</p>
+    </div>
+  </div>
+  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר.</aside>
+</section>
+
+<!-- 15 · DIVIDER video -->
+<section class="slide divider">
+  <div class="big-ico">🎬</div>
+  <div class="num">03 / VIDEO</div>
+  <h1>הקלטת וידאו</h1>
+  <p class="lead"><span dir="ltr">fps · CSS styles · persistent cursor · VP9</span></p>
+  <aside class="notes" data-t="13:00 – 13:15"></aside>
+</section>
+
+<!-- 16 · video -->
+<section class="slide">
+  <div class="eyebrow">use.video</div>
+  <h2>בוחרים קצב פריימים, ומעצבים עם CSS</h2>
+  <div class="split" style="grid-template-columns: 1.7fr 1fr">
+    <pre class="code" style="font-size:13.5px" data-title="playwright.config.ts · project 'video'"><code>video: {
+  mode: 'on',
+  size: { width: 1280, height: 720 },
+  fps: 60,
+  show: {
+    actions: {
+      style: {
+        point: 'width: 20px; height: 20px; border-radius: 50%; background: red',
+        highlight: 'outline: 2px solid #333; background: rgba(0, 128, 255, .15)',
+        title: 'font-size: 16px',
+      },
+    },
+  },
+},</code></pre>
+    <div>
+      <div class="fps">
+        <div class="row r25">25 fps<div class="rail"><div class="dot"></div></div></div>
+        <div class="row r60">60 fps<div class="rail"><div class="dot"></div></div></div>
+      </div>
+      <ul class="clean" style="margin-top:18px">
+        <li class="frag"><code>fps</code> — ב-Firefox וב-WebKit המקסימום כרגע הוא 25</li>
+        <li class="frag"><code>style</code> מחליף את <code>fontSize</code>, שהוגדר כ-deprecated</li>
+        <li class="frag">הסמן נשאר על המסך גם אחרי ניווט, וזז בתנועה טבעית</li>
+        <li class="frag">קידוד VP9 במקום VP8: פחות עומס על ה-CPU, וקבצים קטנים יותר</li>
+      </ul>
+    </div>
+  </div>
+  <span class="frag" data-hl="4" data-cap='<code>fps: 60</code> קובע את קצב הפריימים של ההקלטה. ב-Firefox וב-WebKit המקסימום כרגע הוא 25.'></span>
+  <span class="frag" data-hl="5-12" data-cap='כאן מעצבים עם CSS את מה שמופיע בווידאו: <code>point</code> הוא הנקודה במקום הקליק, <code>highlight</code> מסמן את האלמנט, ו-<code>title</code> הוא שם הפעולה.'></span>
+  <aside class="notes" data-t="13:15 – 16:00">להריץ: npm run test:video ולפתוח את ה-video.webm מ-test-results. להראות את הנקודה האדומה וההדגשה הכחולה. אותן אפשרויות זמינות גם ב-Playwright MCP וב-playwright-cli.</aside>
+</section>
+
+<!-- 17 · DIVIDER webmcp -->
+<section class="slide divider">
+  <div class="big-ico">🧰</div>
+  <div class="num">04 / WEBMCP</div>
+  <h1>WebMCP</h1>
+  <p class="lead">האתר חושף כלים לסוכני AI — ואנחנו בודקים אותם כמו כל חלק אחר באפליקציה</p>
+  <aside class="notes" data-t="16:00 – 16:15"></aside>
+</section>
+
+<!-- 18 · webmcp what -->
+<section class="slide">
+  <div class="eyebrow">WHAT IS WEBMCP</div>
+  <h2>האתר מגדיר <span class="accent">כלים</span>, הדפדפן מציג אותם, וסוכן ה-AI מפעיל אותם</h2>
+  <svg class="flow" viewBox="0 0 1100 260">
+    <rect class="box" x="20" y="60" width="300" height="140" rx="18"/>
+    <text class="lbl" x="170" y="118" text-anchor="middle">Web page</text>
+    <text class="sub" x="170" y="150" text-anchor="middle">registerTool({ name,</text>
+    <text class="sub" x="170" y="172" text-anchor="middle">inputSchema, execute })</text>
+    <rect class="box" x="400" y="60" width="300" height="140" rx="18"/>
+    <text class="lbl" x="550" y="118" text-anchor="middle">Browser</text>
+    <text class="sub" x="550" y="150" text-anchor="middle">navigator.modelContext</text>
+    <text class="sub" x="550" y="172" text-anchor="middle">(experimental)</text>
+    <rect class="box" x="780" y="20" width="300" height="100" rx="18"/>
+    <text class="lbl" x="930" y="65" text-anchor="middle">AI agent</text>
+    <text class="sub" x="930" y="92" text-anchor="middle">Playwright MCP: webmcp_&lt;tool&gt;</text>
+    <rect class="box" x="780" y="140" width="300" height="100" rx="18" style="stroke:#45e06f"/>
+    <text class="lbl" x="930" y="185" text-anchor="middle">Playwright test</text>
+    <text class="sub" x="930" y="212" text-anchor="middle">page.webmcp.callTool()</text>
+    <path class="wire" id="w1" d="M320 130 L400 130"/>
+    <path class="wire" id="w2" d="M700 110 C740 110 740 70 780 70"/>
+    <path class="wire" id="w3" d="M700 150 C740 150 740 190 780 190"/>
+    <circle class="pkt" r="6"><animateMotion dur="2.4s" repeatCount="indefinite" path="M780 190 C740 190 740 150 700 150 L400 130 L320 130"/></circle>
+    <circle class="pkt" r="6" style="fill:#5cc8ff"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M320 130 L400 130 L700 110 C740 110 740 70 780 70"/></circle>
+  </svg>
+  <div class="grid g3" style="margin-top:10px">
+    <div class="card frag"><p>המפתחים של האתר בוחרים אילו פעולות לחשוף. לכל כלי יש שם, תיאור, <span dir="ltr">JSON Schema</span> ופונקציה שמבצעת אותו.</p></div>
+    <div class="card frag"><p>עדיין <b>ניסיוני</b>: ב-Chromium מפעילים עם <code>--enable-features=WebMCP</code>, ב-Firefox דרך prefs, וב-WebKit אין תמיכה.</p></div>
+    <div class="card frag"><p>אין LLM בטסט. קוראים לכלי עם קלט קבוע ובודקים את התוצאה — כמו טסט ל-API. ב-awesome-testing קוראים לזה <b dir="ltr">tool contract test</b>.</p></div>
+  </div>
+  <aside class="notes" data-t="16:15 – 17:30">המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. להדגיש: תיאורים ותוצאות של כלים מגיעים מהעמוד — Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
+</section>
+
+<!-- 19 · webmcp page code -->
+<section class="slide">
+  <div class="eyebrow">demo-app/public/index.html</div>
+  <h2>בצד של האתר: מגדירים כלי</h2>
+  <pre class="code" data-title="index.html"><code>const modelContext = document.modelContext || navigator.modelContext;
+
+modelContext.registerTool({
+  name: 'add_to_cart',
+  description: 'Adds a product to the cart. Changes the cart contents.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: { productId: { type: 'integer', minimum: 1 }, quantity: { type: 'integer', minimum: 1 } },
+    required: ['productId', 'quantity'],
+  },
+  async execute({ productId, quantity }) {
+    const cart = await api('/api/cart', { method: 'POST', body: JSON.stringify({ productId, quantity }) });
+    if (cart.error) return { isError: true, content: [{ type: 'text', text: cart.error }] };
+    renderCart(cart);
+    return { content: [{ type: 'text', text: JSON.stringify(cart) }] };
+  },
+});</code></pre>
+  <span class="frag" data-hl="1" data-cap='בודקים איפה הדפדפן חושף את ה-API של WebMCP: ב-<code>document.modelContext</code> או ב-<code>navigator.modelContext</code>.'></span>
+  <span class="frag" data-hl="4-11" data-cap='שם, תיאור ו-JSON Schema לקלט. זה מה שסוכן ה-AI רואה כשהוא מחליט אם להשתמש בכלי ואיך.'></span>
+  <span class="frag" data-hl="12-17" data-cap='<code>execute</code> היא הפונקציה שרצה כשקוראים לכלי. היא פונה ל-API של החנות ומעדכנת את העגלה על המסך.'></span>
+  <span class="frag" data-hl="14" data-cap='אם המוצר לא קיים מחזירים <code>isError: true</code>, כדי שגם הסוכן וגם הטסט יבינו שהפעולה נכשלה.'></span>
+  <aside class="notes" data-t="17:30 – 18:30">אותה צורה ש-Playwright משתמש בה בטסטים של עצמו (tests/library/webmcp.spec.ts). שורה 14: שגיאה מוחזרת עם isError, כדי שלא תיראה כמו הצלחה (המלצה מ-awesome-testing).</aside>
+</section>
+
+<!-- 20 · webmcp test -->
+<section class="slide">
+  <div class="eyebrow">tests/webmcp.spec.ts</div>
+  <h2>בצד של הטסט: <span dir="ltr">page.webmcp</span></h2>
+  <div class="grid g2">
+    <pre class="code" data-title="playwright.config.ts"><code>{
+  name: 'webmcp',
+  use: {
+    ...devices['Desktop Chrome'],
+    launchOptions: {
+      args: ['--enable-features=WebMCP'],
+    },
+  },
+  testMatch: '**/webmcp.spec.ts',
+}</code></pre>
+    <pre class="code" data-title="webmcp.spec.ts"><code>const tools = await page.webmcp.tools();
+expect(tools.map(t => t.name).sort())
+  .toEqual(['add_to_cart', 'get_cart', 'search_products']);
+
+const result = await page.webmcp.callTool(
+  'add_to_cart', { productId: 2, quantity: 2 });
+expect(result.isError).not.toBe(true);
+
+const cart = JSON.parse(result.content[0].text);
+expect(cart).toMatchObject({ totalItems: 2, totalPrice: 15 });
+
+// don't trust the tool alone — check the UI too
+await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
+  </div>
+  <div class="term frag" style="margin-top:16px"><span class="pr">$</span> playwright-cli webmcp-list
+<span class="pr">$</span> playwright-cli webmcp-call search_catalog --params '{"query":"cats"}'   <span class="cm"># from the release notes</span></div>
+  <aside class="notes" data-t="18:30 – 21:00">להריץ npm run test:webmcp. להראות את 3 הטסטים: רשימת הכלים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל.</aside>
+</section>
+
+<!-- 21 · getByRef -->
+<section class="slide">
+  <div class="eyebrow">page.getByRef()</div>
+  <h2>מה-snapshot של ה-AI ישר לאלמנט בדף</h2>
+  <div class="split">
+    <div>
+      <div class="yaml">- textbox "Email" <span class="ref">[ref=e21]</span><br><span class="target">- button "Subscribe" <span class="ref">[ref=e22]</span></span><br>- iframe "Chat widget" <span class="ref">[ref=e23]</span></div>
+      <pre class="code frag" style="margin-top:14px"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
+const ref = snapshot.match(/button "Subscribe" \[ref=(\w+)\]/)[1];
+await page.getByRef(ref).click();</code></pre>
+    </div>
+    <div class="mock">
+      <div class="bar-top"><b>PW</b>Shop<span class="url">localhost:3164/widgets</span></div>
+      <div class="body" style="min-height:150px">
+        <div style="font-weight:700;margin-bottom:10px">Newsletter</div>
+        <span class="field" style="display:inline-block;width:180px">you@example.com</span>
+        <span class="btn sub-btn">Subscribe</span>
+        <span class="sub-done">Subscribed!</span>
+      </div>
+    </div>
+  </div>
+  <p class="frag dim" style="margin-top:18px">את ה-ref מקבלים מ-<code>ariaSnapshot</code> במצב <code>'ai'</code>, והוא תקף ל-snapshot האחרון של אותו frame. המספרים בשקופית הם רק דוגמה — בטסט אנחנו שולפים את ה-ref מה-snapshot עצמו.</p>
+  <aside class="notes" data-t="21:00 – 22:00">שימושי במיוחד כשסוכן AI כבר "ראה" את העמוד דרך snapshot והחזיר ref — עכשיו אפשר להשתמש בו ישירות בקוד.</aside>
+</section>
+
+<!-- 22 · more APIs -->
+<section class="slide">
+  <div class="eyebrow">MORE NEW APIs</div>
+  <h2>עוד APIs חדשים</h2>
+  <div class="grid g2">
+    <div class="card frag"><span class="tag">includeShadow</span><pre class="code" style="font-size:14px;margin:6px 0 10px"><code>await page.content({ includeShadow: true });
+// &lt;template shadowrootmode="open"&gt;...</code></pre><p>מחזיר את ה-HTML כולל התוכן של <span dir="ltr">shadow roots</span> פתוחים, בפורמט של <span dir="ltr">declarative shadow DOM</span>. עובד גם עם <code>frame.content()</code>.</p></div>
+    <div class="card frag"><span class="tag">APIRequestContext cookies</span><pre class="code" style="font-size:14px;margin:6px 0 10px"><code>await request.addCookies([{ name: 'session-id', value: '42', url }]);
+await request.cookies(url);
+await request.clearCookies({ name: 'session-id' });</code></pre><p>אותן מתודות שיש ב-BrowserContext, עכשיו גם בטסטים של API.</p></div>
+    <div class="card frag"><span class="tag">fullConfig.filteredProjects</span><p>רשימת הפרויקטים שנשארו אחרי הסינון של <code>--project</code>. זמינה ב-<span dir="ltr">global setup</span> וב-reporters, ובדמו היא מודפסת בתחילת כל ריצה.</p></div>
+    <div class="card frag"><span class="tag">signCount</span><p>קובע מאיזה ערך מתחיל מונה החתימות של passkey וירטואלי ב-<code>credentials.create()</code>. הערך נשמר ונטען יחד עם ה-<span dir="ltr">storage state</span>.</p></div>
+  </div>
+  <aside class="notes" data-t="22:00 – 23:30">הראשונים: קבצי הטסט 03-new-apis.spec.ts. signCount — רק מזכירים, לא בדמו (דורש הגדרת passkey).</aside>
+</section>
+
+<!-- 23 · breaking -->
+<section class="slide brk">
+  <div class="eyebrow">BREAKING CHANGES ⚠️</div>
+  <h2>4 <span dir="ltr">Breaking Changes</span> — כדאי לבדוק לפני שמשדרגים</h2>
+  <div class="grid g2">
+    <div class="card frag"><h3>📐 <span dir="ltr">screen</span> נלקח מהגדרות המכשיר</h3><p>מי שמשתמש ב-<code>devices['Desktop Chrome']</code> יקבל עכשיו גם גודל מסך של <b dir="ltr">1920×1080</b>, וה-viewport נשאר <span dir="ltr">1280×720</span>. כדי לוותר על זה מגדירים <code>screen: undefined</code>.</p></div>
+    <div class="card frag"><h3>👻 iframe מוסתר</h3><p>אלמנט שנמצא בתוך iframe מוסתר, למשל עם <code>visibility: hidden</code>, נחשב עכשיו לא נראה. זה משפיע על פעולות, על <code>isVisible()</code> ועל <code>toBeVisible()</code>.</p></div>
+    <div class="card frag"><h3>📸 <span dir="ltr">--update-snapshots=missing</span></h3><p>טסט שרק יוצר snapshot חסר עובר עכשיו בהצלחה. המצב הרגיל נקרא מעכשיו <code>'default'</code>.</p></div>
+    <div class="card frag"><h3>⚛️ JSX בטסטים</h3><p>JSX בקבצי הטסט מתקמפל עכשיו לפי <code>tsconfig.json</code>, כולל ההגדרות <code>jsx</code> ו-<code>jsxImportSource</code>. ברירת המחדל היא <span dir="ltr">automatic runtime</span> של <code>react/jsx-runtime</code>.</p></div>
+  </div>
+  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים ב-04-breaking-changes.spec.ts. בדמו: הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי.</aside>
+</section>
+
+<!-- 24 · breaking code -->
+<section class="slide">
+  <div class="eyebrow">tests/04-breaking-changes.spec.ts</div>
+  <h2>איך זה נראה בטסט</h2>
+  <div class="grid g2">
+    <pre class="code" data-title="screen"><code>// project uses ...devices['Desktop Chrome']
+await page.goto('/widgets');
+await expect(page.locator('#screen-size'))
+  .toHaveText('1920×1080');
+
+// opt out
+const context = await browser.newContext({
+  ...devices['Desktop Chrome'],
+  screen: undefined,
+});
+// → screen follows the viewport: 1280×720</code></pre>
+    <pre class="code" data-title="hidden iframe"><code>const chatButton = page
+  .frameLocator('#hidden-frame')
+  .getByRole('button', { name: 'Chat with us' });
+
+await expect(chatButton).toHaveCount(1); // in the DOM
+await expect(chatButton).toBeHidden();   // 1.64: hidden
+expect(await chatButton.isVisible()).toBe(false);</code></pre>
+  </div>
+  <aside class="notes" data-t="26:00 – 26:45">ערכי המסך פה הם מה שראינו בפועל בהרצה של הדמו.</aside>
+</section>
+
+<!-- 25 · upgrade checklist -->
+<section class="slide">
+  <div class="eyebrow">UPGRADE PLAN</div>
+  <h2>איך משדרגים בלי הפתעות</h2>
+  <div class="steps">
+    <div class="card frag"><p><b>נשדרג קודם בלי shuffle</b> — כדי שכישלונות בגלל ה-Breaking Changes לא יתערבבו עם כישלונות בגלל סדר הטסטים.</p></div>
+    <div class="card frag"><p><b>נריץ פעם אחת בדיוק כמו ב-CI</b> ונשווה לריצה הקודמת: אותו מספר טסטים? אותם פרויקטים?</p></div>
+    <div class="card frag"><p><b>כשהכול ירוק</b> — נוסיף ריצת לילה עם <code>--shuffle</code> ונשמור את ה-seed.</p></div>
+    <div class="card frag"><p><b>נוסיף locks</b> רק במקומות שבהם טסטים חולקים משאב שאי אפשר לשכפל.</p></div>
+  </div>
+  <p class="dim" style="margin-top:14px;font-size:15px">מבוסס על "Playwright 1.64: Shuffle, Test Locks and Breaking Changes" · currents.dev</p>
+  <aside class="notes" data-t="26:45 – 27:45">סיכום מעשי.</aside>
+</section>
+
+<!-- 26 · sources -->
+<section class="slide">
+  <div class="eyebrow">SOURCES</div>
+  <h2>מקורות</h2>
+  <ul class="src-list">
+    <li>הקוד מהשיעור · <a href="https://github.com/AlexKomanov/playwright-1.64-lesson" target="_blank" rel="noopener">github.com/AlexKomanov/playwright-1.64-lesson</a></li>
+    <li>Release notes (רשמי) · <a href="https://playwright.dev/docs/release-notes" target="_blank" rel="noopener">playwright.dev/docs/release-notes</a></li>
+    <li>GitHub releases v1.64.0 / v1.64.1 · <a href="https://github.com/microsoft/playwright/releases" target="_blank" rel="noopener">github.com/microsoft/playwright/releases</a></li>
+    <li>API: WebMCP · <a href="https://playwright.dev/docs/api/class-webmcp" target="_blank" rel="noopener">playwright.dev/docs/api/class-webmcp</a></li>
+    <li>API: Locator.within · <a href="https://playwright.dev/docs/api/class-locator#locator-within" target="_blank" rel="noopener">playwright.dev/docs/api/class-locator</a></li>
+    <li>Test locks · <a href="https://playwright.dev/docs/test-parallel#test-locks" target="_blank" rel="noopener">playwright.dev/docs/test-parallel</a></li>
+    <li>Playwright tests: webmcp.spec.ts · <a href="https://github.com/microsoft/playwright/blob/main/tests/library/webmcp.spec.ts" target="_blank" rel="noopener">github.com/microsoft/playwright</a></li>
+    <li>Currents · <a href="https://currents.dev/posts/playwright-1-64-shuffle-test-locks-and-breaking-changes" target="_blank" rel="noopener">Shuffle, Test Locks and Breaking Changes</a></li>
+    <li>Awesome Testing · <a href="https://www.awesome-testing.com/2026/10/understanding-webmcp-with-playwright-and-ai-agents" target="_blank" rel="noopener">Understanding WebMCP with Playwright</a></li>
+    <li>Medium · <a href="https://medium.com/@svetlana.tretjakova/playwright-1-64-just-landed-the-new-features-that-actually-matter-for-test-automation-6ec53c8db917" target="_blank" rel="noopener">Playwright 1.64 Just Landed</a></li>
+    <li>Medium · <a href="https://medium.com/@amol9patil/playwright-1-64-what-changed-why-its-better-and-should-you-use-it-72eb11f7322b" target="_blank" rel="noopener">Playwright 1.64: What Changed</a></li>
+    <li>TestDino · <a href="https://testdino.com/blog/playwright-1-64-release" target="_blank" rel="noopener">WebMCP, Shuffle, and locator.within() Explained</a></li>
+  </ul>
+  <aside class="notes" data-t="27:45 – 28:00">להפנות לתיאור הסרטון.</aside>
+</section>
+
+<!-- 27 · closing -->
+<section class="slide divider">
+  <div class="big-ico">🎭</div>
+  <h1>נתראה ב-<span class="accent" dir="ltr">1.65</span></h1>
+  <p class="lead">כל הקוד ואפליקציית הדמו נמצאים בריפו:</p>
+  <p style="margin:6px 0 0"><a class="repo-link" style="font-size:22px" href="https://github.com/AlexKomanov/playwright-1.64-lesson" target="_blank" rel="noopener" dir="ltr">github.com/AlexKomanov/playwright-1.64-lesson</a></p>
+  <div class="term" style="max-width:720px;margin:24px auto 0;text-align:left"><span class="pr">$</span> git clone https://github.com/AlexKomanov/playwright-1.64-lesson.git</div>
+  <aside class="notes" data-t="28:00 – 28:30">סגירה + קריאה להירשם.</aside>
+</section>
+
+</main>
+
+<nav class="nav">
+  <button id="prevBtn" aria-label="הקודם">→</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter">1 / 1</span>
+  <button id="nextBtn" aria-label="הבא">←</button>
+</nav>
+
+<script>
+(() => {
+  const deck = document.getElementById('slides');
+  const slides = [...deck.querySelectorAll('.slide')];
+  let idx = 0;
+  let navLock = Infinity; // observer stays quiet until the start slide is in place
+  const startIdx = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+
+  // ---------- syntax highlight ----------
+  const KW = /\b(const|let|var|await|async|function|return|if|else|for|of|new|import|from|export|default|true|false|undefined|null|test|expect)\b/;
+  const TOKEN = /(\/\/.*$)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_$][\w$]*)(?=\s*\()|(\b[A-Za-z_$][\w$]*\b)|(=>|[{}()[\]])/gm;
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  function highlight(line) {
+    let out = '', last = 0;
+    line.replace(TOKEN, (m, c, s, n, f, w, p, off) => {
+      out += esc(line.slice(last, off));
+      if (c) out += `<span class="tk-c">${esc(c)}</span>`;
+      else if (s) out += `<span class="tk-s">${esc(s)}</span>`;
+      else if (n) out += `<span class="tk-n">${n}</span>`;
+      else if (f) out += KW.test(f) && !/^(test|expect)$/.test(f) ? `<span class="tk-k">${f}</span>` : `<span class="tk-f">${f}</span>`;
+      else if (w) out += KW.test(w) && w.length === w.match(KW)[0].length ? `<span class="tk-k">${w}</span>` : esc(w);
+      else if (p) out += `<span class="tk-p">${esc(p)}</span>`;
+      last = off + m.length;
+      return m;
+    });
+    return out + esc(line.slice(last));
+  }
+  document.querySelectorAll('pre.code').forEach(pre => {
+    const code = pre.querySelector('code');
+    const raw = code.textContent.replace(/^\n|\n$/g, '');
+    code.innerHTML = raw.split('\n').map(l => `<span class="ln">${highlight(l) || ' '}</span>`).join('');
+    if (pre.dataset.title) {
+      const t = document.createElement('span'); t.className = 'title'; t.textContent = pre.dataset.title; pre.prepend(t);
+    }
+    const b = document.createElement('button'); b.className = 'copy'; b.textContent = 'copy';
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      navigator.clipboard?.writeText(raw).then(() => { b.textContent = 'copied ✓'; setTimeout(() => (b.textContent = 'copy'), 1200); });
+    });
+    pre.prepend(b);
+  });
+
+  // ---------- captions for highlighted code lines ----------
+  document.querySelectorAll('.slide').forEach(slide => {
+    if (!slide.querySelector('.frag[data-cap]')) return;
+    const pre = [...slide.querySelectorAll('pre.code')].find(p => !p.closest('.frag') && !p.closest('.card'));
+    const cap = document.createElement('div');
+    cap.className = 'hl-cap';
+    // keep code + caption in one grid cell so split layouts stay intact
+    const wrap = document.createElement('div');
+    pre.before(wrap);
+    wrap.append(pre, cap);
+  });
+
+  // ---------- fragments ----------
+  const frags = s => [...s.querySelectorAll('.frag')];
+  function parseHl(spec) {
+    const set = new Set();
+    spec.split(',').forEach(part => {
+      const [a, b] = part.split('-').map(Number);
+      for (let i = a; i <= (b || a); i++) set.add(i);
+    });
+    return set;
+  }
+  function applyFrag(slide, k) {
+    const fs = frags(slide);
+    fs.forEach((f, i) => f.classList.toggle('on', i < k));
+    slide.dataset.k = k;
+    // code line highlight from the last shown fragment that has data-hl
+    const hlFrag = fs.slice(0, k).reverse().find(f => f.dataset.hl);
+    const cap = slide.querySelector('.hl-cap');
+    if (cap) {
+      const capFrag = fs.slice(0, k).reverse().find(f => f.dataset.cap);
+      if (capFrag) cap.innerHTML = capFrag.dataset.cap;
+      cap.classList.toggle('on', !!capFrag);
+    }
+    slide.querySelectorAll('pre.code').forEach(pre => {
+      const lines = [...pre.querySelectorAll('.ln')];
+      if (hlFrag && !pre.closest('.frag') && !pre.closest('.card')) {
+        const set = parseHl(hlFrag.dataset.hl);
+        pre.classList.add('has-hl');
+        lines.forEach((l, i) => l.classList.toggle('hl', set.has(i + 1)));
+        const first = lines.find(l => l.classList.contains('hl'));
+        if (first) first.scrollIntoView({ block: 'nearest' });
+      } else {
+        pre.classList.remove('has-hl');
+        lines.forEach(l => l.classList.remove('hl'));
+      }
+    });
+  }
+  slides.forEach(s => applyFrag(s, 0));
+  // Fragments that only drive highlighting are invisible markers
+  document.querySelectorAll('span.frag[data-hl]').forEach(f => (f.style.display = 'none'));
+
+  // ---------- navigation (RTL: first slide on the right) ----------
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('i');
+    d.addEventListener('click', () => go(i));
+    dotsEl.appendChild(d);
+  });
+  function go(i, revealAll = false) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    applyFrag(slides[i], revealAll ? frags(slides[i]).length : Number(slides[i].dataset.k || 0));
+    navLock = Date.now() + 900; // ignore the observer while we scroll there ourselves
+    slides[i].scrollIntoView({ inline: 'start', behavior: 'smooth' });
+    setActive(i);
+  }
+  function setActive(i) {
+    idx = i;
+    slides.forEach((s, j) => s.classList.toggle('active', j === i));
+    [...dotsEl.children].forEach((d, j) => d.classList.toggle('on', j === i));
+    document.getElementById('counter').textContent = `${i + 1} / ${slides.length}`;
+    document.getElementById('progress').style.width = `${((i + 1) / slides.length) * 100}%`;
+    renderNotes();
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next() {
+    const s = slides[idx], k = Number(s.dataset.k || 0);
+    if (k < frags(s).length) applyFrag(s, k + 1);
+    else if (idx < slides.length - 1) { applyFrag(slides[idx + 1], 0); go(idx + 1); }
+  }
+  function prev() {
+    const s = slides[idx], k = Number(s.dataset.k || 0);
+    if (k > 0) applyFrag(s, k - 1);
+    else if (idx > 0) go(idx - 1, true);
+  }
+  const io = new IntersectionObserver(entries => {
+    if (Date.now() < navLock) return;
+    entries.forEach(e => { if (e.isIntersecting && e.intersectionRatio > .6) setActive(slides.indexOf(e.target)); });
+  }, { root: deck, threshold: [.6] });
+  slides.forEach(s => io.observe(s));
+
+  document.addEventListener('keydown', e => {
+    if (e.target.closest?.('input,textarea')) return;
+    if (['ArrowLeft', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowRight', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') toggleNotes();
+    else if (e.key.toLowerCase() === 'f') toggleFs();
+  });
+  document.querySelector('.edge.next').addEventListener('click', next);
+  document.querySelector('.edge.prev').addEventListener('click', prev);
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  // ---------- notes ----------
+  const panel = document.getElementById('notesPanel');
+  function renderNotes() {
+    const n = slides[idx].querySelector('aside.notes');
+    panel.innerHTML = n ? `<div class="t">⏱ ${n.dataset.t || ''}</div>${n.innerHTML}` : '';
+  }
+  function toggleNotes() { panel.classList.toggle('open'); }
+  document.getElementById('notesBtn').addEventListener('click', toggleNotes);
+
+  // ---------- fullscreen ----------
+  const fsBtn = document.getElementById('fs');
+  function toggleFs() { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  fsBtn.addEventListener('click', toggleFs);
+  document.addEventListener('fullscreenchange', () => (fsBtn.textContent = document.fullscreenElement ? '🗗' : '⛶'));
+
+  // ---------- widget: shuffle ----------
+  const shuf = document.getElementById('shuf');
+  const cards = [...shuf.querySelectorAll('.tc')];
+  const order0 = cards.map(c => c.dataset.id);
+  let lastSeed = null;
+  function layout(order) {
+    const w = 190, gap = 18, total = order.length * w + (order.length - 1) * gap;
+    const start = (shuf.clientWidth - total) / 2;
+    order.forEach((id, i) => {
+      const c = cards.find(c => c.dataset.id === id);
+      c.style.left = (start + i * (w + gap)) + 'px';
+    });
+  }
+  function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function shuffled(seed) {
+    const r = mulberry(seed), a = [...order0];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+  function run(order, seed) {
+    layout(order);
+    cards.forEach(c => { c.classList.remove('pass', 'fail'); c.querySelector('.st').textContent = ''; });
+    setTimeout(() => {
+      order.forEach(id => {
+        const c = cards.find(c => c.dataset.id === id);
+        const bad = id === 'show' && order.indexOf('show') < order.indexOf('add');
+        c.classList.add(bad ? 'fail' : 'pass');
+        c.querySelector('.st').textContent = bad ? '✘' : '✓';
+      });
+    }, 750);
+    document.getElementById('seedOut').innerHTML = seed ? `shuffle seed <b>${seed}</b>` : 'declaration order · no seed';
+  }
+  document.getElementById('shufBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = Math.floor(Math.random() * 999999999); run(shuffled(lastSeed), lastSeed); });
+  document.getElementById('replayBtn').addEventListener('click', e => { e.stopPropagation(); if (lastSeed) run(shuffled(lastSeed), lastSeed); });
+  document.getElementById('resetBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = null; run(order0, null); });
+
+  // ---------- widget: locks ----------
+  const lanes = document.getElementById('lanes');
+  const B = id => lanes.querySelector(`[data-b="${id}"]`);
+  function place(id, left, width) { const b = B(id); b.style.left = left + '%'; b.style.width = width + '%'; }
+  function locks(on) {
+    place('c', 2, 30); place('d', 36, 26);
+    place('e', 2, 22); place('f', 28, 34);
+    place('a', 2, 40);
+    if (on) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
+    else { place('b', 10, 40); B('a').classList.replace('settings', 'clash'); B('b').classList.replace('settings', 'clash'); }
+  }
+  document.getElementById('noLock').addEventListener('click', e => { e.stopPropagation(); locks(false); });
+  document.getElementById('withLock').addEventListener('click', e => { e.stopPropagation(); locks(true); });
+
+  // ---------- start ----------
+  window.addEventListener('load', () => {
+    layout(order0);
+    locks(true);
+    navLock = Date.now() + 900;
+    slides[startIdx].scrollIntoView({ inline: 'start', behavior: 'instant' });
+    setActive(startIdx);
+  });
+  window.addEventListener('resize', () => { layout(lastSeed ? shuffled(lastSeed) : order0); navLock = Date.now() + 900; slides[idx].scrollIntoView({ inline: 'start', behavior: 'instant' }); });
+})();
+</script>
+</body>
+</html>

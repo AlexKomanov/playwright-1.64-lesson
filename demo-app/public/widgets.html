@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PW Shop — Widgets</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PW<span>Shop</span></div>
+    <nav>
+      <a href="/">Shop</a>
+      <a href="/settings">Settings</a>
+      <a href="/widgets">Widgets</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- page.content({ includeShadow: true }) -->
+    <section class="card">
+      <h2>Shadow DOM widget</h2>
+      <promo-banner></promo-banner>
+    </section>
+
+    <!-- Breaking change: device descriptors now forward `screen` -->
+    <section class="card">
+      <h2>Screen info</h2>
+      <p>window.screen: <strong id="screen-size"></strong> · viewport: <strong id="viewport-size"></strong></p>
+      <p class="muted" id="screen-mq"></p>
+    </section>
+
+    <!-- Breaking change: elements inside hidden iframes are hidden -->
+    <section class="card">
+      <h2>Hidden iframe</h2>
+      <p class="muted">The iframe below has <code>visibility: hidden</code>. Its button is in the DOM, but nobody can see it.</p>
+      <iframe id="hidden-frame" title="Chat widget" style="visibility:hidden; height:60px; border:0"
+        srcdoc="<button>Chat with us</button>"></iframe>
+    </section>
+
+    <!-- page.getByRef() + ariaSnapshot({ mode: 'ai' }) -->
+    <section class="card">
+      <h2>Newsletter</h2>
+      <div class="row">
+        <input aria-label="Email" placeholder="you@example.com">
+        <button id="subscribe">Subscribe</button>
+        <span id="subscribed" class="muted"></span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    customElements.define('promo-banner', class extends HTMLElement {
+      connectedCallback() {
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = `
+          <style>p { margin: 0; padding: 12px 16px; border-radius: 10px; background: #eaf7ee; color: #1b7a33; font-weight: 600 }</style>
+          <p>Free shipping on orders over $50</p>`;
+      }
+    });
+
+    document.getElementById('screen-size').textContent = `${screen.width}×${screen.height}`;
+    document.getElementById('viewport-size').textContent = `${innerWidth}×${innerHeight}`;
+    document.getElementById('screen-mq').textContent =
+      matchMedia('(min-device-width: 1600px)').matches ? 'Large screen layout' : 'Regular screen layout';
+    document.getElementById('subscribe').addEventListener('click', () => {
+      document.getElementById('subscribed').textContent = 'Subscribed!';
+    });
+  </script>
+</body>
+</html>

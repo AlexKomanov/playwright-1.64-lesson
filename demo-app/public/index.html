@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PW Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PW<span>Shop</span></div>
+    <nav>
+      <a href="/">Shop</a>
+      <a href="/settings">Settings</a>
+      <a href="/widgets">Widgets</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Fruit Market</h1>
+      <p class="muted">Demo store for the Playwright 1.64 lesson.
+        WebMCP: <span id="webmcp-status" class="badge off">checking…</span></p>
+    </section>
+
+    <section class="card">
+      <h2>Products</h2>
+      <div class="row" style="margin-bottom:12px">
+        <input id="search" placeholder="Search products" aria-label="Search products">
+      </div>
+      <table aria-label="Products">
+        <thead><tr><th>ID</th><th>Category</th><th>Name</th><th>Price</th><th></th></tr></thead>
+        <tbody id="products"></tbody>
+      </table>
+    </section>
+
+    <section class="card" aria-label="Cart">
+      <h2>Cart</h2>
+      <p>Items: <strong id="cart-count">0</strong> · Total: <strong id="cart-total">$0</strong></p>
+      <button id="clear-cart">Clear cart</button>
+    </section>
+  </main>
+
+  <script>
+    const $ = s => document.querySelector(s);
+
+    async function api(path, init) {
+      const res = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...init });
+      return res.json();
+    }
+
+    function renderCart(cart) {
+      $('#cart-count').textContent = cart.totalItems;
+      $('#cart-total').textContent = '$' + cart.totalPrice;
+    }
+
+    async function loadProducts(q = '') {
+      const products = await api('/api/products?q=' + encodeURIComponent(q));
+      // Note: the 3rd cell of every row is the product name (used by locator.within()).
+      $('#products').innerHTML = products.map(p => `
+        <tr>
+          <td>${p.id}</td><td>${p.category}</td><td>${p.name}</td><td>$${p.price}</td>
+          <td><button data-id="${p.id}">Add to cart</button></td>
+        </tr>`).join('');
+      return products;
+    }
+
+    $('#products').addEventListener('click', async e => {
+      const id = Number(e.target.dataset.id);
+      if (id) renderCart(await api('/api/cart', { method: 'POST', body: JSON.stringify({ productId: id, quantity: 1 }) }));
+    });
+    $('#search').addEventListener('input', e => loadProducts(e.target.value));
+    $('#clear-cart').addEventListener('click', async () => renderCart(await api('/api/cart', { method: 'DELETE' })));
+
+    loadProducts();
+    api('/api/cart').then(renderCart);
+
+    // ---- WebMCP: expose the shop's operations as tools for AI agents ----
+    // Same registration shape Playwright uses in its own tests (tests/library/webmcp.spec.ts).
+    const modelContext = document.modelContext || navigator.modelContext;
+    if (modelContext) {
+      $('#webmcp-status').textContent = 'tools registered';
+      $('#webmcp-status').classList.remove('off');
+      const text = value => ({ content: [{ type: 'text', text: JSON.stringify(value) }] });
+
+      modelContext.registerTool({
+        name: 'search_products',
+        description: 'Search the catalog by product name',
+        inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
+        annotations: { readOnlyHint: true },
+        async execute({ query }) { return text(await loadProducts(query)); },
+      });
+
+      modelContext.registerTool({
+        name: 'add_to_cart',
+        description: 'Adds a product to the cart. Changes the cart contents.',
+        inputSchema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: { productId: { type: 'integer', minimum: 1 }, quantity: { type: 'integer', minimum: 1 } },
+          required: ['productId', 'quantity'],
+        },
+        async execute({ productId, quantity }) {
+          const cart = await api('/api/cart', { method: 'POST', body: JSON.stringify({ productId, quantity }) });
+          if (cart.error) return { isError: true, content: [{ type: 'text', text: cart.error }] };
+          renderCart(cart);
+          return text(cart);
+        },
+      });
+
+      modelContext.registerTool({
+        name: 'get_cart',
+        description: 'Returns the current cart',
+        annotations: { readOnlyHint: true },
+        async execute() { return text(await api('/api/cart')); },
+      });
+    } else {
+      $('#webmcp-status').textContent = 'unavailable in this browser';
+    }
+  </script>
+</body>
+</html>
