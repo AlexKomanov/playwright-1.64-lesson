@@ -157,10 +157,12 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .tc .st { position: absolute; bottom: 10px; right: 12px; font-size: 18px; }
 .seed { font-family: var(--mono); text-align: center; direction: ltr; color: var(--dim); font-size: 16px; }
 .seed b { color: var(--warn); }
-.btn-ui { font: 600 16px 'Heebo', sans-serif; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(69,224,111,.12); color: var(--text); cursor: pointer; transition: background .2s, transform .1s; }
-.btn-ui:hover { background: rgba(69,224,111,.25); }
+.btn-ui { font: 600 16px 'Heebo', sans-serif; padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,.18); background: transparent; color: var(--text); cursor: pointer; transition: background .2s, transform .1s; }
+.btn-ui:hover { border-color: var(--accent); }
+.btn-ui.active { border-color: var(--accent); background: rgba(69,224,111,.22); box-shadow: 0 0 18px var(--glow); }
+.btn-ui:disabled { opacity: .35; cursor: default; border-color: rgba(255,255,255,.18); }
+.blk.pending { background: rgba(255,181,71,.18) !important; color: var(--dim) !important; outline: 1px dashed rgba(255,181,71,.6); }
 .btn-ui:active { transform: scale(.97); }
-.btn-ui.ghost { border-color: rgba(255,255,255,.18); background: transparent; }
 .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
 /* ---------- locks widget ---------- */
@@ -512,8 +514,8 @@ aside.notes { display: none; }
   <div class="seed" id="seedOut">declaration order · no seed</div>
   <div class="btn-row" style="margin:16px 0 18px">
     <button class="btn-ui" id="shufBtn">🔀 npx playwright test --shuffle</button>
-    <button class="btn-ui ghost" id="replayBtn">↺ replay same seed</button>
-    <button class="btn-ui ghost" id="resetBtn">reset</button>
+    <button class="btn-ui" id="replayBtn" disabled>↺ replay same seed</button>
+    <button class="btn-ui" id="resetBtn">reset</button>
   </div>
   <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npx playwright test --project=order-demo --workers=1 --shuffle
 <span class="out">Running 2 tests using 1 worker, shuffle seed 476438802</span>
@@ -546,7 +548,7 @@ aside.notes { display: none; }
   </div>
   <div class="legend"><span><i style="background:var(--warn)"></i><span dir="ltr">lock: 'store-settings'</span></span><span><i style="background:var(--info)"></i>טסטים בלי lock — ממשיכים לרוץ במקביל</span><span><i style="background:var(--bad)"></i>התנגשות</span></div>
   <div class="btn-row" style="margin-top:18px">
-    <button class="btn-ui ghost" id="noLock">בלי lock</button>
+    <button class="btn-ui" id="noLock">בלי lock</button>
     <button class="btn-ui" id="withLock">עם lock</button>
   </div>
   <p class="dim" style="text-align:center;margin-top:12px;font-size:16px">בדמו: בלי ה-lock כל 3 הריצות נכשלו. עם ה-lock — כל 3 עברו.</p>
@@ -1087,9 +1089,15 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     }, 750);
     document.getElementById('seedOut').innerHTML = seed ? `shuffle seed <b>${seed}</b>` : 'declaration order · no seed';
   }
-  document.getElementById('shufBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = Math.floor(Math.random() * 999999999); run(shuffled(lastSeed), lastSeed); });
-  document.getElementById('replayBtn').addEventListener('click', e => { e.stopPropagation(); if (lastSeed) run(shuffled(lastSeed), lastSeed); });
-  document.getElementById('resetBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = null; run(order0, null); });
+  const shufBtns = ['shufBtn', 'replayBtn', 'resetBtn'].map(id => document.getElementById(id));
+  function pressed(btns, btn) {
+    btns.forEach(b => b.classList.toggle('active', b === btn));
+    btn?.blur(); // keep arrow/space keys driving the slides
+  }
+  const replayBtn = document.getElementById('replayBtn');
+  document.getElementById('shufBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = Math.floor(Math.random() * 999999999); run(shuffled(lastSeed), lastSeed); replayBtn.disabled = false; pressed(shufBtns, e.currentTarget); });
+  replayBtn.addEventListener('click', e => { e.stopPropagation(); if (lastSeed) run(shuffled(lastSeed), lastSeed); pressed(shufBtns, e.currentTarget); });
+  document.getElementById('resetBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = null; run(order0, null); replayBtn.disabled = true; pressed(shufBtns, null); e.currentTarget.blur(); });
 
   // ---------- widget: locks ----------
   const lanes = document.getElementById('lanes');
@@ -1099,16 +1107,20 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     place('c', 2, 30); place('d', 36, 26);
     place('e', 2, 22); place('f', 28, 34);
     place('a', 2, 40);
-    if (on) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
+    B('a').classList.toggle('pending', on === null);
+    B('b').classList.toggle('pending', on === null);
+    if (on === null) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
+    else if (on) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
     else { place('b', 10, 40); B('a').classList.replace('settings', 'clash'); B('b').classList.replace('settings', 'clash'); }
   }
-  document.getElementById('noLock').addEventListener('click', e => { e.stopPropagation(); locks(false); });
-  document.getElementById('withLock').addEventListener('click', e => { e.stopPropagation(); locks(true); });
+  const lockBtns = ['noLock', 'withLock'].map(id => document.getElementById(id));
+  document.getElementById('noLock').addEventListener('click', e => { e.stopPropagation(); locks(false); pressed(lockBtns, e.currentTarget); });
+  document.getElementById('withLock').addEventListener('click', e => { e.stopPropagation(); locks(true); pressed(lockBtns, e.currentTarget); });
 
   // ---------- start ----------
   window.addEventListener('load', () => {
     layout(order0);
-    locks(true);
+    locks(null); // no choice yet: both buttons neutral
     navLock = Date.now() + 900;
     slides[startIdx].scrollIntoView({ inline: 'start', behavior: 'instant' });
     setActive(startIdx);
