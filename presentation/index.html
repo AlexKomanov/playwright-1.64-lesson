@@ -150,6 +150,13 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .col-slide[data-k="2"] #colTable tr:nth-child(3) td:nth-child(3) { transition-delay: .25s; }
 .col-slide[data-k="2"] #colTable tr:nth-child(4) td:nth-child(3) { transition-delay: .5s; }
 @media (max-height: 900px) { .col-step p { font-size: 16px; } .col-step .code { font-size: 14px; } }
+.shuf-tips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.shuf-tips .card { display: flex; flex-direction: column; }
+.shuf-tips h3 { font-size: 20px; }
+.shuf-tips p { flex: 1; }
+.shuf-tips .term { font-size: 13.5px; padding: 28px 14px 10px; margin-top: 12px; }
+.shuf-tips .code { font-size: 12.5px; padding: 10px 0; margin-top: 12px; }
+.shuf-tips .tag { align-self: flex-start; }
 /* ---------- shuffle widget ---------- */
 .shuf { display: flex; gap: 14px; direction: ltr; justify-content: center; margin: 10px 0 18px; position: relative; height: 120px; }
 .tc { position: absolute; width: 190px; height: 104px; border-radius: 14px; background: var(--card-2); border: 1px solid var(--line); padding: 14px; font-family: var(--mono); font-size: 14px; transition: left .7s cubic-bezier(.3,1.3,.5,1), border-color .3s, background .3s; text-align: left; }
@@ -530,13 +537,35 @@ aside.notes { display: none; }
 <!-- 11 · shuffle gotchas -->
 <section class="slide">
   <div class="eyebrow">SHUFFLE · IN PRACTICE</div>
-  <h2>איך משתמשים ב-shuffle נכון</h2>
-  <div class="grid g3">
-    <div class="card frag"><div class="ico">🌙</div><h3>בריצת הלילה</h3><p>נריץ shuffle בריצת הלילה ולא בבדיקות של ה-PR, כדי שכישלון אקראי לא יחסום merge של משהו אחר. את ה-seed נשמור בלוג.</p><span class="tag info" style="margin-top:10px">currents.dev</span></div>
-    <div class="card frag"><div class="ico">🧩</div><h3>רק במצב parallel</h3><p>סדר הקבצים תמיד מתערבב. טסטים בתוך אותו קובץ מתערבבים רק במצב parallel — במצב default הם רצים לפי הסדר שבו נכתבו.</p><span class="tag" style="margin-top:10px">Playwright CLI help</span></div>
-    <div class="card frag"><div class="ico">🔗</div><h3><span dir="ltr">beforeAll</span> מחזיק אותם יחד</h3><p>גילינו את זה בדמו: טסטים שחולקים <code>beforeAll</code> רצים כקבוצה אחת, ולכן לא מתערבבים. ברגע שהורדנו את ה-hook, ה-shuffle תפס את הבאג.</p><span class="tag warn he" style="margin-top:10px">נבדק בדמו</span></div>
+  <h2>shuffle בפרויקט אמיתי: 3 דברים שכדאי לדעת</h2>
+  <div class="grid g3 shuf-tips">
+    <div class="card frag">
+      <div class="ico">🌙</div>
+      <h3>מריצים בריצת הלילה, לא בכל PR</h3>
+      <p>הכישלון ש-shuffle מוצא הוא אקראי. אם הוא ירוץ על כל PR, מפתח שבכלל לא נגע בטסטים האלה ייחסם. לכן נריץ אותו בלילה, ונשמור את ה-seed מהלוג כדי לשחזר את הכישלון.</p>
+      <div class="term"><span class="pr">$</span> npx playwright test --shuffle
+<span class="out">… shuffle seed 271828182</span></div>
+      <span class="tag info" style="margin-top:10px">currents.dev</span>
+    </div>
+    <div class="card frag">
+      <div class="ico">🧩</div>
+      <h3>בלי <span dir="ltr">fullyParallel</span> מתערבבים רק הקבצים</h3>
+      <p>shuffle תמיד משנה את סדר הקבצים. כדי שגם הטסטים בתוך אותו קובץ יתערבבו, הקובץ צריך לרוץ במצב parallel.</p>
+      <pre class="code"><code>// playwright.config.ts
+fullyParallel: true,</code></pre>
+      <span class="tag" style="margin-top:10px">Playwright CLI help</span>
+    </div>
+    <div class="card frag">
+      <div class="ico">🔗</div>
+      <h3><span dir="ltr">beforeAll</span> משותף מבטל את הערבוב</h3>
+      <p>טסטים שחולקים <code>beforeAll</code> רצים תמיד יחד ובאותו סדר. בדמו זה הסתיר את הבאג. ברגע שהורדנו את ה-<code>beforeAll</code>, shuffle תפס אותו.</p>
+      <pre class="code"><code>test.beforeAll(...) // one group
+test('add an apple', ...)
+test('cart shows one item', ...)</code></pre>
+      <span class="tag warn he" style="margin-top:10px">נבדק בדמו</span>
+    </div>
   </div>
-  <aside class="notes" data-t="9:00 – 9:45">הנקודה השלישית היא משהו שגילינו בפועל כשבנינו את הדמו — בקוד של Playwright, קבוצות עם beforeAll/afterAll במצב parallel נשארות יחד. זה מוסבר בהערה בקובץ order-demo.</aside>
+  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: גילינו בפועל כשבנינו את הדמו — בקוד של Playwright, טסטים עם beforeAll/afterAll משותף במצב parallel נשארים קבוצה אחת. זה מוסבר גם בהערה בקובץ order-demo.</aside>
 </section>
 
 <!-- 12 · locks visual -->
