@@ -203,6 +203,22 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .dimtag { border-color: rgba(255,255,255,.3) !important; color: var(--dim) !important; }
 .lk-tips .card p { font-size: 16px; }
 @media (max-height: 900px) { .lk2-seq li { font-size: 15px; padding: 5px 10px; } .lk2-col .sum { font-size: 14.5px; } }
+.excl { margin-top: 16px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 20px; align-items: center; }
+.excl p { font-size: 16px; color: #c9d8d0; margin: 0; }
+.excl .code { font-size: 13px; padding: 30px 0 10px; }
+.scope-demo .card { padding: 14px 18px; }
+.ftree { list-style: none; padding: 0; margin: 6px 0 8px; font-size: 15px; }
+.ftree ul { list-style: none; padding-inline-start: 26px; margin: 2px 0 6px; color: var(--dim); font-family: var(--mono); font-size: 13.5px; direction: ltr; text-align: right; }
+.ftree > li > span { font-family: var(--mono); font-size: 14px; }
+.ftree li.locked > span { color: var(--warn); }
+.ftree .need { color: var(--warn); font-family: 'Heebo', sans-serif; }
+.scope-demo .term { font-size: 12.5px; padding: 28px 14px 10px; }
+.scope-demo .sum { font-size: 15.5px; margin-top: 8px; color: #c9d8d0; }
+/* file references */
+.file-ref { position: absolute; top: 22px; inset-inline-start: 7vw; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; z-index: 5; max-width: calc(86vw - 120px); }
+.file-ref span { font: 12.5px var(--mono); color: var(--dim); background: rgba(10,18,15,.85); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; direction: ltr; white-space: nowrap; }
+.file-ref span::before { content: '📄 '; }
+.file-ref span.cmd::before { content: '▶ '; color: var(--accent); }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -361,7 +377,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 3 · DEMO APP -->
-<section class="slide">
+<section class="slide" data-files="demo-app/server.js|demo-app/public/">
   <div class="eyebrow">SETUP</div>
   <h2>אפליקציית הדמו: <span class="accent">PW Shop</span></h2>
   <div class="split">
@@ -392,7 +408,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 5 · within: the problem -->
-<section class="slide">
+<section class="slide" data-files="demo-app/public/settings.html|tests/01-within.spec.ts">
   <div class="eyebrow">THE PROBLEM</div>
   <h2>שני כפתורי <span dir="ltr">Save</span> באותו עמוד</h2>
   <div class="split">
@@ -431,7 +447,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 6 · within: code -->
-<section class="slide">
+<section class="slide" data-files="tests/01-within.spec.ts">
   <div class="eyebrow">tests/01-within.spec.ts</div>
   <h2>הקוד: <span dir="ltr">saveButton.within(dialog)</span></h2>
   <pre class="code" data-title="01-within.spec.ts"><code>test('save the store settings', async ({ page }) => {
@@ -455,7 +471,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 7 · within: table column -->
-<section class="slide col-slide">
+<section class="slide col-slide" data-files="tests/01-within.spec.ts|demo-app/public/index.html">
   <div class="eyebrow">RELATIVE LOCATORS · PER PARENT</div>
   <h2>עוד דוגמה: עמודה שלמה בטבלה</h2>
   <div class="split">
@@ -499,7 +515,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 9 · default projects -->
-<section class="slide">
+<section class="slide" data-files="playwright.config.ts|tests/global-setup.ts">
   <div class="eyebrow">testProject.default</div>
   <h2>פרויקט שמוגדר בקונפיג — אבל <span class="accent">לא רץ</span> אוטומטית</h2>
   <div class="split">
@@ -531,7 +547,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 10 · shuffle -->
-<section class="slide">
+<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|>npm run test:shuffle">
   <div class="eyebrow">--shuffle [seed]</div>
   <h2>סדר אקראי — תופס טסטים <span class="accent">שתלויים זה בזה</span></h2>
   <div class="shuf" id="shuf">
@@ -557,7 +573,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 11 · shuffle gotchas -->
-<section class="slide">
+<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|tests/order-demo/cart-order-beforeall.spec.ts">
   <div class="eyebrow">SHUFFLE · IN PRACTICE</div>
   <h2>shuffle בפרויקט אמיתי: 3 דברים שכדאי לדעת</h2>
   <div class="grid g3 shuf-tips">
@@ -593,7 +609,7 @@ fullyParallel: true,</code></pre>
 </section>
 
 <!-- 12 · locks: why -->
-<section class="slide lk2">
+<section class="slide lk2" data-files="tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
   <div class="eyebrow">TEST LOCKS</div>
   <h2>למה צריך <span dir="ltr">lock</span>?</h2>
   <p class="lead" style="margin:-6px 0 18px">יש לנו שני טסטים שמשנים את אותה הגדרה בשרת, ערכת הנושא של החנות (theme). Playwright מריץ טסטים במקביל, אז הם עלולים לרוץ באותו זמן.</p>
@@ -629,7 +645,7 @@ test('switch theme to light', { lock: 'store-settings' }, async ({ page }) => { 
 </section>
 
 <!-- 13 · locks: new in 1.64 -->
-<section class="slide">
+<section class="slide" data-files="tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
   <div class="eyebrow">test.describe.configure({ lock })</div>
   <h2>חדש ב-1.64: lock לכל הקובץ בשורה אחת</h2>
   <p class="lead" style="margin:-6px 0 18px">נניח שיש לנו קובץ שכל הטסטים בו משנים את הגדרות החנות, וכולם צריכים את אותו lock.</p>
@@ -656,7 +672,7 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
 </section>
 
 <!-- 13b · locks: good to know -->
-<section class="slide">
+<section class="slide" data-files="tests/02-locks-b.spec.ts">
   <div class="eyebrow">TEST LOCKS · GOOD TO KNOW</div>
   <h2>כדאי לדעת לפני שמוסיפים lock</h2>
   <div class="grid g3 lk-tips">
@@ -665,14 +681,58 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
     <div class="card frag"><div class="ico">👤</div><h3>הכי טוב: בלי משאב משותף</h3>
       <p>אם כל טסט עובד על נתונים משלו, אין על מה להתנגש. למשל, במקום ששני טסטים ישנו את ההגדרות של אותו משתמש, כל טסט יוצר לעצמו משתמש חדש בהתחלה. ככה לא צריך lock בכלל.</p></div>
     <div class="card frag"><div class="ico">📄</div><h3>lock על קובץ תופס את כל הקובץ</h3>
-      <p>כשהקובץ לא רץ במצב parallel, הטסטים שלו רצים ברצף וה-lock תפוס עד שהקובץ כולו מסתיים. לכן נשים בקובץ כזה רק את הטסטים שבאמת צריכים את ה-lock.</p></div>
+      <p>כשהקובץ לא רץ במצב parallel, ה-lock תפוס עד שכל הטסטים בקובץ מסתיימים, גם אלה שלא צריכים אותו. דוגמה עם זמנים אמיתיים בשקופית הבאה.</p></div>
   </div>
-  <p class="frag dim" style="margin-top:16px;font-size:15px">ויש גם lock מובנה בשם <code>'exclusive'</code>: טסט איתו רץ לבד, בלי אף טסט אחר במקביל. שימושי למשל לבדיקות ביצועים. מקורות: התיעוד הרשמי ו-currents.dev.</p>
+  <div class="frag excl">
+    <p><b>ויש גם lock מובנה בשם <code>'exclusive'</code>:</b> הטסט מתחיל רק כשאף טסט אחר לא רץ, ועד שהוא מסתיים אף טסט אחר לא מתחיל. מתאים למשל לבדיקות ביצועים, או לטסט שמאתחל שירות משותף.</p>
+    <pre class="code" data-title="tests/02-locks-b.spec.ts"><code>test('reset settings in isolation', { lock: 'exclusive' }, async ({ request }) => {
+  const res = await request.put('/api/settings', { data: { theme: 'light' } });
+  expect(await res.json()).toEqual({ theme: 'light' });
+});</code></pre>
+  </div>
   <aside class="notes" data-t="">כרטיס 1: lock מאט — רק כשצריך. כרטיס 2: המלצה מ-currents.dev — עדיף לבודד נתונים (משתמש לכל טסט) מאשר לנעול. כרטיס 3: מהתיעוד — במצב default/serial ה-lock מוחזק לכל הקובץ. exclusive מהתיעוד של 1.63.</aside>
 </section>
 
+<!-- 13c · locks: file-level lock demo -->
+<section class="slide" data-files="tests/lock-scope/mixed/settings-and-browse.spec.ts|tests/lock-scope/split/|tests/lock-scope/other-settings.spec.ts">
+  <div class="eyebrow">TEST LOCKS · DEMO</div>
+  <h2>דוגמה: כמה זמן lock על קובץ תופס</h2>
+  <p class="lead" style="margin:-6px 0 16px">יש לנו טסט נוסף שצריך את אותו lock: <span dir="ltr">another settings test</span>. נבדוק כמה זמן הוא מחכה, בשני מבנים של אותם טסטים בדיוק.</p>
+  <div class="grid g2 scope-demo">
+    <div class="card frag">
+      <span class="tag bad he">קובץ אחד: הגדרות וגם גלישה</span>
+      <ul class="ftree">
+        <li class="locked">🔒 <span dir="ltr">mixed/settings-and-browse.spec.ts</span>
+          <ul><li>settings test <span class="need" dir="rtl">(צריך lock)</span> · 1s</li><li>browse products · 2s</li><li>view the cart · 2s</li></ul></li>
+      </ul>
+      <div class="term"><span class="pr">$</span> npm run test:lock-scope:mixed
+<span class="out">  [0.4s → 1.4s]  worker 0  settings test (needs the lock)</span>
+<span class="out">  [1.4s → 3.4s]  worker 0  browse products</span>
+<span class="out">  [3.4s → 5.4s]  worker 0  view the cart</span>
+<span class="bad-t">  [5.4s → 6.5s]  worker 0  another settings test</span>
+<span class="out">  4 passed (6.6s)</span></div>
+      <p class="sum">הטסט הנוסף חיכה <b>5.4 שניות</b>, עד שכל הקובץ הסתיים. רק השנייה הראשונה באמת הייתה צריכה את ה-lock.</p>
+    </div>
+    <div class="card frag">
+      <span class="tag he">שני קבצים: רק מה שצריך lock נעול</span>
+      <ul class="ftree">
+        <li class="locked">🔒 <span dir="ltr">split/settings.spec.ts</span><ul><li>settings test <span class="need" dir="rtl">(צריך lock)</span> · 1s</li></ul></li>
+        <li>📄 <span dir="ltr">split/browse.spec.ts</span><ul><li>browse products · 2s</li><li>view the cart · 2s</li></ul></li>
+      </ul>
+      <div class="term"><span class="pr">$</span> npm run test:lock-scope:split
+<span class="out">  [0.4s → 1.4s]  worker 0  another settings test</span>
+<span class="out">  [0.4s → 2.4s]  worker 1  browse products</span>
+<span class="out">  [1.4s → 2.4s]  worker 0  settings test (needs the lock)</span>
+<span class="out">  [2.4s → 4.4s]  worker 1  view the cart</span>
+<span class="out">  4 passed (4.6s)</span></div>
+      <p class="sum">ה-lock תפוס רק <b>שנייה</b> בכל פעם, והטסטים בלי lock רצים במקביל. כל הריצה: <span dir="ltr">4.6s</span> במקום <span dir="ltr">6.6s</span>.</p>
+    </div>
+  </div>
+  <aside class="notes" data-t="">להריץ את שתי הפקודות בטרמינל. הפלט בשקופית הוא ריצה אמיתית (3 ריצות לכל גרסה, אותן תוצאות). להסביר: בקובץ במצב default הטסטים רצים ברצף ב-worker אחד, וה-lock מוחזק לכל הקובץ — כך כתוב בתיעוד. הפתרון: להוציא את הטסטים שלא צריכים lock לקובץ נפרד.</aside>
+</section>
+
 <!-- 14 · snapshots -->
-<section class="slide">
+<section class="slide" data-files="playwright.config.ts|tests/03-new-apis.spec.ts">
   <div class="eyebrow">SNAPSHOTS</div>
   <h2>צילומי מסך: פורמט WebP, ושינוי ב-<span dir="ltr">missing</span></h2>
   <div class="grid g2">
@@ -707,7 +767,7 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
 </section>
 
 <!-- 16 · video -->
-<section class="slide">
+<section class="slide" data-files="playwright.config.ts|>npm run test:video">
   <div class="eyebrow">use.video</div>
   <h2>בוחרים קצב פריימים, ומעצבים עם CSS</h2>
   <div class="split" style="grid-template-columns: 1.7fr 1fr">
@@ -786,7 +846,7 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
 </section>
 
 <!-- 19 · webmcp page code -->
-<section class="slide">
+<section class="slide" data-files="demo-app/public/index.html">
   <div class="eyebrow">demo-app/public/index.html</div>
   <h2>בצד של האתר: מגדירים כלי</h2>
   <pre class="code" data-title="index.html"><code>const modelContext = document.modelContext || navigator.modelContext;
@@ -815,7 +875,7 @@ modelContext.registerTool({
 </section>
 
 <!-- 20 · webmcp test -->
-<section class="slide">
+<section class="slide" data-files="tests/webmcp.spec.ts|>npm run test:webmcp">
   <div class="eyebrow">tests/webmcp.spec.ts</div>
   <h2>בצד של הטסט: <span dir="ltr">page.webmcp</span></h2>
   <div class="grid g2">
@@ -849,7 +909,7 @@ await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
 </section>
 
 <!-- 21 · getByRef -->
-<section class="slide">
+<section class="slide" data-files="tests/03-new-apis.spec.ts|demo-app/public/widgets.html">
   <div class="eyebrow">page.getByRef()</div>
   <h2>מה-snapshot של ה-AI ישר לאלמנט בדף</h2>
   <div class="split">
@@ -874,7 +934,7 @@ await page.getByRef(ref).click();</code></pre>
 </section>
 
 <!-- 22 · more APIs -->
-<section class="slide">
+<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/global-setup.ts">
   <div class="eyebrow">MORE NEW APIs</div>
   <h2>עוד APIs חדשים</h2>
   <div class="grid g2">
@@ -890,7 +950,7 @@ await request.clearCookies({ name: 'session-id' });</code></pre><p>אותן מת
 </section>
 
 <!-- 23 · breaking -->
-<section class="slide brk">
+<section class="slide brk" data-files="tests/04-breaking-changes.spec.ts|tests/03-new-apis.spec.ts">
   <div class="eyebrow">BREAKING CHANGES ⚠️</div>
   <h2>4 <span dir="ltr">Breaking Changes</span> — כדאי לבדוק לפני שמשדרגים</h2>
   <div class="grid g2">
@@ -903,7 +963,7 @@ await request.clearCookies({ name: 'session-id' });</code></pre><p>אותן מת
 </section>
 
 <!-- 24 · breaking code -->
-<section class="slide">
+<section class="slide" data-files="tests/04-breaking-changes.spec.ts|demo-app/public/widgets.html">
   <div class="eyebrow">tests/04-breaking-changes.spec.ts</div>
   <h2>איך זה נראה בטסט</h2>
   <div class="grid g2">
@@ -1023,6 +1083,19 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
       navigator.clipboard?.writeText(raw).then(() => { b.textContent = 'copied ✓'; setTimeout(() => (b.textContent = 'copy'), 1200); });
     });
     pre.prepend(b);
+  });
+
+  // ---------- test-file references (bottom corner of a slide) ----------
+  document.querySelectorAll('.slide[data-files]').forEach(slide => {
+    const box = document.createElement('div');
+    box.className = 'file-ref';
+    slide.dataset.files.split('|').forEach(f => {
+      const chip = document.createElement('span');
+      if (f.startsWith('>')) { chip.className = 'cmd'; f = f.slice(1); }
+      chip.textContent = f;
+      box.append(chip);
+    });
+    slide.append(box);
   });
 
   // ---------- captions for highlighted code lines ----------

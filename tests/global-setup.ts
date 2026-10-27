@@ -3,6 +3,9 @@ import type { FullConfig } from '@playwright/test';
 // NEW in 1.64: config.filteredProjects = the projects left after the --project filter
 // (and after `default: false` projects were skipped).
 export default async function globalSetup(config: FullConfig) {
+  // Shared clock for the lock-scope timeline demo (workers inherit this env var).
+  process.env.RUN_STARTED_AT = String(Date.now());
+
   const selected = config.filteredProjects.map(p => p.name);
   const all = config.projects.map(p => p.name);
   console.log(`\n[global-setup] projects selected: ${selected.join(', ')}  (configured: ${all.join(', ')})`);

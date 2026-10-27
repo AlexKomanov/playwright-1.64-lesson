@@ -30,7 +30,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/order-demo/**', '**/webmcp.spec.ts'],
+      testIgnore: ['**/order-demo/**', '**/lock-scope/**', '**/webmcp.spec.ts'],
     },
     {
       // WebMCP is experimental: Chromium needs a feature flag
@@ -50,6 +50,12 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
       testMatch: '**/01-within.spec.ts',
+      default: false,
+    },
+    {
+      // How long a file-level lock is held — prints a timeline
+      name: 'lock-scope',
+      testMatch: '**/lock-scope/**/*.spec.ts',
       default: false,
     },
     {

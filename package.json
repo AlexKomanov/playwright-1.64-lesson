@@ -9,6 +9,8 @@
     "test:all": "playwright test --project=\"*\"",
     "test:shuffle": "playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle",
     "test:shuffle:beforeall": "playwright test tests/order-demo/cart-order-beforeall.spec.ts --project=order-demo --workers=1 --shuffle",
+    "test:lock-scope:mixed": "playwright test tests/lock-scope/mixed tests/lock-scope/other-settings.spec.ts --project=lock-scope --workers=2 --reporter=list",
+    "test:lock-scope:split": "playwright test tests/lock-scope/split tests/lock-scope/other-settings.spec.ts --project=lock-scope --workers=2 --reporter=list",
     "test:webmcp": "playwright test --project=webmcp",
     "test:video": "playwright test --project=video",
     "report": "playwright show-report"

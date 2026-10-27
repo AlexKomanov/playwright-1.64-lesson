@@ -31,6 +31,8 @@ npm run demo           # רק אפליקציית הדמו, בכתובת http://l
 npm run test:shuffle   # טסטים שתלויים זה בזה, בסדר אקראי (כדאי להריץ כמה פעמים)
 npm run test:shuffle -- <seed>      # משחזר את הסדר של ריצה שנכשלה
 npm run test:shuffle:beforeall      # אותם טסטים עם beforeAll משותף: shuffle לא מערבב אותם
+npm run test:lock-scope:mixed       # lock על קובץ שלם: טסט אחר מחכה לכל הקובץ (מדפיס ציר זמן)
+npm run test:lock-scope:split       # אותם טסטים מפוצלים לשני קבצים: ה-lock תפוס רק שנייה
 npm run test:webmcp    # טסטים ל-page.webmcp (Chromium עם --enable-features=WebMCP)
 npm run test:video     # הקלטת וידאו ב-60fps עם עיצוב CSS לסימון הפעולות
 npm run test:all       # כל הפרויקטים, כולל firefox ו-webkit
@@ -47,7 +49,8 @@ npm run report         # פתיחת ה-HTML report
 | `locator.within()` | `tests/01-within.spec.ts` |
 | `testProject.default` | `playwright.config.ts` |
 | `--shuffle` | `tests/order-demo/cart-order.spec.ts` (בלי `beforeAll`), `tests/order-demo/cart-order-beforeall.spec.ts` (עם `beforeAll`) |
-| `test.describe.configure({ lock })` | `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` |
+| `test.describe.configure({ lock })`, lock מובנה `'exclusive'` | `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` |
+| כמה זמן lock על קובץ תופס | `tests/lock-scope/` (`mixed/`, `split/`, `other-settings.spec.ts`) |
 | צילומי מסך ב-WebP, `--update-snapshots=missing` | `playwright.config.ts`, `tests/03-new-apis.spec.ts` |
 | הקלטת וידאו: `fps`, `style` | `playwright.config.ts` (פרויקט `video`) |
 | WebMCP: הגדרת הכלים בצד האתר | `demo-app/public/index.html` |
