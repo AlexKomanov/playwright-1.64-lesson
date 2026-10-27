@@ -493,7 +493,8 @@ aside.notes { display: none; }
 <span class="cm"># all of them — e.g. on CI</span></div>
       <div class="card frag" style="margin-top:16px;border-color:rgba(255,181,71,.35)">
         <span class="tag warn">CI TIP · currents.dev</span>
-        <p>ב-CI כדאי לציין את הפרויקטים במפורש עם <code>--project</code>, ולבדוק ב-<span dir="ltr">global setup</span> את <code>config.filteredProjects</code> — כדי שהריצה תיכשל אם דפדפן נפל ממנה בלי שאף אחד שם לב.</p>
+        <p><b>הבעיה:</b> אחרי שסימנו את firefox ב-<code>default: false</code>, גם ה-CI שמריץ <code>npx playwright test</code> מפסיק להריץ אותו. שום טסט לא נכשל, אז אף אחד לא ישים לב.</p>
+        <p style="margin-top:8px"><b>הפתרון:</b> ב-CI נריץ עם <code>--project="*"</code>, וככה כל הדפדפנים ממשיכים לרוץ.</p>
       </div>
     </div>
   </div>
