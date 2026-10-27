@@ -32,13 +32,13 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 | 2:30–6:00 | 5–8 | **`locator.within()`** | `npx playwright test 01-within --headed` |
 | 6:00–7:30 | 9–10 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
 | 7:30–9:45 | 11–12 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, שחזור עם `npm run test:shuffle -- <seed>`, ואז `npm run test:shuffle:beforeall` להשוואה |
-| 9:45–12:00 | 13–14 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
-| 12:00–13:00 | 15 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
-| 13:00–16:00 | 16–17 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
-| 16:00–21:00 | 18–21 | **WebMCP** | `npm run test:webmcp` |
-| 21:00–23:30 | 22–23 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test 03-new-apis` |
-| 23:30–26:45 | 24–25 | **4 Breaking Changes** | `npx playwright test 04-breaking-changes` |
-| 26:45–28:30 | 26–28 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
+| 9:45–12:00 | 13–15 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
+| 12:00–13:00 | 16 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
+| 13:00–16:00 | 17–18 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
+| 16:00–21:00 | 19–22 | **WebMCP** | `npm run test:webmcp` |
+| 21:00–23:30 | 23–24 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test 03-new-apis` |
+| 23:30–26:45 | 25–26 | **4 Breaking Changes** | `npx playwright test 04-breaking-changes` |
+| 26:45–28:30 | 27–29 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
 
 ## מפת קבצים לפי פיצ'ר
 
@@ -57,7 +57,7 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 ## מה נבדק בפועל (23 באוקטובר 2026, עם @playwright/test 1.64.1 על macOS)
 - `npx playwright test`: 17/17 עברו (פרויקטים `chromium` ו-`webmcp`).
 - `--project=firefox`: 3/3 עברו. `--project=video`: 3/3 עברו ונוצרו קבצי `video.webm`.
-- `--shuffle`: בלי `beforeAll` 3 מתוך 10 ריצות נכשלו, ו-seed `235879484` משחזר את הכישלון. עם `beforeAll` משותף 10 מתוך 10 ריצות עברו (27 באוקטובר 2026).
+- `--shuffle` (4 טסטים בכל קובץ): בלי `beforeAll` 9 מתוך 10 ריצות נכשלו, ו-seed `519956039` משחזר את הכישלון. עם `beforeAll` משותף 10 מתוך 10 ריצות עברו (27 באוקטובר 2026).
 - Locks: בלי ה-lock הטסטים של 02-locks נכשלו ב-3 מתוך 3 ריצות. עם ה-lock עברו 3 מתוך 3.
 - צילום המסך נשמר כ-`promo-banner-looks-right-1-chromium-darwin.webp`. על Linux/Windows הוא ייווצר מחדש בריצה הראשונה עם `--update-snapshots=missing`.
 

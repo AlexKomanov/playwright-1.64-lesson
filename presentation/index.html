@@ -185,6 +185,34 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .legend { direction: rtl; display: flex; gap: 22px; justify-content: center; font-size: 15px; color: var(--dim); }
 .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-inline-end: 6px; }
 
+/* ---------- locks story ---------- */
+.lk-intro { font-size: 20px; color: #c9d8d0; margin: -6px 0 18px; max-width: 1000px; }
+.lk-board { display: grid; gap: 9px; margin-bottom: 18px; }
+.lk-axis { display: grid; grid-template-columns: 110px 1fr; font-size: 14px; color: var(--dim); }
+.lk-axis span { grid-column: 2; text-align: start; }
+.lk-row { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 12px; }
+.lk-lbl { font-family: var(--mono); font-size: 14px; color: var(--dim); direction: ltr; text-align: right; }
+.lk-track { position: relative; height: 44px; background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.07); border-radius: 10px; }
+.lk-blk { position: absolute; top: 5px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; transition: left .8s cubic-bezier(.3,1.2,.5,1), width .8s, background .4s, opacity .4s; }
+.lk-free { background: rgba(92,200,255,.85); color: #04263a; font-weight: 600; }
+.lk-a, .lk-b { background: rgba(255,181,71,.25); color: var(--dim); outline: 1px dashed rgba(255,181,71,.6); }
+.lk-a { inset-inline-start: 0; width: 46%; }
+.lk-b { inset-inline-start: 54%; width: 44%; }
+.lk-wait { inset-inline-start: 0; width: 50%; opacity: 0; color: var(--dim); font-weight: 600; border: 1px dashed rgba(255,255,255,.25); }
+.lk-res { font-size: 18px; }
+/* step 1: no lock — A and B overlap, A fails */
+.lk-slide[data-k="1"] .lk-b { inset-inline-start: 8%; width: 44%; }
+.lk-slide[data-k="1"] .lk-a, .lk-slide[data-k="1"] .lk-b { background: var(--bad); color: #fff; outline: none; }
+.lk-slide[data-k="1"] .lk-a .lk-res::after { content: '✘'; }
+.lk-slide[data-k="1"] .lk-b .lk-res::after { content: '✓'; }
+/* step 2: with lock — B waits, both pass */
+.lk-slide[data-k="2"] .lk-a, .lk-slide[data-k="2"] .lk-b { background: var(--warn); color: #3a2400; outline: none; }
+.lk-slide[data-k="2"] .lk-wait { opacity: 1; }
+.lk-slide[data-k="2"] .lk-res::after { content: '✓'; }
+.lk-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.lk-step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+.lk-step p { font-size: 17px; margin: 6px 0 0; color: #c9d8d0; }
+@media (max-height: 900px) { .lk-intro { font-size: 17px; } .lk-track { height: 38px; } .lk-blk { height: 28px; font-size: 13.5px; } .lk-step p { font-size: 15px; } }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -218,6 +246,11 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .steps { counter-reset: s; display: grid; gap: 14px; }
 .steps .card { display: grid; grid-template-columns: 54px 1fr; align-items: center; gap: 16px; padding: 16px 20px; }
 .run-steps { grid-template-columns: 1fr 1fr; }
+.lock-steps { gap: 10px; }
+.lock-steps .card { padding: 12px 18px; }
+.lock-steps h3 { font-size: 19px; margin-bottom: 4px; }
+.lock-steps p { font-size: 16px; }
+.lock-steps .code { font-size: 13px; padding: 10px 0; margin-top: 8px; }
 .run-steps .card { align-items: start; }
 .run-steps .term { font-size: 14.5px; padding: 30px 16px 12px; margin-top: 6px; }
 .run-steps h3 { font-size: 19px; }
@@ -516,10 +549,10 @@ aside.notes { display: none; }
   <div class="eyebrow">--shuffle [seed]</div>
   <h2>סדר אקראי — תופס טסטים <span class="accent">שתלויים זה בזה</span></h2>
   <div class="shuf" id="shuf">
-    <div class="tc" data-id="add"><b>test #1</b>add an apple<br>to the cart<span class="st"></span></div>
-    <div class="tc" data-id="show"><b>test #2 · needs #1</b>cart shows<br>one item<span class="st"></span></div>
-    <div class="tc" data-id="within"><b>test #3</b>within()<br>dialog<span class="st"></span></div>
-    <div class="tc" data-id="cookies"><b>test #4</b>request<br>cookies<span class="st"></span></div>
+    <div class="tc" data-id="t1"><b>test #1</b>add an apple<br>to the cart<span class="st"></span></div>
+    <div class="tc" data-id="t2"><b>test #2</b>add a banana<br>to the cart<span class="st"></span></div>
+    <div class="tc" data-id="t3"><b>test #3 · needs #1 #2</b>cart shows<br>two items<span class="st"></span></div>
+    <div class="tc" data-id="t4"><b>test #4 · needs #1 #2</b>cart total<br>is $12.5<span class="st"></span></div>
   </div>
   <div class="seed" id="seedOut">declaration order · no seed</div>
   <div class="btn-row" style="margin:16px 0 18px">
@@ -528,10 +561,13 @@ aside.notes { display: none; }
     <button class="btn-ui" id="resetBtn">reset</button>
   </div>
   <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npm run test:shuffle
-<span class="out">Running 2 tests using 1 worker, shuffle seed 235879484</span>
-<span class="bad-t">  1 failed</span><span class="out">  1 passed</span>
-<span class="pr">$</span> npm run test:shuffle -- 235879484   <span class="cm"># same order, same failure</span></div>
-  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle עד שטסט 2 מגיע לפני 1 ונהיה אדום. ואז replay — אותו seed, אותו סדר. הפלט בטרמינל הוא ריצה אמיתית מהדמו (seed 235879484 משחזר את הכישלון).</aside>
+<span class="out">Running 4 tests using 1 worker, shuffle seed 519956039</span>
+<span class="out">  ✓ 2: add a banana to the cart</span>
+<span class="bad-t">  ✘ 3: cart shows two items</span>
+<span class="bad-t">  ✘ 4: cart total is $12.5</span>
+<span class="out">  ✓ 1: add an apple to the cart</span>
+<span class="pr">$</span> npm run test:shuffle -- 519956039   <span class="cm"># same order, same failure</span></div>
+  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 519956039 מריץ את הבננה, אחר כך את 3 ו-4 (נכשלים), ורק בסוף את התפוח.</aside>
 </section>
 
 <!-- 11 · shuffle gotchas -->
@@ -560,7 +596,7 @@ fullyParallel: true,</code></pre>
       <h3>איפה shuffle לא יעזור: <span dir="ltr">beforeAll</span> משותף</h3>
       <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
       <div class="term"><span class="pr">$</span> npm run test:shuffle
-<span class="bad-t">  no beforeAll:     3/10 runs failed</span>
+<span class="bad-t">  no beforeAll:     9/10 runs failed</span>
 <span class="pr">$</span> npm run test:shuffle:beforeall
 <span class="out">  shared beforeAll: 10/10 runs passed</span></div>
       <p class="dim" style="font-size:14px;margin-top:10px">שני הקבצים נמצאים ב-<code>tests/order-demo</code>, עם אותם טסטים בדיוק. ההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
@@ -571,22 +607,54 @@ fullyParallel: true,</code></pre>
 </section>
 
 <!-- 12 · locks visual -->
-<section class="slide">
+<section class="slide lk-slide">
   <div class="eyebrow">TEST LOCKS</div>
-  <h2><span dir="ltr">Test Locks</span>: טסטים שמשתמשים <span class="accent">באותו משאב</span> מחכים לתורם</h2>
-  <div class="lanes" id="lanes">
-    <div class="lane">worker 1<div class="track"><div class="blk settings" data-b="a">locks-a: theme→dark</div></div></div>
-    <div class="lane">worker 2<div class="track"><div class="blk settings" data-b="b">locks-b: theme→light</div></div></div>
-    <div class="lane">worker 3<div class="track"><div class="blk free" data-b="c">within()</div><div class="blk free" data-b="d">cookies</div></div></div>
-    <div class="lane">worker 4<div class="track"><div class="blk free" data-b="e">webmcp</div><div class="blk free" data-b="f">shadow</div></div></div>
+  <h2><span dir="ltr">Test Locks</span>: שני טסטים שמשנים <span class="accent">את אותה הגדרה</span> לא ירוצו ביחד</h2>
+  <p class="lk-intro">Playwright מריץ כמה טסטים באותו זמן, כל אחד בתהליך נפרד שנקרא <b dir="ltr">worker</b>. זה מהיר, אבל יש בעיה כששני טסטים משנים את אותו דבר בשרת.</p>
+
+  <div class="lk-board">
+    <div class="lk-axis"><span>זמן ←</span></div>
+    <div class="lk-row"><span class="lk-lbl">worker 1</span><div class="lk-track">
+      <div class="lk-blk lk-a"><span class="lk-t">טסט A: משנה ל-dark ובודק</span><span class="lk-res"></span></div>
+    </div></div>
+    <div class="lk-row"><span class="lk-lbl">worker 2</span><div class="lk-track">
+      <div class="lk-blk lk-wait">⏳ מחכה ל-lock</div>
+      <div class="lk-blk lk-b"><span class="lk-t">טסט B: משנה ל-light ובודק</span><span class="lk-res"></span></div>
+    </div></div>
+    <div class="lk-row"><span class="lk-lbl">worker 3</span><div class="lk-track">
+      <div class="lk-blk lk-free" style="inset-inline-start:0;width:38%">טסט אחר</div>
+      <div class="lk-blk lk-free" style="inset-inline-start:41%;width:40%">טסט אחר</div>
+    </div></div>
+    <div class="lk-row"><span class="lk-lbl">worker 4</span><div class="lk-track">
+      <div class="lk-blk lk-free" style="inset-inline-start:0;width:52%">טסט אחר</div>
+      <div class="lk-blk lk-free" style="inset-inline-start:55%;width:30%">טסט אחר</div>
+    </div></div>
   </div>
-  <div class="legend"><span><i style="background:var(--warn)"></i><span dir="ltr">lock: 'store-settings'</span></span><span><i style="background:var(--info)"></i>טסטים בלי lock — ממשיכים לרוץ במקביל</span><span><i style="background:var(--bad)"></i>התנגשות</span></div>
-  <div class="btn-row" style="margin-top:18px">
-    <button class="btn-ui" id="noLock">בלי lock</button>
-    <button class="btn-ui" id="withLock">עם lock</button>
+
+  <div class="lk-steps">
+    <div class="lk-step frag"><span class="tag bad he">בלי lock</span>
+      <p>A ו-B רצים באותו זמן. A שומר dark, B דורס ל-light, ו-A בודק ומוצא light. <b>A נכשל, למרות שאין באג באפליקציה.</b></p></div>
+    <div class="lk-step frag"><span class="tag he">עם <span dir="ltr">lock: 'store-settings'</span></span>
+      <p>A תופס את ה-lock. B מבקש את אותו lock, רואה שהוא תפוס ומחכה. כש-A מסיים, B מתחיל. <b>שניהם עוברים.</b></p></div>
   </div>
-  <p class="dim" style="text-align:center;margin-top:12px;font-size:16px">בדמו: בלי ה-lock כל 3 הריצות נכשלו. עם ה-lock — כל 3 עברו.</p>
-  <aside class="notes" data-t="9:45 – 11:00">ללחוץ "בלי lock" — שני הבלוקים הכתומים חופפים ונהיים אדומים. "עם lock" — אחד זז אחרי השני, והשאר ממשיכים במקביל. Test Locks הגיעו ב-1.63. ב-1.64 אפשר להגדיר lock לקובץ שלם או ל-describe שלם.</aside>
+  <aside class="notes" data-t="9:45 – 11:00">שלב 0: להסביר מה זה worker — תהליך שמריץ טסטים, וכמה כאלה רצים במקביל. שלב 1 (חץ): בלי lock — A ו-B חופפים, B דורס את ההגדרה, A נכשל. שלב 2 (חץ): עם lock — B מחכה (הקו המקווקו), ואז רץ. worker 3 ו-4 לא מושפעים. בדמו: בלי ה-lock כל 3 הריצות נכשלו, עם ה-lock כל 3 עברו. Test Locks הגיעו ב-1.63; ב-1.64 אפשר להגדיר lock לקובץ שלם או ל-describe שלם (השקופית הבאה).</aside>
+</section>
+
+<!-- 12b · how a lock works -->
+<section class="slide">
+  <div class="eyebrow">HOW A LOCK WORKS</div>
+  <h2>איך lock עובד בפועל</h2>
+  <p class="lead" style="margin:-6px 0 20px">כמו מפתח יחיד לחדר ישיבות: מי שמחזיק את המפתח נכנס, וכל מי שצריך את אותו חדר מחכה שהמפתח יחזור.</p>
+  <div class="steps lock-steps">
+    <div class="card frag"><div><h3>נותנים ל-lock שם</h3><p>השם הוא סתם מחרוזת שאנחנו בוחרים, והוא מייצג את המשאב המשותף. כל הטסטים שנוגעים בהגדרות החנות יקבלו את אותו שם.</p>
+      <pre class="code"><code>test('switch theme to dark', { lock: 'store-settings' }, async ({ page }) => { ... });
+test('switch theme to light', { lock: 'store-settings' }, async ({ page }) => { ... });</code></pre></div></div>
+    <div class="card frag"><div><h3>לפני שטסט מתחיל, Playwright בודק</h3><p>האם רץ עכשיו טסט אחר עם lock באותו שם? אם כן, הטסט מחכה. אם לא, הוא תופס את ה-lock ומתחיל לרוץ.</p></div></div>
+    <div class="card frag"><div><h3>כשהטסט מסתיים, ה-lock משתחרר</h3><p>הטסט הבא שחיכה לאותו שם מתחיל לרוץ. ככה שני טסטים עם אותו lock אף פעם לא רצים באותו זמן, גם אם הם בקבצים שונים, ב-workers שונים או ב-projects שונים.</p></div></div>
+    <div class="card frag"><div><h3>כל השאר ממשיכים כרגיל</h3><p>טסט בלי lock, או עם lock בשם אחר, לא מחכה לאף אחד ורץ במקביל כמו תמיד.</p></div></div>
+  </div>
+  <p class="dim" style="margin-top:12px;font-size:15px">בדמו: <code>tests/02-locks-a.spec.ts</code> ו-<code>tests/02-locks-b.spec.ts</code> · מקור: התיעוד הרשמי, Test locks</p>
+  <aside class="notes" data-t="">להסביר עם האנלוגיה של המפתח. שלב 1: השם הוא מחרוזת חופשית — מה שחשוב זה שאותו שם = אותו משאב. שלב 2-3: מהתיעוד: "Playwright acquires all the locks of a test before the test starts and releases them when it finishes". שלב 4: טסטים אחרים לא מושפעים. בשקופית הבאה: מה חדש ב-1.64 — lock לקובץ שלם עם describe.configure.</aside>
 </section>
 
 <!-- 13 · locks code -->
@@ -1110,13 +1178,22 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
+  // Same rules as tests/order-demo/cart-order.spec.ts: #1 empties the cart and adds an apple, #2 adds a banana
+  function cartAt(order, id) {
+    let cart = [];
+    for (const t of order.slice(0, order.indexOf(id))) {
+      if (t === 't1') cart = ['apple'];
+      if (t === 't2') cart = [...cart, 'banana'];
+    }
+    return cart.sort();
+  }
   function run(order, seed) {
     layout(order);
     cards.forEach(c => { c.classList.remove('pass', 'fail'); c.querySelector('.st').textContent = ''; });
     setTimeout(() => {
       order.forEach(id => {
         const c = cards.find(c => c.dataset.id === id);
-        const bad = id === 'show' && order.indexOf('show') < order.indexOf('add');
+        const bad = cartAt(order, id).join() !== 'apple,banana' && (id === 't3' || id === 't4');
         c.classList.add(bad ? 'fail' : 'pass');
         c.querySelector('.st').textContent = bad ? '✘' : '✓';
       });
@@ -1133,28 +1210,9 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
   replayBtn.addEventListener('click', e => { e.stopPropagation(); if (lastSeed) run(shuffled(lastSeed), lastSeed); pressed(shufBtns, e.currentTarget); });
   document.getElementById('resetBtn').addEventListener('click', e => { e.stopPropagation(); lastSeed = null; run(order0, null); replayBtn.disabled = true; pressed(shufBtns, null); e.currentTarget.blur(); });
 
-  // ---------- widget: locks ----------
-  const lanes = document.getElementById('lanes');
-  const B = id => lanes.querySelector(`[data-b="${id}"]`);
-  function place(id, left, width) { const b = B(id); b.style.left = left + '%'; b.style.width = width + '%'; }
-  function locks(on) {
-    place('c', 2, 30); place('d', 36, 26);
-    place('e', 2, 22); place('f', 28, 34);
-    place('a', 2, 40);
-    B('a').classList.toggle('pending', on === null);
-    B('b').classList.toggle('pending', on === null);
-    if (on === null) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
-    else if (on) { place('b', 44, 40); B('a').classList.replace('clash', 'settings'); B('b').classList.replace('clash', 'settings'); }
-    else { place('b', 10, 40); B('a').classList.replace('settings', 'clash'); B('b').classList.replace('settings', 'clash'); }
-  }
-  const lockBtns = ['noLock', 'withLock'].map(id => document.getElementById(id));
-  document.getElementById('noLock').addEventListener('click', e => { e.stopPropagation(); locks(false); pressed(lockBtns, e.currentTarget); });
-  document.getElementById('withLock').addEventListener('click', e => { e.stopPropagation(); locks(true); pressed(lockBtns, e.currentTarget); });
-
   // ---------- start ----------
   window.addEventListener('load', () => {
     layout(order0);
-    locks(null); // no choice yet: both buttons neutral
     navLock = Date.now() + 900;
     slides[startIdx].scrollIntoView({ inline: 'start', behavior: 'instant' });
     setActive(startIdx);
