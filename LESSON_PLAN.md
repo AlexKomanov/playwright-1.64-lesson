@@ -31,7 +31,7 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 | 1:30–2:30 | 3–4 | הורדת הריפו, ואפליקציית הדמו PW Shop | `git clone`, `npm install`, `npm run demo`, לעבור על 3 העמודים |
 | 2:30–6:00 | 5–8 | **`locator.within()`** | `npx playwright test 01-within --headed` |
 | 6:00–7:30 | 9–10 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
-| 7:30–9:45 | 11–12 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, ואז שחזור עם seed |
+| 7:30–9:45 | 11–12 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, שחזור עם `npm run test:shuffle -- <seed>`, ואז `npm run test:shuffle:beforeall` להשוואה |
 | 9:45–12:00 | 13–14 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
 | 12:00–13:00 | 15 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
 | 13:00–16:00 | 16–17 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
@@ -48,7 +48,7 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 | `default: false`, video `fps` + `style`, WebP | `playwright.config.ts` |
 | `fullConfig.filteredProjects` | `tests/global-setup.ts` |
 | Test locks לקובץ שלם + `exclusive` | `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` |
-| `--shuffle` | `tests/order-demo/cart-order.spec.ts` (פרויקט `order-demo`) |
+| `--shuffle` | `tests/order-demo/cart-order.spec.ts` ו-`tests/order-demo/cart-order-beforeall.spec.ts` (פרויקט `order-demo`) |
 | WebMCP (צד העמוד) | `demo-app/public/index.html` |
 | WebMCP (צד הטסט) | `tests/webmcp.spec.ts` (פרויקט `webmcp`) |
 | `getByRef`, `includeShadow`, cookies של APIRequestContext, צילום WebP | `tests/03-new-apis.spec.ts` |
@@ -57,12 +57,12 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 ## מה נבדק בפועל (23 באוקטובר 2026, עם @playwright/test 1.64.1 על macOS)
 - `npx playwright test`: 17/17 עברו (פרויקטים `chromium` ו-`webmcp`).
 - `--project=firefox`: 3/3 עברו. `--project=video`: 3/3 עברו ונוצרו קבצי `video.webm`.
-- `--shuffle` בפרויקט `order-demo`: בחלק מהריצות הטסט התלוי רץ ראשון ונכשל. seed `476438802` משחזר את הכישלון.
+- `--shuffle`: בלי `beforeAll` 3 מתוך 10 ריצות נכשלו, ו-seed `235879484` משחזר את הכישלון. עם `beforeAll` משותף 10 מתוך 10 ריצות עברו (27 באוקטובר 2026).
 - Locks: בלי ה-lock הטסטים של 02-locks נכשלו ב-3 מתוך 3 ריצות. עם ה-lock עברו 3 מתוך 3.
 - צילום המסך נשמר כ-`promo-banner-looks-right-1-chromium-darwin.webp`. על Linux/Windows הוא ייווצר מחדש בריצה הראשונה עם `--update-snapshots=missing`.
 
 ## דברים שגילינו בדרך (כדאי להזכיר בסרטון)
-- **shuffle ו-`beforeAll`:** טסטים במצב parallel שחולקים `beforeAll`/`afterAll` נשארים קבוצה אחת ולא מתערבבים ביניהם. ראינו את זה בקוד של `shuffleTestGroups`/`createTestGroups` בחבילה. לכן לקובץ ה-order-demo אין hook.
+- **shuffle ו-`beforeAll`:** טסטים במצב parallel שחולקים `beforeAll`/`afterAll` נשארים קבוצה אחת ולא מתערבבים ביניהם. ראינו את זה בקוד של `shuffleTestGroups`/`createTestGroups` בחבילה, ולכן יש בדמו שני קבצים: אחד בלי hook ואחד עם `beforeAll`.
 - **`test.use({ screen: undefined })` בתוך describe** לא ביטל את ה-screen של ה-device בבדיקה שלנו, והמסך נשאר 1920×1080. ה-opt-out עבד ב-`browser.newContext({ ...devices['Desktop Chrome'], screen: undefined })`. התיעוד מציג את ה-opt-out ברמת הקונפיג.
 - **`test.use({ ...devices[...] })` בתוך describe** נכשל עם השגיאה "forces a new worker". מגדירים device ברמת הקובץ או בקונפיג.
 

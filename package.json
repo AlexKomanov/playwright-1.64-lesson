@@ -7,7 +7,8 @@
     "demo": "node demo-app/server.js",
     "test": "playwright test",
     "test:all": "playwright test --project=\"*\"",
-    "test:shuffle": "playwright test --project=order-demo --workers=1 --shuffle",
+    "test:shuffle": "playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle",
+    "test:shuffle:beforeall": "playwright test tests/order-demo/cart-order-beforeall.spec.ts --project=order-demo --workers=1 --shuffle",
     "test:webmcp": "playwright test --project=webmcp",
     "test:video": "playwright test --project=video",
     "report": "playwright show-report"

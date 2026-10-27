@@ -1,14 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 // A BAD test file on purpose: test #2 silently depends on test #1.
-// In declaration order it is green. With --shuffle it fails ~half the time.
+// In declaration order it is green. With --shuffle it fails in some runs.
 //
-//   npx playwright test --project=order-demo --workers=1             # green
-//   npx playwright test --project=order-demo --workers=1 --shuffle   # sometimes red
-//   npx playwright test --project=order-demo --workers=1 --shuffle <seed>  # replay that order
+//   npm run test:shuffle                    # random order — sometimes red
+//   npm run test:shuffle -- <seed>          # replay the order of a failed run
 //
 // Note: --shuffle reorders test files and tests in parallel mode (fullyParallel is on in the config).
-// Tests that share a beforeAll/afterAll hook stay together as one group, so this file has none.
+// Compare with cart-order-beforeall.spec.ts: the same tests with a shared beforeAll are never reordered.
 
 test('add an apple to the cart', async ({ request }) => {
   await request.delete('/api/cart');

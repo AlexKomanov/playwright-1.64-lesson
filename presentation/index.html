@@ -527,11 +527,11 @@ aside.notes { display: none; }
     <button class="btn-ui" id="replayBtn" disabled>↺ replay same seed</button>
     <button class="btn-ui" id="resetBtn">reset</button>
   </div>
-  <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npx playwright test --project=order-demo --workers=1 --shuffle
-<span class="out">Running 2 tests using 1 worker, shuffle seed 476438802</span>
-<span class="out">  ✘ cart shows one item · ✓ add an apple to the cart</span>
-<span class="pr">$</span> npx playwright test --project=order-demo --workers=1 --shuffle 476438802 <span class="cm"># same order again</span></div>
-  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle עד שטסט 2 מגיע לפני 1 ונהיה אדום. ואז replay — אותו seed, אותו סדר. הפלט בטרמינל הוא ריצה אמיתית מהדמו שלנו (seed 476438802 שחזר את הכישלון).</aside>
+  <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npm run test:shuffle
+<span class="out">Running 2 tests using 1 worker, shuffle seed 235879484</span>
+<span class="bad-t">  1 failed</span><span class="out">  1 passed</span>
+<span class="pr">$</span> npm run test:shuffle -- 235879484   <span class="cm"># same order, same failure</span></div>
+  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle עד שטסט 2 מגיע לפני 1 ונהיה אדום. ואז replay — אותו seed, אותו סדר. הפלט בטרמינל הוא ריצה אמיתית מהדמו (seed 235879484 משחזר את הכישלון).</aside>
 </section>
 
 <!-- 11 · shuffle gotchas -->
@@ -559,10 +559,11 @@ fullyParallel: true,</code></pre>
       <div class="ico">🔗</div>
       <h3>איפה shuffle לא יעזור: <span dir="ltr">beforeAll</span> משותף</h3>
       <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
-      <pre class="code"><code>test.beforeAll(...)
-test('add an apple', ...)    // 1st
-test('cart shows one item', ...) // 2nd</code></pre>
-      <p class="dim" style="font-size:14px;margin-top:10px">בקובץ הדמו <code>cart-order.spec.ts</code> עם <code>beforeAll</code> הסדר לא השתנה באף ריצה. בלעדיו, shuffle הפיל את הטסט התלוי.</p>
+      <div class="term"><span class="pr">$</span> npm run test:shuffle
+<span class="bad-t">  no beforeAll:     3/10 runs failed</span>
+<span class="pr">$</span> npm run test:shuffle:beforeall
+<span class="out">  shared beforeAll: 10/10 runs passed</span></div>
+      <p class="dim" style="font-size:14px;margin-top:10px">שני הקבצים נמצאים ב-<code>tests/order-demo</code>, עם אותם טסטים בדיוק. ההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
       <span class="tag warn he" style="margin-top:10px">נבדק בקוד של Playwright ובדמו</span>
     </div>
   </div>

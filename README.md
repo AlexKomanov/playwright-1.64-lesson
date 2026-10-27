@@ -29,6 +29,8 @@ npx playwright install chromium
 npm test               # הפרויקטים שרצים כברירת מחדל: chromium + webmcp
 npm run demo           # רק אפליקציית הדמו, בכתובת http://localhost:3164
 npm run test:shuffle   # טסטים שתלויים זה בזה, בסדר אקראי (כדאי להריץ כמה פעמים)
+npm run test:shuffle -- <seed>      # משחזר את הסדר של ריצה שנכשלה
+npm run test:shuffle:beforeall      # אותם טסטים עם beforeAll משותף: shuffle לא מערבב אותם
 npm run test:webmcp    # טסטים ל-page.webmcp (Chromium עם --enable-features=WebMCP)
 npm run test:video     # הקלטת וידאו ב-60fps עם עיצוב CSS לסימון הפעולות
 npm run test:all       # כל הפרויקטים, כולל firefox ו-webkit
@@ -44,7 +46,7 @@ npm run report         # פתיחת ה-HTML report
 |---|---|
 | `locator.within()` | `tests/01-within.spec.ts` |
 | `testProject.default` | `playwright.config.ts` |
-| `--shuffle` | `tests/order-demo/cart-order.spec.ts` |
+| `--shuffle` | `tests/order-demo/cart-order.spec.ts` (בלי `beforeAll`), `tests/order-demo/cart-order-beforeall.spec.ts` (עם `beforeAll`) |
 | `test.describe.configure({ lock })` | `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` |
 | צילומי מסך ב-WebP, `--update-snapshots=missing` | `playwright.config.ts`, `tests/03-new-apis.spec.ts` |
 | הקלטת וידאו: `fps`, `style` | `playwright.config.ts` (פרויקט `video`) |
