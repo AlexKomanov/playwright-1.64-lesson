@@ -48,7 +48,9 @@ p, li { font-size: 20px; line-height: 1.6; }
 .lead { font-size: 24px; color: var(--dim); max-width: 900px; }
 .accent { color: var(--accent); text-shadow: 0 0 24px var(--glow); }
 .dim { color: var(--dim); }
-code, .ic { font-family: var(--mono); font-size: .86em; background: rgba(69,224,111,.10); color: #b9f7c9; padding: 2px 8px; border-radius: 6px; direction: ltr; unicode-bidi: isolate; white-space: nowrap; font-variant-ligatures: none; }
+/* show code characters literally: no '--' or '=>' ligatures in any browser */
+code, pre, .term, .yaml, .tc { font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0; }
+code, .ic { font-family: var(--mono); font-size: .86em; background: rgba(69,224,111,.10); color: #b9f7c9; padding: 2px 8px; border-radius: 6px; direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
 .ltr { direction: ltr; unicode-bidi: embed; display: inline-block; }
 
 .grid { display: grid; gap: 20px; }
