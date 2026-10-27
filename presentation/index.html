@@ -557,15 +557,16 @@ fullyParallel: true,</code></pre>
     </div>
     <div class="card frag">
       <div class="ico">🔗</div>
-      <h3><span dir="ltr">beforeAll</span> משותף מבטל את הערבוב</h3>
-      <p>טסטים שחולקים <code>beforeAll</code> רצים תמיד יחד ובאותו סדר. בדמו זה הסתיר את הבאג. ברגע שהורדנו את ה-<code>beforeAll</code>, shuffle תפס אותו.</p>
-      <pre class="code"><code>test.beforeAll(...) // one group
-test('add an apple', ...)
-test('cart shows one item', ...)</code></pre>
-      <span class="tag warn he" style="margin-top:10px">נבדק בדמו</span>
+      <h3>איפה shuffle לא יעזור: <span dir="ltr">beforeAll</span> משותף</h3>
+      <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
+      <pre class="code"><code>test.beforeAll(...)
+test('add an apple', ...)    // 1st
+test('cart shows one item', ...) // 2nd</code></pre>
+      <p class="dim" style="font-size:14px;margin-top:10px">בקובץ הדמו <code>cart-order.spec.ts</code> עם <code>beforeAll</code> הסדר לא השתנה באף ריצה. בלעדיו, shuffle הפיל את הטסט התלוי.</p>
+      <span class="tag warn he" style="margin-top:10px">נבדק בקוד של Playwright ובדמו</span>
     </div>
   </div>
-  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: גילינו בפועל כשבנינו את הדמו — בקוד של Playwright, טסטים עם beforeAll/afterAll משותף במצב parallel נשארים קבוצה אחת. זה מוסבר גם בהערה בקובץ order-demo.</aside>
+  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ order-demo זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
 </section>
 
 <!-- 12 · locks visual -->
