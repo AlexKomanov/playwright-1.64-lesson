@@ -24,7 +24,10 @@ test('the shop registers the expected tools', async ({ page }) => {
 });
 
 test('add_to_cart works — and the UI agrees with the tool', async ({ page, request }) => {
-  const result = await page.webmcp.callTool('add_to_cart', { productId: 2, quantity: 2 });
+  const result = await page.webmcp.callTool('add_to_cart', {
+    productId: 2,
+    quantity: 2,
+  });
   expect(result.isError).not.toBe(true);
 
   const cart = JSON.parse(result.content[0].text);

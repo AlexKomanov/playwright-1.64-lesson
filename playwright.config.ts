@@ -33,9 +33,14 @@ export default defineConfig({
       testIgnore: ['**/order-demo/**', '**/lock-scope/**', '**/webmcp.spec.ts'],
     },
     {
-      // WebMCP is experimental: Chromium needs a feature flag
+      // WebMCP is experimental: needs a flag
       name: 'webmcp',
-      use: { ...devices['Desktop Chrome'], launchOptions: { args: ['--enable-features=WebMCP'] } },
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--enable-features=WebMCP'],
+        },
+      },
       testMatch: '**/webmcp.spec.ts',
     },
 
@@ -63,6 +68,23 @@ export default defineConfig({
       name: 'order-demo',
       testMatch: '**/order-demo/**',
       default: false,
+    },
+    {
+      // BEFORE 1.64: only a font size for the action title, and no fps option.
+      // fontSize still works in 1.64 but is deprecated ("Use style.title instead").
+      name: 'video-before',
+      testMatch: '**/01-within.spec.ts',
+      default: false,
+      use: {
+        ...devices['Desktop Chrome'],
+        video: {
+          mode: 'on',
+          size: { width: 1280, height: 720 },
+          show: {
+            actions: { fontSize: 16 },
+          },
+        },
+      },
     },
     {
       // NEW in 1.64: video fps + CSS-styled action decorations

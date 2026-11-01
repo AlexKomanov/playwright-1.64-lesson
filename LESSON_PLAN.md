@@ -28,19 +28,21 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 | זמן | שקופיות | נושא | דמו חי |
 |---|---|---|---|
 | 0:00–1:30 | 1–2 | פתיחה ומבנה השיעור | — |
-| 1:30–2:30 | 3–4 | הורדת הריפו, ואפליקציית הדמו PW Shop | `git clone`, `npm install`, `npm run demo`, לעבור על 3 העמודים |
-| 2:30–6:00 | 5–8 | **`locator.within()`** | `npx playwright test 01-within --headed` |
-| 6:00–7:30 | 9–10 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
-| 7:30–9:45 | 11–12 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, שחזור עם `npm run test:shuffle -- <seed>`, ואז `npm run test:shuffle:beforeall` להשוואה |
-| 9:45–12:00 | 13–16 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
-| 12:00–13:00 | 17 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
-| 13:00–16:00 | 18–19 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
-| 16:00–21:00 | 20–23 | **WebMCP** | `npm run test:webmcp` |
-| 21:00–23:30 | 24–25 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test 03-new-apis` |
-| 23:30–26:45 | 26–27 | **4 Breaking Changes** | `npx playwright test 04-breaking-changes` |
-| 26:45–28:30 | 28–30 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
+| 1:30–3:30 | 3–6 | התקנה ושדרוג (ולמה צריך להוריד דפדפנים), הורדת הריפו, ואפליקציית הדמו PW Shop | `git clone`, `npm install`, `npm run demo`, לעבור על 3 העמודים |
+| 3:30–6:30 | 7–10 | **`locator.within()`** | `npx playwright test 01-within --headed` |
+| 6:30–7:45 | 11–12 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
+| 7:45–9:45 | 13–14 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, שחזור עם `npm run test:shuffle -- <seed>`, ואז `npm run test:shuffle:beforeall` להשוואה |
+| 9:45–12:00 | 15–18 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
+| 12:00–13:00 | 19 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
+| 13:00–15:30 | 20–21 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
+| 15:30–20:30 | 22–25 | **WebMCP** | `npm run test:webmcp` |
+| 20:30–23:30 | 26–28 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test 03-new-apis` |
+| 23:30–26:45 | 29–30 | **4 Breaking Changes** | `npx playwright test 04-breaking-changes` |
+| 26:45–28:30 | 31–33 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
 
 ## מפת קבצים לפי פיצ'ר
+
+לכל פיצ'ר שהיה לו קודם תחליף יש גם גרסת "לפני 1.64" שרצה: `tests/before-1.64/` ופרויקט `video-before`. WebMCP, `getByRef` ו-`signCount` הם APIs חדשים לגמרי.
 
 | פיצ'ר | קובץ |
 |---|---|

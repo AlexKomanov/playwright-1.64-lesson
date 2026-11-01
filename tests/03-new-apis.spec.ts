@@ -6,7 +6,8 @@ test('getByRef: click the element an AI snapshot pointed at', async ({ page }) =
 
   const snapshot = await page.ariaSnapshot({ mode: 'ai' });
   // e.g.  - button "Subscribe" [ref=e23]
-  const ref = snapshot.match(/button "Subscribe" \[ref=(\w+)\]/)![1];
+  const ref = snapshot
+    .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
   console.log(`Subscribe button has ref ${ref}`);
 
   await page.getByRef(ref).click();
@@ -31,8 +32,11 @@ test('content() can include open shadow roots', async ({ page }) => {
 test('APIRequestContext: addCookies / cookies / clearCookies', async ({ request, baseURL }) => {
   expect((await request.get('/api/whoami')).status()).toBe(401);
 
-  await request.addCookies([{ name: 'session-id', value: 'alex', url: baseURL! }]);
-  expect(await (await request.get('/api/whoami')).json()).toEqual({ user: 'alex' });
+  await request.addCookies([
+    { name: 'session-id', value: 'alex', url: baseURL! },
+  ]);
+  const me = await (await request.get('/api/whoami')).json();
+  expect(me).toEqual({ user: 'alex' });
   console.log(await request.cookies(baseURL!));
 
   await request.clearCookies({ name: 'session-id' });

@@ -142,11 +142,11 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .mtable td.cellhl { background: rgba(69,224,111,.28) !important; box-shadow: inset 0 0 0 2px #2ead4b; font-weight: 700; }
 .mtable td.wrong { background: rgba(255,92,108,.25) !important; box-shadow: inset 0 0 0 2px #ff5c6c; }
 
-.col-step { margin-bottom: 18px; }
-.col-step .code { font-size: 15.5px; padding: 12px 0; margin: 4px 0 8px; }
-.col-step p { font-size: 18px; margin: 0; }
+.col-step { margin-bottom: 8px; }
+.col-step .code { font-size: 13px; padding: 30px 0 10px; margin: 4px 0 8px; }
+.col-step p { font-size: 16px; margin: 0; }
 .col-slide[data-k="1"] #colTable tr:nth-child(2) td:nth-child(3) { background: rgba(255,92,108,.25); box-shadow: inset 0 0 0 2px #ff5c6c; font-weight: 700; }
-.col-slide[data-k="2"] #colTable tr td:nth-child(3) { background: rgba(69,224,111,.28); box-shadow: inset 0 0 0 2px #2ead4b; font-weight: 700; }
+.col-slide[data-k="2"] #colTable tr td:nth-child(3), .col-slide[data-k="3"] #colTable tr td:nth-child(3) { background: rgba(69,224,111,.28); box-shadow: inset 0 0 0 2px #2ead4b; font-weight: 700; }
 .col-slide[data-k="2"] #colTable tr:nth-child(3) td:nth-child(3) { transition-delay: .25s; }
 .col-slide[data-k="2"] #colTable tr:nth-child(4) td:nth-child(3) { transition-delay: .5s; }
 @media (max-height: 900px) { .col-step p { font-size: 16px; } .col-step .code { font-size: 14px; } }
@@ -187,8 +187,8 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 
 /* ---------- locks: why ---------- */
 .lk2-col .tag { margin-bottom: 8px; }
-.lk2-seq { list-style: none; counter-reset: st; padding: 0; margin: 6px 0 0; display: grid; gap: 7px; }
-.lk2-seq li { counter-increment: st; display: flex; align-items: center; gap: 10px; font-size: 17px; padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.03); color: #d6e4dc; }
+.lk2-seq { list-style: none; counter-reset: st; padding: 0; margin: 6px 0 0; display: grid; gap: 5px; }
+.lk2-seq li { counter-increment: st; display: flex; align-items: center; gap: 10px; font-size: 16px; padding: 5px 12px; border-radius: 10px; background: rgba(255,255,255,.03); color: #d6e4dc; }
 .lk2-seq li::before { content: counter(st); font: 700 13px var(--mono); color: var(--dim); min-width: 14px; }
 .lk2-seq .who { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; font: 800 14px var(--mono); flex: none; }
 .lk2-seq .who.a { background: #5cc8ff; color: #04263a; }
@@ -219,6 +219,23 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .file-ref span { font: 12.5px var(--mono); color: var(--dim); background: rgba(10,18,15,.85); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; direction: ltr; white-space: nowrap; }
 .file-ref span::before { content: '📄 '; }
 .file-ref span.cmd::before { content: '▶ '; color: var(--accent); }
+.install-steps .card p { font-size: 15px; margin-top: 8px; }
+.install-steps .why-card { border-color: rgba(92,200,255,.35); }
+.err-box { font-size: 14px; line-height: 1.5; max-width: 900px; }
+/* ---------- before / after ---------- */
+.ba { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.ba > div, .split > *, .grid > * { min-width: 0; }
+.ba .code { font-size: 12.5px; padding: 30px 0 10px; margin-top: 6px; }
+.ba-note { font-size: 15px; color: var(--dim); margin: 8px 0 0; }
+.ba-line { font-size: 16px; margin: 6px 0; color: #c9d8d0; }
+.ba-line .tag { margin: 0 0 0 6px; vertical-align: 1px; }
+.ba-before { margin-bottom: 12px; }
+.ba-before .term { margin-top: 6px; }
+.api-rows { display: grid; gap: 10px; }
+.api-rows .card { padding: 12px 18px; }
+.api-rows .card p { font-size: 15.5px; margin-top: 8px; }
+.api-rows .ba .code { font-size: 12.5px; padding: 26px 0 8px; }
+.api-rows .card > .tag { margin-bottom: 4px; }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -237,7 +254,7 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .flow .pkt { fill: var(--accent); filter: drop-shadow(0 0 6px var(--accent)); }
 
 /* ---------- aria ref widget ---------- */
-.yaml { direction: ltr; text-align: left; font-family: var(--mono); font-size: 16px; background: #07100d; border-radius: 14px; padding: 18px 22px; border: 1px solid var(--line); line-height: 1.8; }
+.yaml { direction: ltr; text-align: left; font-family: var(--mono); font-size: 15px; background: #07100d; border-radius: 14px; padding: 12px 20px; border: 1px solid var(--line); line-height: 1.6; }
 .yaml .ref { color: var(--warn); transition: background .3s; border-radius: 4px; padding: 0 3px; }
 .slide[data-k="1"] .yaml .target, .slide[data-k="2"] .yaml .target { background: rgba(255,181,71,.15); outline: 1px solid rgba(255,181,71,.5); border-radius: 6px; }
 .slide[data-k="2"] .sub-btn { box-shadow: 0 0 0 4px rgba(69,224,111,1), 0 0 26px rgba(69,224,111,.85); }
@@ -358,6 +375,45 @@ aside.notes { display: none; }
   <aside class="notes" data-t="0:45 – 1:30">מעבר מהיר על המבנה. חמישה חלקים, כל אחד עם דמו חי. להדגיש: "נריץ הכל על PW Shop — חנות קטנה שבנינו בדיוק בשביל השיעור."</aside>
 </section>
 
+<!-- 2a · INSTALL / UPGRADE -->
+<section class="slide" data-files="package.json">
+  <div class="eyebrow">INSTALL · UPGRADE</div>
+  <h2>מתקינים או משדרגים ל-<span dir="ltr">1.64</span></h2>
+  <div class="steps run-steps install-steps">
+    <div class="card frag"><div><h3>משדרגים את החבילה</h3><div class="term"><span class="pr">$</span> npm install -D @playwright/test@latest
+<span class="pr">$</span> npx playwright --version
+<span class="out">Version 1.64.1</span></div><p class="dim">אפשר גם לבקש גרסה מדויקת: <code>@playwright/test@1.64.1</code></p></div></div>
+    <div class="card frag"><div><h3>מורידים את הדפדפנים שמתאימים לגרסה</h3><div class="term"><span class="pr">$</span> npx playwright install           <span class="cm"># all</span>
+<span class="pr">$</span> npx playwright install chromium  <span class="cm"># one</span></div></div></div>
+    <div class="card frag"><div><h3>ב-CI: גם ספריות מערכת</h3><div class="term"><span class="pr">$</span> npx playwright install --with-deps</div><p class="dim">מתקין גם את ספריות מערכת ההפעלה שהדפדפנים צריכים. לפי התיעוד, זה שימושי בעיקר בסביבות CI.</p></div></div>
+    <div class="card frag why-card"><div><h3>למה צריך להוריד דפדפנים אחרי כל שדרוג?</h3><p>כל גרסה של Playwright צריכה גרסאות מסוימות של הדפדפנים. ב-1.64 אלה <span dir="ltr">Chromium 156</span>, <span dir="ltr">Firefox 157</span> ו-<span dir="ltr">WebKit 27.2</span>, וצריך להתקין אותן עם ה-CLI של Playwright.</p><p class="dim">הדפדפנים נשמרים בתיקייה משותפת לכל הפרויקטים, למשל <code>~/Library/Caches/ms-playwright</code> ב-macOS. גרסה שאף פרויקט כבר לא צריך נמחקת אוטומטית.</p></div></div>
+  </div>
+  <p class="dim" style="margin-top:10px;font-size:14px">מקור: התיעוד הרשמי, <span dir="ltr">Updating Playwright</span> ו-<span dir="ltr">Browsers</span></p>
+  <aside class="notes" data-t="">שלב 1: npm install -D @playwright/test@latest — זה מה שהתיעוד ממליץ (Updating Playwright), ואחריו playwright install --with-deps. שלב 2: דפדפנים. שלב 3: with-deps ל-CI. שלב 4: למה — "Each version of Playwright needs specific versions of browser binaries". בשקופית הבאה: מה קורה אם שוכחים.</aside>
+</section>
+
+<!-- 2a2 · forgot to install browsers -->
+<section class="slide" data-files="package.json">
+  <div class="eyebrow">INSTALL · WHAT IF WE FORGET</div>
+  <h2>שכחנו להוריד את הדפדפנים? <span class="accent">Playwright יגיד לנו</span></h2>
+  <p class="lead" style="margin:-6px 0 16px">שדרגנו את החבילה ומיד הרצנו טסטים. הדפדפנים של 1.64 עוד לא על המחשב, אז הטסט נכשל עוד לפני שהוא מתחיל:</p>
+  <div class="term err-box"><span class="pr">$</span> npx playwright test
+<span class="bad-t">  ✘ save settings</span>
+
+<span class="bad-t">Error: browserType.launch: Executable doesn't exist at</span>
+<span class="out">  ~/Library/Caches/ms-playwright/chromium_headless_shell-1248/…</span>
+<span class="out">╔════════════════════════════════════════════════════════════╗</span>
+<span class="out">║ Looks like Playwright was just installed or updated.       ║</span>
+<span class="out">║ Please run the following command to download new browsers: ║</span>
+<span class="out">║                                                            ║</span>
+<span class="out">║     </span>npx playwright install<span class="out">                                 ║</span>
+<span class="out">║                                                            ║</span>
+<span class="out">║ &lt;3 Playwright Team                                         ║</span>
+<span class="out">╚════════════════════════════════════════════════════════════╝</span></div>
+  <p class="frag" style="margin-top:14px">הפתרון הוא בדיוק מה שכתוב בהודעה: <code>npx playwright install</code>. המספר <span dir="ltr">1248</span> בנתיב הוא גרסת ה-Chromium ש-1.64 צריך.</p>
+  <aside class="notes" data-t="">הפלט הזה הוא אמיתי: הרצנו טסט מהדמו כשהתיקייה של הדפדפנים ריקה (PLAYWRIGHT_BROWSERS_PATH לתיקייה ריקה). קיצרנו רק את הנתיב בשורה השנייה.</aside>
+</section>
+
 <!-- 2b · GET THE CODE -->
 <section class="slide">
   <div class="eyebrow">GET THE CODE</div>
@@ -371,7 +427,7 @@ aside.notes { display: none; }
     <div class="card frag"><div><h3>מרימים את השרת של אפליקציית הדמו</h3><div class="term"><span class="pr">$</span> npm run demo
 <span class="out">PW Shop running at http://localhost:3164</span></div><p class="dim" style="margin-top:8px">ופותחים בדפדפן את <span dir="ltr">http://localhost:3164</span></p></div></div>
     <div class="card frag"><div><h3>מריצים את הטסטים, בטרמינל נוסף</h3><div class="term"><span class="pr">$</span> npx playwright test
-<span class="out">17 passed</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
+<span class="out">28 passed</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
   </div>
   <aside class="notes" data-t="">להראות את הריפו ב-GitHub. להדגיש: npm run demo רק בשביל לראות את האפליקציה בדפדפן — הטסטים מרימים את השרת לבד.</aside>
 </section>
@@ -393,7 +449,7 @@ aside.notes { display: none; }
 <span class="out">PW Shop running at http://localhost:3164</span>
 <span class="pr">$</span> npx playwright test
 <span class="out">[global-setup] projects selected: chromium, webmcp</span>
-<span class="out">  17 passed (3.2s)</span></div>
+<span class="out">  28 passed (5.3s)</span></div>
   </div>
   <aside class="notes" data-t="1:30 – 2:30">להראות את התיקייה. הקונפיג מרים את השרת לבד (webServer), אז לא חייבים להריץ npm run demo — זה רק כדי לראות את האפליקציה בדפדפן.</aside>
 </section>
@@ -447,10 +503,16 @@ aside.notes { display: none; }
 </section>
 
 <!-- 6 · within: code -->
-<section class="slide" data-files="tests/01-within.spec.ts">
-  <div class="eyebrow">tests/01-within.spec.ts</div>
-  <h2>הקוד: <span dir="ltr">saveButton.within(dialog)</span></h2>
-  <pre class="code" data-title="01-within.spec.ts"><code>test('save the store settings', async ({ page }) => {
+<section class="slide" data-files="tests/01-within.spec.ts|tests/before-1.64/01-within.spec.ts">
+  <div class="eyebrow">LOCATOR.WITHIN() · BEFORE / AFTER</div>
+  <h2>הקוד: לפני ואחרי <span dir="ltr">within()</span></h2>
+  <span class="frag" data-hl="5-6" data-cap='שני לוקייטורים נפרדים: אחד לכל כפתורי ה-<span dir="ltr">Save</span> בעמוד, ואחד לדיאלוג. עדיין לא לחצנו על כלום.'></span>
+  <span class="frag" data-hl="8-9" data-cap='בכל העמוד יש 2 כפתורי <span dir="ltr">Save</span>, אבל בתוך הדיאלוג יש רק אחד.'></span>
+  <span class="frag" data-hl="11-12" data-cap='בוחרים light, ולוחצים על ה-<span dir="ltr">Save</span> שבתוך הדיאלוג.'></span>
+  <span class="frag" data-hl="14-15" data-cap='מוודאים שהדיאלוג נסגר ושה-theme נשמר.'></span>
+  <div class="ba">
+    <div><span class="tag he">ב-1.64</span>
+      <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#7-22"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
   await page.goto('/settings');
   await page.getByRole('button', { name: 'Open store settings' }).click();
 
@@ -460,34 +522,56 @@ aside.notes { display: none; }
   await expect(saveButton).toHaveCount(2);
   await expect(saveButton.within(dialog)).toHaveCount(1);
 
+  await dialog.getByLabel('Theme').selectOption('light');
   await saveButton.within(dialog).click();
+
   await expect(dialog).toBeHidden();
+  await expect(page.locator('#theme')).toHaveText('light');
+});</code></pre></div>
+    <div class="frag"><span class="tag he dimtag">עד 1.63</span>
+      <pre class="code" data-title="tests/before-1.64/01-within.spec.ts" data-src="tests/before-1.64/01-within.spec.ts#7-17"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
+  await page.goto('/settings');
+  await page.getByRole('button', { name: 'Open store settings' }).click();
+
+  const dialog = page.getByTestId('settings-dialog');
+  await dialog.getByLabel('Theme').selectOption('light');
+  await dialog.getByRole('button', { name: 'Save' }).click();
+
+  await expect(dialog).toBeHidden();
+  await expect(page.locator('#theme')).toHaveText('light');
 });</code></pre>
-  <span class="frag" data-hl="5-6" data-cap='שני לוקייטורים נפרדים: אחד לכל כפתורי ה-<span dir="ltr">Save</span> בעמוד, ואחד לדיאלוג. עדיין לא לחצנו על כלום.'></span>
-  <span class="frag" data-hl="8-9" data-cap='בכל העמוד יש 2 כפתורי <span dir="ltr">Save</span>, אבל בתוך הדיאלוג יש רק אחד.'></span>
-  <span class="frag" data-hl="11-12" data-cap='לוחצים על ה-<span dir="ltr">Save</span> שבתוך הדיאלוג, ומוודאים שהדיאלוג נסגר.'></span>
-  <p class="frag dim" style="margin-top:16px">עד עכשיו כתבנו <code>dialog.getByRole(...)</code>. זה עובד, אבל צריך לבנות את הלוקייטור מחדש מתוך הדיאלוג. עם <code>within()</code> פשוט משתמשים בשני הלוקייטורים שכבר יש לנו.</p>
-  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות. בסוף להריץ: npx playwright test 01-within --headed.</aside>
+      <p class="ba-note">מתחילים מההורה ובונים את הלוקייטור מחדש בתוכו: <code>dialog.getByRole(...)</code>. עובד גם היום, אבל עם <code>within()</code> משתמשים בשני הלוקייטורים שכבר יש לנו.</p></div>
+  </div>
+  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות בצד של 1.64. בסוף (חץ) מופיע הקוד של עד 1.63 — אותו טסט, מתחיל מהדיאלוג. שני הקבצים רצים: npx playwright test 01-within.</aside>
 </section>
 
 <!-- 7 · within: table column -->
-<section class="slide col-slide" data-files="tests/01-within.spec.ts|demo-app/public/index.html">
+<section class="slide col-slide" data-files="tests/01-within.spec.ts|tests/before-1.64/01-within.spec.ts|demo-app/public/index.html">
   <div class="eyebrow">RELATIVE LOCATORS · PER PARENT</div>
   <h2>עוד דוגמה: עמודה שלמה בטבלה</h2>
-  <div class="split">
+  <div class="split" style="grid-template-columns: 1.6fr 1fr">
     <div>
       <div class="col-step frag">
-        <span class="tag bad he">בלי <span dir="ltr">within</span></span>
-        <pre class="code"><code>page.getByRole('cell').nth(2)
-// → ['Apple']</code></pre>
-        <p>כאן <code>nth(2)</code> רץ על כל התאים בטבלה ביחד, ולכן מקבלים תא אחד בלבד: התא השלישי בטבלה כולה.</p>
+        <span class="tag bad he">בלי <span dir="ltr">within</span> ← רק <span dir="ltr">Apple</span></span>
+        <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#27-28"><code>const thirdCell = page.getByRole('cell').nth(2);
+await expect(thirdCell).toHaveText('Apple');</code></pre>
+        <p><code>nth(2)</code> נספר על כל התאים בטבלה, ולכן מקבלים תא אחד.</p>
       </div>
       <div class="col-step frag">
-        <span class="tag he">עם <span dir="ltr">within</span></span>
-        <pre class="code"><code>page.getByRole('cell').nth(2)
-  .within(page.getByRole('row'))
-// → ['Apple', 'Banana', 'Cherry']</code></pre>
-        <p>עכשיו <code>nth(2)</code> רץ בתוך כל שורה בנפרד, ומקבלים את התא השלישי של כל שורה. עמודה שלמה, בלי לולאה.</p>
+        <span class="tag he">ב-1.64: עם <span dir="ltr">within</span> ← כל העמודה</span>
+        <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#36-38"><code>const thirdColumn = page.getByRole('cell').nth(2)
+  .within(page.getByRole('row'));
+await expect(thirdColumn).toHaveText(['Apple', 'Banana', 'Cherry']);</code></pre>
+        <p><code>nth(2)</code> נספר בתוך כל שורה בנפרד: תא אחד מכל שורה.</p>
+      </div>
+      <div class="col-step frag">
+        <span class="tag he dimtag">עד 1.63</span>
+        <pre class="code" data-title="tests/before-1.64/01-within.spec.ts" data-src="tests/before-1.64/01-within.spec.ts#23-27"><code>const rows = page.getByRole('row').filter({ has: page.getByRole('cell') });
+const names: string[] = [];
+for (const row of await rows.all())
+  names.push(await row.getByRole('cell').nth(2).innerText());
+expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
+        <p>אותה תוצאה דרשה לולאה על השורות.</p>
       </div>
     </div>
     <div class="mock">
@@ -519,22 +603,25 @@ aside.notes { display: none; }
   <div class="eyebrow">testProject.default</div>
   <h2>פרויקט שמוגדר בקונפיג — אבל <span class="accent">לא רץ</span> אוטומטית</h2>
   <div class="split">
-    <pre class="code" data-title="playwright.config.ts"><code>export default defineConfig({
-  projects: [
-    { name: 'chromium', use: devices['Desktop Chrome'] },
-    { name: 'firefox', use: devices['Desktop Firefox'],
-      default: false },
-    { name: 'webkit', use: devices['Desktop Safari'],
-      default: false },
-  ],
-});</code></pre>
+    <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#48-59"><code>{
+  name: 'firefox',
+  use: { ...devices['Desktop Firefox'] },
+  testMatch: '**/01-within.spec.ts',
+  default: false,
+},
+{
+  name: 'webkit',
+  use: { ...devices['Desktop Safari'] },
+  testMatch: '**/01-within.spec.ts',
+  default: false,
+},</code></pre>
     <div>
-      <div class="term frag"><span class="pr">$</span> npx playwright test
-<span class="cm"># chromium only</span>
-<span class="pr">$</span> npx playwright test --project=firefox
-<span class="cm"># firefox</span>
-<span class="pr">$</span> npx playwright test --project="*"
-<span class="cm"># all of them — e.g. on CI</span></div>
+      <div class="frag ba-before"><span class="tag he dimtag">עד 1.63</span>
+        <div class="term"><span class="pr">$</span> npx playwright test --project=chromium  <span class="cm"># every run</span></div></div>
+      <span class="tag he">ב-1.64</span>
+      <div class="term frag"><span class="pr">$</span> npx playwright test                    <span class="cm"># chromium</span>
+<span class="pr">$</span> npx playwright test --project=firefox  <span class="cm"># firefox</span>
+<span class="pr">$</span> npx playwright test --project="*"      <span class="cm"># all (CI)</span></div>
       <div class="card frag" style="margin-top:16px;border-color:rgba(255,181,71,.35)">
         <span class="tag warn">CI TIP · currents.dev</span>
         <p><b>הבעיה:</b> אחרי שסימנו את firefox ב-<code>default: false</code>, גם ה-CI שמריץ <code>npx playwright test</code> מפסיק להריץ אותו. שום טסט לא נכשל, אז אף אחד לא ישים לב.</p>
@@ -542,7 +629,7 @@ aside.notes { display: none; }
       </div>
     </div>
   </div>
-  <span class="frag" data-hl="4-7" data-cap='firefox ו-webkit מוגדרים בקונפיג, אבל <code>default: false</code> מוציא אותם מהרצה רגילה. הם ירוצו רק כשנבקש אותם עם <code>--project</code>.'></span>
+  <span class="frag" data-hl="5,11" data-cap='firefox ו-webkit מוגדרים בקונפיג, אבל <code>default: false</code> מוציא אותם מהרצה רגילה. הם ירוצו רק כשנבקש אותם עם <code>--project</code>.'></span>
   <aside class="notes" data-t="6:15 – 7:30">בדמו שלנו: firefox, webkit, order-demo ו-video הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
 </section>
 
@@ -573,7 +660,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 11 · shuffle gotchas -->
-<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|tests/order-demo/cart-order-beforeall.spec.ts">
+<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|tests/order-demo/cart-order-beforeall.spec.ts|playwright.config.ts">
   <div class="eyebrow">SHUFFLE · IN PRACTICE</div>
   <h2>shuffle בפרויקט אמיתי: 3 דברים שכדאי לדעת</h2>
   <div class="grid g3 shuf-tips">
@@ -589,8 +676,7 @@ aside.notes { display: none; }
       <div class="ico">🧩</div>
       <h3>בלי <span dir="ltr">fullyParallel</span> מתערבבים רק הקבצים</h3>
       <p>shuffle תמיד משנה את סדר הקבצים. כדי שגם הטסטים בתוך אותו קובץ יתערבבו, הקובץ צריך לרוץ במצב parallel.</p>
-      <pre class="code"><code>// playwright.config.ts
-fullyParallel: true,</code></pre>
+      <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#9"><code>fullyParallel: true,</code></pre>
       <span class="tag" style="margin-top:10px">Playwright CLI help</span>
     </div>
     <div class="card frag">
@@ -609,10 +695,10 @@ fullyParallel: true,</code></pre>
 </section>
 
 <!-- 12 · locks: why -->
-<section class="slide lk2" data-files="tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
+<section class="slide lk2" data-files="tests/before-1.64/02-locks-per-test.spec.ts|tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
   <div class="eyebrow">TEST LOCKS</div>
   <h2>למה צריך <span dir="ltr">lock</span>?</h2>
-  <p class="lead" style="margin:-6px 0 18px">יש לנו שני טסטים שמשנים את אותה הגדרה בשרת, ערכת הנושא של החנות (theme). Playwright מריץ טסטים במקביל, אז הם עלולים לרוץ באותו זמן.</p>
+  <p class="lead" style="margin:-6px 0 14px">שני טסטים משנים את אותה הגדרה בשרת (theme), ו-Playwright עלול להריץ אותם באותו זמן.</p>
   <div class="grid g2">
     <div class="card frag lk2-col">
       <span class="tag bad he">בלי lock — רצים באותו זמן</span>
@@ -637,38 +723,55 @@ fullyParallel: true,</code></pre>
     </div>
   </div>
   <div class="frag" style="margin-top:14px">
-    <pre class="code"><code>test('switch theme to dark', { lock: 'store-settings' }, async ({ page }) => { /* A */ });
-test('switch theme to light', { lock: 'store-settings' }, async ({ page }) => { /* B */ });</code></pre>
-    <p class="dim" style="font-size:15px;margin-top:8px">ה-lock הוא שם שאנחנו בוחרים. טסטים עם אותו שם אף פעם לא רצים באותו זמן, גם אם הם בקבצים שונים. בדמו, בלי ה-lock כל 3 הריצות נכשלו, ועם ה-lock כל 3 עברו.</p>
+    <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#7-12"><code>test('switch theme to dark', { lock: 'store-settings' }, async ({ request }) =&gt; {
+  await request.put('/api/settings', { data: { theme: 'dark' } });
+  await new Promise(resolve =&gt; setTimeout(resolve, 500)); // another test could change it meanwhile
+  const settings = await (await request.get('/api/settings')).json();
+  expect(settings).toEqual({ theme: 'dark' });
+});</code></pre>
+    <p class="dim" style="font-size:15px;margin-top:8px">כך מגדירים lock על טסט אחד (קיים מאז 1.63). הטסט של B זהה, עם light. ה-lock הוא שם שאנחנו בוחרים. טסטים עם אותו שם אף פעם לא רצים באותו זמן, גם אם הם בקבצים שונים. בדמו, בלי ה-lock כל 3 הריצות נכשלו, ועם ה-lock כל 3 עברו.</p>
   </div>
   <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר. הנקודה: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. שלב 3: הקוד — lock הוא פשוט שם. Test Locks הגיעו ב-1.63. מקור: התיעוד הרשמי, Test locks. הדמו: tests/02-locks-a.spec.ts ו-tests/02-locks-b.spec.ts.</aside>
 </section>
 
 <!-- 13 · locks: new in 1.64 -->
-<section class="slide" data-files="tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
+<section class="slide" data-files="tests/before-1.64/02-locks-describe.spec.ts|tests/02-locks-configure.spec.ts">
   <div class="eyebrow">test.describe.configure({ lock })</div>
   <h2>חדש ב-1.64: lock לכל הקובץ בשורה אחת</h2>
-  <p class="lead" style="margin:-6px 0 18px">נניח שיש לנו קובץ שכל הטסטים בו משנים את הגדרות החנות, וכולם צריכים את אותו lock.</p>
-  <div class="grid g2">
-    <div class="frag">
-      <span class="tag he dimtag">עד 1.63: עוטפים את הטסטים ב-describe</span>
-      <pre class="code" data-title="settings.spec.ts"><code>test.describe('store settings', { lock: 'store-settings' }, () => {
-  test('switch theme to dark', async ({ page }) => { ... });
-  test('switch theme to light', async ({ page }) => { ... });
-  test('reset theme', async ({ page }) => { ... });
-});</code></pre>
-    </div>
-    <div class="frag">
-      <span class="tag he">ב-1.64: שורה אחת בראש הקובץ</span>
-      <pre class="code" data-title="settings.spec.ts"><code>test.describe.configure({ lock: 'store-settings' });
+  <p class="lead" style="margin:-6px 0 18px">אותם שני טסטים בדיוק, בשני קבצים. ההבדל היחיד הוא איך מגדירים את ה-lock לכולם.</p>
+  <div class="ba">
+    <div class="frag"><span class="tag he dimtag">עד 1.63</span>
+      <pre class="code" data-title="tests/before-1.64/02-locks-describe.spec.ts" data-src="tests/before-1.64/02-locks-describe.spec.ts#6-18"><code>test.describe('store settings', { lock: 'store-settings' }, () =&gt; {
+  test('switch theme to dark', async ({ request }) =&gt; {
+    await request.put('/api/settings', { data: { theme: 'dark' } });
+    const settings = await (await request.get('/api/settings')).json();
+    expect(settings).toEqual({ theme: 'dark' });
+  });
 
-test('switch theme to dark', async ({ page }) => { ... });
-test('switch theme to light', async ({ page }) => { ... });
-test('reset theme', async ({ page }) => { ... });</code></pre>
-    </div>
+  test('switch theme to light', async ({ request }) =&gt; {
+    await request.put('/api/settings', { data: { theme: 'light' } });
+    const settings = await (await request.get('/api/settings')).json();
+    expect(settings).toEqual({ theme: 'light' });
+  });
+});</code></pre>
+      <p class="ba-note">עוטפים את כל הטסטים ב-<code>describe</code> עם <code>{ lock }</code>.</p></div>
+    <div class="frag"><span class="tag he">ב-1.64</span>
+      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#6-18"><code>test.describe.configure({ lock: 'store-settings' });
+
+test('switch theme to dark', async ({ request }) =&gt; {
+  await request.put('/api/settings', { data: { theme: 'dark' } });
+  const settings = await (await request.get('/api/settings')).json();
+  expect(settings).toEqual({ theme: 'dark' });
+});
+
+test('switch theme to light', async ({ request }) =&gt; {
+  await request.put('/api/settings', { data: { theme: 'light' } });
+  const settings = await (await request.get('/api/settings')).json();
+  expect(settings).toEqual({ theme: 'light' });
+});</code></pre>
+      <p class="ba-note">שורה אחת בראש הקובץ, בלי לעטוף. זו אותה פקודה שכבר משמשת ל-<code>mode</code> ול-<code>retries</code>. בתוך <code>describe</code> היא חלה רק על הטסטים שבו.</p></div>
   </div>
-  <p class="frag" style="margin-top:16px">התוצאה זהה: כל הטסטים בקובץ מקבלים את ה-lock. ההבדל הוא שאין צורך לעטוף אותם, וזו אותה פקודה שכבר משמשת להגדרות כמו <code>mode</code> ו-<code>retries</code>. אם קוראים לה בתוך <code>describe</code>, ה-lock חל רק על הטסטים שבתוכו.</p>
-  <aside class="notes" data-t="">להדגיש: lock על describe היה כבר ב-1.63 (release notes של 1.63). מה שחדש ב-1.64 הוא describe.configure({ lock }) — שורה אחת לקובץ שלם, בלי לעטוף. בדמו: 02-locks-a.spec.ts ו-02-locks-b.spec.ts משתמשים בדיוק בזה.</aside>
+  <aside class="notes" data-t="">lock על describe היה כבר ב-1.63 (release notes של 1.63). מה שחדש ב-1.64 הוא describe.configure({ lock }). שני הקבצים רצים ועוברים.</aside>
 </section>
 
 <!-- 13b · locks: good to know -->
@@ -685,7 +788,7 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
   </div>
   <div class="frag excl">
     <p><b>ויש גם lock מובנה בשם <code>'exclusive'</code>:</b> הטסט מתחיל רק כשאף טסט אחר לא רץ, ועד שהוא מסתיים אף טסט אחר לא מתחיל. מתאים למשל לבדיקות ביצועים, או לטסט שמאתחל שירות משותף.</p>
-    <pre class="code" data-title="tests/02-locks-b.spec.ts"><code>test('reset settings in isolation', { lock: 'exclusive' }, async ({ request }) => {
+    <pre class="code" data-title="tests/02-locks-b.spec.ts" data-src="tests/02-locks-b.spec.ts#16-19"><code>test('reset settings in isolation', { lock: 'exclusive' }, async ({ request }) =&gt; {
   const res = await request.put('/api/settings', { data: { theme: 'light' } });
   expect(await res.json()).toEqual({ theme: 'light' });
 });</code></pre>
@@ -737,24 +840,25 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
   <h2>צילומי מסך: פורמט WebP, ושינוי ב-<span dir="ltr">missing</span></h2>
   <div class="grid g2">
     <div>
-      <span class="tag">NEW</span>
-      <pre class="code" data-title="playwright.config.ts"><code>export default defineConfig({
-  expect: {
-    toHaveScreenshot: { type: 'webp' },
-  },
-});</code></pre>
-      <p class="frag" style="font-size:17px">בדמו: <code>promo-banner-looks-right-1-chromium-darwin.webp</code></p>
+      <span class="tag">NEW · type: 'webp'</span>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> צילום בלי שם נשמר תמיד כ-<code>.png</code>.</p>
+      <p class="ba-line"><span class="tag he">ב-1.64</span> אפשר לבחור WebP לכל הצילומים בלי שם:</p>
+      <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#18-21"><code>expect: {
+  // NEW in 1.64: store unnamed toHaveScreenshot() baselines as WebP
+  toHaveScreenshot: { type: 'webp' },
+},</code></pre>
+      <p class="frag" style="font-size:16px">בדמו נוצר: <code>promo-banner-looks-right-1-chromium-darwin.webp</code></p>
     </div>
     <div>
-      <span class="tag warn">BREAKING</span>
+      <span class="tag warn">BREAKING · --update-snapshots=missing</span>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> טסט שרק יצר צילום חסר <b>נכשל</b>.</p>
+      <p class="ba-line"><span class="tag he">ב-1.64</span> הוא <b>עובר</b>:</p>
       <div class="term"><span class="pr">$</span> npx playwright test --update-snapshots=missing
-<span class="out">  ✓ promo banner looks right</span>
-<span class="cm"># 1.64: tests that only CREATE missing</span>
-<span class="cm"># snapshots now PASS</span></div>
-      <p class="frag" style="font-size:17px">המצב הרגיל קיבל שם: <code>'default'</code>. הוא מתנהג כמו קודם — יוצר את ה-snapshot החסר ו<b>מכשיל</b> את הטסט. טיפ: נוסיף ב-CI בדיקה שמתריעה על קבצי תמונה חדשים, כי ריצה ירוקה כבר לא מבטיחה שלא נוספו כאלה.</p>
+<span class="out">  ✓ promo banner looks right</span></div>
+      <p class="frag" style="font-size:16px">המצב הרגיל קיבל שם, <code>'default'</code>, ומתנהג כמו קודם: יוצר את הצילום החסר ומכשיל את הטסט. טיפ: נוסיף ב-CI בדיקה שמתריעה על קבצי תמונה חדשים, כי ריצה ירוקה כבר לא מבטיחה שלא נוספו כאלה.</p>
     </div>
   </div>
-  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר.</aside>
+  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר. ההתנהגות הקודמת לפי ה-release notes של 1.64.</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
@@ -767,11 +871,14 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
 </section>
 
 <!-- 16 · video -->
-<section class="slide" data-files="playwright.config.ts|>npm run test:video">
+<section class="slide" data-files="playwright.config.ts|>npm run test:video|>npm run test:video:before">
   <div class="eyebrow">use.video</div>
   <h2>בוחרים קצב פריימים, ומעצבים עם CSS</h2>
-  <div class="split" style="grid-template-columns: 1.7fr 1fr">
-    <pre class="code" style="font-size:13.5px" data-title="playwright.config.ts · project 'video'"><code>video: {
+  <span class="frag" data-hl="4" data-cap='<code>fps: 60</code> קובע את קצב הפריימים של ההקלטה. ב-Firefox וב-WebKit המקסימום כרגע הוא 25.'></span>
+  <span class="frag" data-hl="5-13" data-cap='כאן מעצבים עם CSS את מה שמופיע בווידאו: <code>point</code> הוא הנקודה במקום הקליק, <code>highlight</code> מסמן את האלמנט, ו-<code>title</code> הוא שם הפעולה.'></span>
+  <div class="split" style="grid-template-columns: 1.55fr 1fr">
+    <div><span class="tag he">ב-1.64</span>
+      <pre class="code" style="font-size:13px" data-title="playwright.config.ts · project 'video'" data-src="playwright.config.ts#96-109"><code>video: {
   mode: 'on',
   size: { width: 1280, height: 720 },
   fps: 60,
@@ -784,23 +891,28 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
       },
     },
   },
-},</code></pre>
+},</code></pre></div>
     <div>
       <div class="fps">
         <div class="row r25">25 fps<div class="rail"><div class="dot"></div></div></div>
         <div class="row r60">60 fps<div class="rail"><div class="dot"></div></div></div>
       </div>
-      <ul class="clean" style="margin-top:18px">
-        <li class="frag"><code>fps</code> — ב-Firefox וב-WebKit המקסימום כרגע הוא 25</li>
-        <li class="frag"><code>style</code> מחליף את <code>fontSize</code>, שהוגדר כ-deprecated</li>
+      <div class="frag" style="margin-top:14px"><span class="tag he dimtag">עד 1.63</span>
+        <pre class="code" style="font-size:13px" data-title="project 'video-before'" data-src="playwright.config.ts#80-86"><code>video: {
+  mode: 'on',
+  size: { width: 1280, height: 720 },
+  show: {
+    actions: { fontSize: 16 },
+  },
+},</code></pre>
+        <p class="ba-note">רק גודל גופן לשם הפעולה, ובלי <code>fps</code>. ב-1.64 <code>fontSize</code> עדיין עובד אבל מסומן deprecated.</p></div>
+      <ul class="clean" style="margin-top:10px">
         <li class="frag">הסמן נשאר על המסך גם אחרי ניווט, וזז בתנועה טבעית</li>
         <li class="frag">קידוד VP9 במקום VP8: פחות עומס על ה-CPU, וקבצים קטנים יותר</li>
       </ul>
     </div>
   </div>
-  <span class="frag" data-hl="4" data-cap='<code>fps: 60</code> קובע את קצב הפריימים של ההקלטה. ב-Firefox וב-WebKit המקסימום כרגע הוא 25.'></span>
-  <span class="frag" data-hl="5-12" data-cap='כאן מעצבים עם CSS את מה שמופיע בווידאו: <code>point</code> הוא הנקודה במקום הקליק, <code>highlight</code> מסמן את האלמנט, ו-<code>title</code> הוא שם הפעולה.'></span>
-  <aside class="notes" data-t="13:15 – 16:00">להריץ: npm run test:video ולפתוח את ה-video.webm מ-test-results. להראות את הנקודה האדומה וההדגשה הכחולה. אותן אפשרויות זמינות גם ב-Playwright MCP וב-playwright-cli.</aside>
+  <aside class="notes" data-t="13:15 – 16:00">להריץ: npm run test:video ואז npm run test:video:before, ולהשוות את שני קבצי ה-video.webm ב-test-results. fontSize מסומן ב-types של 1.64 כ-"@deprecated Use style.title instead".</aside>
 </section>
 
 <!-- 17 · DIVIDER webmcp -->
@@ -849,24 +961,25 @@ test('reset theme', async ({ page }) => { ... });</code></pre>
 <section class="slide" data-files="demo-app/public/index.html">
   <div class="eyebrow">demo-app/public/index.html</div>
   <h2>בצד של האתר: מגדירים כלי</h2>
-  <pre class="code" data-title="index.html"><code>const modelContext = document.modelContext || navigator.modelContext;
-
-modelContext.registerTool({
-  name: 'add_to_cart',
-  description: 'Adds a product to the cart. Changes the cart contents.',
-  inputSchema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: { productId: { type: 'integer', minimum: 1 }, quantity: { type: 'integer', minimum: 1 } },
-    required: ['productId', 'quantity'],
-  },
-  async execute({ productId, quantity }) {
-    const cart = await api('/api/cart', { method: 'POST', body: JSON.stringify({ productId, quantity }) });
-    if (cart.error) return { isError: true, content: [{ type: 'text', text: cart.error }] };
-    renderCart(cart);
-    return { content: [{ type: 'text', text: JSON.stringify(cart) }] };
-  },
-});</code></pre>
+  <p class="dim" style="margin:-10px 0 12px;font-size:16px"><span dir="ltr">WebMCP</span> הוא API חדש ב-1.64, ולכן אין כאן גרסה של "לפני".</p>
+  <pre class="code" data-title="demo-app/public/index.html" data-src="demo-app/public/index.html#80,94-109"><code>const modelContext = document.modelContext || navigator.modelContext;
+// …
+  modelContext.registerTool({
+    name: 'add_to_cart',
+    description: 'Adds a product to the cart. Changes the cart contents.',
+    inputSchema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: { productId: { type: 'integer', minimum: 1 }, quantity: { type: 'integer', minimum: 1 } },
+      required: ['productId', 'quantity'],
+    },
+    async execute({ productId, quantity }) {
+      const cart = await api('/api/cart', { method: 'POST', body: JSON.stringify({ productId, quantity }) });
+      if (cart.error) return { isError: true, content: [{ type: 'text', text: cart.error }] };
+      renderCart(cart);
+      return text(cart);
+    },
+  });</code></pre>
   <span class="frag" data-hl="1" data-cap='בודקים איפה הדפדפן חושף את ה-API של WebMCP: ב-<code>document.modelContext</code> או ב-<code>navigator.modelContext</code>.'></span>
   <span class="frag" data-hl="4-11" data-cap='שם, תיאור ו-JSON Schema לקלט. זה מה שסוכן ה-AI רואה כשהוא מחליט אם להשתמש בכלי ואיך.'></span>
   <span class="frag" data-hl="12-17" data-cap='<code>execute</code> היא הפונקציה שרצה כשקוראים לכלי. היא פונה ל-API של החנות ומעדכנת את העגלה על המסך.'></span>
@@ -875,11 +988,11 @@ modelContext.registerTool({
 </section>
 
 <!-- 20 · webmcp test -->
-<section class="slide" data-files="tests/webmcp.spec.ts|>npm run test:webmcp">
+<section class="slide" data-files="tests/webmcp.spec.ts|playwright.config.ts|>npm run test:webmcp">
   <div class="eyebrow">tests/webmcp.spec.ts</div>
   <h2>בצד של הטסט: <span dir="ltr">page.webmcp</span></h2>
-  <div class="grid g2">
-    <pre class="code" data-title="playwright.config.ts"><code>{
+  <div class="grid g2" style="grid-template-columns: 1fr 1.6fr">
+    <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#36-45"><code>  // WebMCP is experimental: needs a flag
   name: 'webmcp',
   use: {
     ...devices['Desktop Chrome'],
@@ -888,19 +1001,21 @@ modelContext.registerTool({
     },
   },
   testMatch: '**/webmcp.spec.ts',
-}</code></pre>
-    <pre class="code" data-title="webmcp.spec.ts"><code>const tools = await page.webmcp.tools();
-expect(tools.map(t => t.name).sort())
-  .toEqual(['add_to_cart', 'get_cart', 'search_products']);
-
-const result = await page.webmcp.callTool(
-  'add_to_cart', { productId: 2, quantity: 2 });
+},</code></pre>
+    <pre class="code" data-title="tests/webmcp.spec.ts" data-src="tests/webmcp.spec.ts#17-19,27-34,36-37"><code>const tools = await page.webmcp.tools();
+const names = tools.map(t =&gt; t.name).sort();
+expect(names).toEqual(['add_to_cart', 'get_cart', 'search_products']);
+// …
+const result = await page.webmcp.callTool('add_to_cart', {
+  productId: 2,
+  quantity: 2,
+});
 expect(result.isError).not.toBe(true);
 
 const cart = JSON.parse(result.content[0].text);
 expect(cart).toMatchObject({ totalItems: 2, totalPrice: 15 });
 
-// don't trust the tool alone — check the UI too
+// Don't trust the tool's own report only — check the visible UI and the backend too.
 await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
   </div>
   <div class="term frag" style="margin-top:16px"><span class="pr">$</span> playwright-cli webmcp-list
@@ -909,15 +1024,25 @@ await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
 </section>
 
 <!-- 21 · getByRef -->
-<section class="slide" data-files="tests/03-new-apis.spec.ts|demo-app/public/widgets.html">
+<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/before-1.64/03-new-apis.spec.ts|demo-app/public/widgets.html">
   <div class="eyebrow">page.getByRef()</div>
   <h2>מה-snapshot של ה-AI ישר לאלמנט בדף</h2>
-  <div class="split">
+  <div class="split" style="grid-template-columns: 1.5fr 1fr">
     <div>
       <div class="yaml">- textbox "Email" <span class="ref">[ref=e21]</span><br><span class="target">- button "Subscribe" <span class="ref">[ref=e22]</span></span><br>- iframe "Chat widget" <span class="ref">[ref=e23]</span></div>
-      <pre class="code frag" style="margin-top:14px"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
-const ref = snapshot.match(/button "Subscribe" \[ref=(\w+)\]/)[1];
-await page.getByRef(ref).click();</code></pre>
+      <div class="frag" style="margin-top:12px"><span class="tag he">ב-1.64</span>
+        <pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#7-13"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
+// e.g.  - button "Subscribe" [ref=e23]
+const ref = snapshot
+  .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
+console.log(`Subscribe button has ref ${ref}`);
+
+await page.getByRef(ref).click();</code></pre></div>
+      <div class="frag" style="margin-top:10px"><span class="tag he dimtag">עד 1.63</span>
+        <pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#8-10"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
+await expect(page.locator('#subscribed'))
+  .toHaveText('Subscribed!');</code></pre>
+        <p class="ba-note">ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי role ושם.</p></div>
     </div>
     <div class="mock">
       <div class="bar-top"><b>PW</b>Shop<span class="url">localhost:3164/widgets</span></div>
@@ -929,24 +1054,65 @@ await page.getByRef(ref).click();</code></pre>
       </div>
     </div>
   </div>
-  <p class="frag dim" style="margin-top:18px">את ה-ref מקבלים מ-<code>ariaSnapshot</code> במצב <code>'ai'</code>, והוא תקף ל-snapshot האחרון של אותו frame. המספרים בשקופית הם רק דוגמה — בטסט אנחנו שולפים את ה-ref מה-snapshot עצמו.</p>
+  <p class="frag dim" style="margin-top:12px;font-size:15px">את ה-ref מקבלים מ-<code>ariaSnapshot</code> במצב <code>'ai'</code>. המספרים בשקופית הם רק דוגמה.</p>
   <aside class="notes" data-t="21:00 – 22:00">שימושי במיוחד כשסוכן AI כבר "ראה" את העמוד דרך snapshot והחזיר ref — עכשיו אפשר להשתמש בו ישירות בקוד.</aside>
 </section>
 
-<!-- 22 · more APIs -->
-<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/global-setup.ts">
+<!-- 22 · more APIs: shadow + cookies -->
+<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/before-1.64/03-new-apis.spec.ts">
   <div class="eyebrow">MORE NEW APIs</div>
-  <h2>עוד APIs חדשים</h2>
-  <div class="grid g2">
-    <div class="card frag"><span class="tag">includeShadow</span><pre class="code" style="font-size:14px;margin:6px 0 10px"><code>await page.content({ includeShadow: true });
-// &lt;template shadowrootmode="open"&gt;...</code></pre><p>מחזיר את ה-HTML כולל התוכן של <span dir="ltr">shadow roots</span> פתוחים, בפורמט של <span dir="ltr">declarative shadow DOM</span>. עובד גם עם <code>frame.content()</code>.</p></div>
-    <div class="card frag"><span class="tag">APIRequestContext cookies</span><pre class="code" style="font-size:14px;margin:6px 0 10px"><code>await request.addCookies([{ name: 'session-id', value: '42', url }]);
-await request.cookies(url);
-await request.clearCookies({ name: 'session-id' });</code></pre><p>אותן מתודות שיש ב-BrowserContext, עכשיו גם בטסטים של API.</p></div>
-    <div class="card frag"><span class="tag">fullConfig.filteredProjects</span><p>רשימת הפרויקטים שנשארו אחרי הסינון של <code>--project</code>. זמינה ב-<span dir="ltr">global setup</span> וב-reporters, ובדמו היא מודפסת בתחילת כל ריצה.</p></div>
-    <div class="card frag"><span class="tag">signCount</span><p>קובע מאיזה ערך מתחיל מונה החתימות של passkey וירטואלי ב-<code>credentials.create()</code>. הערך נשמר ונטען יחד עם ה-<span dir="ltr">storage state</span>.</p></div>
+  <h2>עוד APIs חדשים: Shadow DOM ו-cookies</h2>
+  <div class="api-rows">
+    <div class="card frag"><span class="tag">page.content({ includeShadow })</span>
+      <div class="ba">
+        <div><span class="tag he dimtag">עד 1.63</span><pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#16-19"><code>const html = await page.content();
+expect(html).not.toContain('shadowrootmode'); // no shadow root in the HTML
+await expect(page.locator('promo-banner'))
+  .toContainText('Free shipping on orders over $50');</code></pre></div>
+        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#21-22,27-28"><code>const plain = await page.content();
+const withShadow = await page.content({ includeShadow: true });
+// …
+expect(withShadow).toContain('shadowrootmode="open"');
+expect(withShadow).toContain('Free shipping on orders over $50');</code></pre></div>
+      </div>
+      <p>קודם ה-shadow root לא נכנס ל-HTML, ואת הטקסט קראנו דרך לוקייטור. עכשיו הוא חלק מה-HTML.</p></div>
+    <div class="card frag"><span class="tag">APIRequestContext cookies</span>
+      <div class="ba">
+        <div><span class="tag he dimtag">עד 1.63</span><pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#24-27"><code>const res = await request.get('/api/whoami', {
+  headers: { Cookie: 'session-id=alex' },
+});
+expect(await res.json()).toEqual({ user: 'alex' });</code></pre></div>
+        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#35-42"><code>await request.addCookies([
+  { name: 'session-id', value: 'alex', url: baseURL! },
+]);
+const me = await (await request.get('/api/whoami')).json();
+expect(me).toEqual({ user: 'alex' });
+console.log(await request.cookies(baseURL!));
+
+await request.clearCookies({ name: 'session-id' });</code></pre></div>
+      </div>
+      <p>קודם שלחנו header של Cookie בכל בקשה. עכשיו ל-<code>request</code> יש מתודות cookies כמו ל-BrowserContext.</p></div>
   </div>
-  <aside class="notes" data-t="22:00 – 23:30">הראשונים: קבצי הטסט 03-new-apis.spec.ts. signCount — רק מזכירים, לא בדמו (דורש הגדרת passkey).</aside>
+  <aside class="notes" data-t="">שני הקבצים רצים: npx playwright test 03-new-apis ו-npx playwright test tests/before-1.64.</aside>
+</section>
+
+<!-- 22b · more APIs: filteredProjects + signCount -->
+<section class="slide" data-files="tests/global-setup.ts">
+  <div class="eyebrow">MORE NEW APIs</div>
+  <h2>ועוד שניים: <span dir="ltr">filteredProjects</span> ו-<span dir="ltr">signCount</span></h2>
+  <div class="grid g2">
+    <div class="card frag"><span class="tag">fullConfig.filteredProjects</span>
+      <pre class="code" data-title="tests/global-setup.ts" data-src="tests/global-setup.ts#9-10"><code>const selected = config.filteredProjects.map(p =&gt; p.name);
+const all = config.projects.map(p =&gt; p.name);</code></pre>
+      <p class="ba-line" style="margin-top:10px"><span class="tag he">ב-1.64</span> <code>filteredProjects</code>: רק הפרויקטים שנשארו אחרי <code>--project</code> ו-<code>default: false</code>.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> היה רק <code>config.projects</code>: כל הפרויקטים בקונפיג, גם אלה שלא ירוצו.</p>
+      <div class="term" style="margin-top:8px"><span class="pr">$</span> npx playwright test
+<span class="out">[global-setup] projects selected: chromium, webmcp  (configured: chromium, webmcp, firefox, …)</span></div></div>
+    <div class="card frag"><span class="tag">credentials.create({ signCount })</span>
+      <p>קובע מאיזה ערך מתחיל מונה החתימות של passkey וירטואלי. <code>credentials.create()</code> ו-<code>credentials.get()</code> מחזירים את הערך הנוכחי, והוא נשמר ונטען יחד עם ה-storage state.</p>
+      <p class="dim" style="margin-top:10px;font-size:15px">אין לזה דמו בריפו, כי זה דורש הגדרת passkey. המקור: ה-release notes של 1.64.</p></div>
+  </div>
+  <aside class="notes" data-t="">filteredProjects: הקוד ב-global-setup מדפיס את שתי הרשימות בתחילת כל ריצה — זה בדיוק ההבדל בין לפני לאחרי. signCount: רק להזכיר.</aside>
 </section>
 
 <!-- 23 · breaking -->
@@ -967,24 +1133,28 @@ await request.clearCookies({ name: 'session-id' });</code></pre><p>אותן מת
   <div class="eyebrow">tests/04-breaking-changes.spec.ts</div>
   <h2>איך זה נראה בטסט</h2>
   <div class="grid g2">
-    <pre class="code" data-title="screen"><code>// project uses ...devices['Desktop Chrome']
-await page.goto('/widgets');
-await expect(page.locator('#screen-size'))
-  .toHaveText('1920×1080');
-
-// opt out
+    <div><span class="tag warn">screen</span>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> <span dir="ltr">window.screen</span> היה בגודל ה-viewport, <span dir="ltr">1280×720</span>.</p>
+      <p class="ba-line"><span class="tag he">ב-1.64</span> הוא מגיע מהגדרות המכשיר, <span dir="ltr">1920×1080</span>. כדי לחזור להתנהגות הקודמת: <code>screen: undefined</code>.</p>
+      <pre class="code" data-title="tests/04-breaking-changes.spec.ts" data-src="tests/04-breaking-changes.spec.ts#6-8,15-19"><code>await page.goto('/widgets');
+await expect(page.locator('#screen-size')).toHaveText('1920×1080');
+await expect(page.locator('#viewport-size')).toHaveText('1280×720');
+// …
 const context = await browser.newContext({
   ...devices['Desktop Chrome'],
   screen: undefined,
-});
-// → screen follows the viewport: 1280×720</code></pre>
-    <pre class="code" data-title="hidden iframe"><code>const chatButton = page
+  baseURL,
+});</code></pre></div>
+    <div><span class="tag warn">hidden iframe</span>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> כפתור בתוך iframe מוסתר נחשב <b>visible</b>.</p>
+      <p class="ba-line"><span class="tag he">ב-1.64</span> הוא נחשב <b>hidden</b>.</p>
+      <pre class="code" data-title="tests/04-breaking-changes.spec.ts" data-src="tests/04-breaking-changes.spec.ts#29-35"><code>const chatButton = page
   .frameLocator('#hidden-frame')
   .getByRole('button', { name: 'Chat with us' });
 
-await expect(chatButton).toHaveCount(1); // in the DOM
-await expect(chatButton).toBeHidden();   // 1.64: hidden
-expect(await chatButton.isVisible()).toBe(false);</code></pre>
+await expect(chatButton).toHaveCount(1); // in the DOM…
+await expect(chatButton).toBeHidden();   // …but hidden
+expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
   </div>
   <aside class="notes" data-t="26:00 – 26:45">ערכי המסך פה הם מה שראינו בפועל בהרצה של הדמו.</aside>
 </section>
@@ -1009,6 +1179,8 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
   <h2>מקורות</h2>
   <ul class="src-list">
     <li>הקוד מהשיעור · <a href="https://github.com/AlexKomanov/playwright-1.64-lesson" target="_blank" rel="noopener">github.com/AlexKomanov/playwright-1.64-lesson</a></li>
+    <li>התקנה ושדרוג · <a href="https://playwright.dev/docs/intro#updating-playwright" target="_blank" rel="noopener">playwright.dev/docs/intro#updating-playwright</a></li>
+    <li>דפדפנים · <a href="https://playwright.dev/docs/browsers" target="_blank" rel="noopener">playwright.dev/docs/browsers</a></li>
     <li>Release notes (רשמי) · <a href="https://playwright.dev/docs/release-notes" target="_blank" rel="noopener">playwright.dev/docs/release-notes</a></li>
     <li>GitHub releases v1.64.0 / v1.64.1 · <a href="https://github.com/microsoft/playwright/releases" target="_blank" rel="noopener">github.com/microsoft/playwright/releases</a></li>
     <li>API: WebMCP · <a href="https://playwright.dev/docs/api/class-webmcp" target="_blank" rel="noopener">playwright.dev/docs/api/class-webmcp</a></li>
