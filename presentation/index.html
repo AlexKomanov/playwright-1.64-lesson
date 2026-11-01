@@ -215,10 +215,17 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .scope-demo .term { font-size: 12.5px; padding: 28px 14px 10px; }
 .scope-demo .sum { font-size: 15.5px; margin-top: 8px; color: #c9d8d0; }
 /* file references */
-.file-ref { position: absolute; top: 22px; inset-inline-start: 7vw; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; z-index: 5; max-width: calc(86vw - 120px); }
-.file-ref span { font: 12.5px var(--mono); color: var(--dim); background: rgba(10,18,15,.85); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; direction: ltr; white-space: nowrap; }
-.file-ref span::before { content: '📄 '; }
-.file-ref span.cmd::before { content: '▶ '; color: var(--accent); }
+.file-ref { position: absolute; top: 18px; inset-inline-start: 7vw; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: flex-start; z-index: 5; max-width: calc(86vw - 120px); }
+.file-ref .fr-head { font: 700 13px 'Heebo', sans-serif; color: var(--dim); }
+.file-ref .fr-chip { display: inline-flex; align-items: stretch; border-radius: 9px; overflow: hidden; border: 1px solid var(--kind); background: rgba(10,18,15,.9); white-space: nowrap; }
+.file-ref .fr-kind { font: 700 13px 'Heebo', sans-serif; color: #071a10; background: var(--kind); padding: 3px 9px; }
+.file-ref .fr-path { font: 12.5px var(--mono); color: var(--text); padding: 3px 10px; direction: ltr; unicode-bidi: isolate; }
+.fr-chip.k-test   { --kind: #45e06f; }
+.fr-chip.k-before { --kind: #9fb3a8; }
+.fr-chip.k-page   { --kind: #5cc8ff; }
+.fr-chip.k-server { --kind: #5cc8ff; }
+.fr-chip.k-config { --kind: #ffb547; }
+.fr-chip.k-cmd    { --kind: #c792ea; }
 .install-steps .card p { font-size: 15px; margin-top: 8px; }
 .install-steps .why-card { border-color: rgba(92,200,255,.35); }
 .err-box { font-size: 14px; line-height: 1.5; max-width: 900px; }
@@ -1261,10 +1268,30 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
   document.querySelectorAll('.slide[data-files]').forEach(slide => {
     const box = document.createElement('div');
     box.className = 'file-ref';
-    slide.dataset.files.split('|').forEach(f => {
+    // What each file is, so viewers know where to look in the repo
+    const kindOf = f =>
+      f.startsWith('>') ? ['cmd', 'הרצה'] :
+      f.startsWith('tests/before-1.64/') ? ['before', 'טסט · עד 1.63'] :
+      f === 'tests/global-setup.ts' ? ['config', 'global setup'] :
+      f.startsWith('tests/') ? ['test', f.endsWith('/') ? 'טסטים' : 'טסט'] :
+      f.startsWith('demo-app/public/') ? ['page', f.endsWith('/') ? 'דפי הדמו' : 'דף בדמו'] :
+      f === 'demo-app/server.js' ? ['server', 'שרת הדמו'] :
+      f === 'package.json' ? ['config', 'חבילה'] :
+      ['config', 'קונפיג'];
+    const order = ['test', 'before', 'page', 'server', 'config', 'cmd'];
+    const files = slide.dataset.files.split('|').filter(Boolean)
+      .map(f => ({ f: f.replace(/^>/, ''), kind: kindOf(f) }))
+      .sort((a, b) => order.indexOf(a.kind[0]) - order.indexOf(b.kind[0]));
+    const head = document.createElement('span');
+    head.className = 'fr-head';
+    head.textContent = 'הקוד בריפו:';
+    box.append(head);
+    files.forEach(({ f, kind: [cls, label] }) => {
       const chip = document.createElement('span');
-      if (f.startsWith('>')) { chip.className = 'cmd'; f = f.slice(1); }
-      chip.textContent = f;
+      chip.className = `fr-chip k-${cls}`;
+      chip.innerHTML = `<span class="fr-kind"></span><span class="fr-path"></span>`;
+      chip.querySelector('.fr-kind').textContent = label;
+      chip.querySelector('.fr-path').textContent = f;
       box.append(chip);
     });
     slide.append(box);
