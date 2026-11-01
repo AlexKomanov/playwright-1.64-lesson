@@ -12,7 +12,6 @@
 | `demo-app/` | **PW Shop**: אפליקציית דמו קטנה על Node, בלי ספריות חיצוניות |
 | `tests/` | קובץ טסט לכל חידוש |
 | `tests/before-1.64/` | אותן בדיקות כמו שכתבו אותן לפני 1.64. רצות גם היום, כדי להשוות לפני ואחרי |
-| `scripts/sync-slide-code.py` | שומר שהקוד במצגת זהה לקוד בקבצים (ראו למטה) |
 | `playwright.config.ts` | פרויקטים עם `default: false`, הקלטת וידאו ב-60fps, צילומי מסך ב-WebP |
 | `LESSON_PLAN.md` | מערך השיעור: מבנה, דמואים ומקורות |
 
@@ -76,16 +75,6 @@ npm run report         # פתיחת ה-HTML report
 
 - צילום המסך השמור (`*.webp`) נוצר על macOS. על Linux או Windows נריץ פעם אחת `npx playwright test --update-snapshots=missing` כדי ליצור צילום למערכת שלנו.
 - WebMCP הוא עדיין פיצ'ר ניסיוני. WebKit לא תומך בו.
-
-## הקוד במצגת זהה לקוד בריפו
-
-כל בלוק קוד במצגת מצביע על הקובץ והשורות שממנו הוא הגיע (`data-src="tests/01-within.spec.ts#7-22"`), והקבצים מופיעים בפינה של כל שקופית.
-אחרי שמשנים קוד בטסטים, מעדכנים את המצגת:
-
-```bash
-python3 scripts/sync-slide-code.py           # מעתיק את השורות מהקבצים למצגת
-python3 scripts/sync-slide-code.py --check   # רק בודק: נכשל אם משהו לא תואם או חסרה הפניה לקובץ
-```
 
 ## מקורות
 
