@@ -247,13 +247,19 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .runs { font-size: 15px; margin-top: 10px; color: #d6e4dc; }
 .runs .bad-x { color: var(--bad); }
 .runs .ok-x { color: var(--accent); }
-.npm-note { font-size: 14px; max-width: 900px; margin: 12px auto 0; text-align: center; }
-.npm-note code { white-space: normal; }
+.npm-note { max-width: 1000px; margin: 14px auto 0; }
+.npm-note p { font-size: 17px; margin: 0 0 8px; text-align: center; color: #c9d8d0; }
+.term.one-line { font-size: 15.5px; padding: 12px 18px; white-space: pre; overflow-x: auto; text-align: center; }
+.term.one-line::before { content: none; }
 .lock-facts { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; }
 .lock-facts li { font-size: 15.5px; color: #c9d8d0; padding-inline-start: 18px; position: relative; }
 .lock-facts li::before { content: '▸'; position: absolute; inset-inline-start: 0; color: var(--accent); }
 .lock-facts .bad-x { color: var(--bad); font-weight: 600; }
 .lock-facts .ok-x { color: var(--accent); font-weight: 600; }
+.lk-result { font-size: 17px; margin-top: 16px; color: #d6e4dc; }
+.lk-result .bad-x { color: var(--bad); }
+.lk-result .ok-x { color: var(--accent); }
+.lock-ba .code { font-size: 13.5px; }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -673,7 +679,10 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 <span class="bad-t">  ✘ 4: cart total is $12.5</span>
 <span class="out">  ✓ 1: add an apple to the cart</span>
 <span class="pr">$</span> npm run test:shuffle -- 519956039   <span class="cm"># same order, same failure</span></div>
-  <p class="frag dim npm-note"><code>npm run test:shuffle</code> הוא סקריפט ב-<code>package.json</code> שמריץ: <code>playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle</code></p>
+  <div class="frag npm-note">
+    <p><code>npm run test:shuffle</code> הוא סקריפט ב-<code>package.json</code>. זו הפקודה שהוא מריץ:</p>
+    <div class="term one-line">playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle</div>
+  </div>
   <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 519956039 מריץ את הבננה, אחר כך את 3 ו-4 (נכשלים), ורק בסוף את התפוח.</aside>
 </section>
 
@@ -737,60 +746,39 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <p class="sum">שניהם עוברים. כל שאר הטסטים, שאין להם את ה-lock הזה, ממשיכים לרוץ במקביל כרגיל.</p>
     </div>
   </div>
-  <div class="frag" style="margin-top:14px">
-    <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#7-12"><code>test('switch theme to dark', { lock: 'store-settings' }, async ({ request }) =&gt; {
-  await request.put('/api/settings', { data: { theme: 'dark' } });
-  await new Promise(resolve =&gt; setTimeout(resolve, 500)); // another test could change it meanwhile
-  const settings = await (await request.get('/api/settings')).json();
-  expect(settings).toEqual({ theme: 'dark' });
-});</code></pre>
-    <ul class="lock-facts">
-      <li>זה הקוד של טסט A. טסט B זהה, רק עם light.</li>
-      <li><code>lock: 'store-settings'</code> הוא שם שאנחנו בוחרים. שני טסטים עם אותו שם לא ירוצו באותו זמן, גם אם הם בקבצים שונים.</li>
-      <li>הרצנו את שני הטסטים האלה 5 פעמים בכל גרסה. <b class="bad-x">בלי ה-lock: בכל 5 הריצות אחד מהם נכשל.</b> <b class="ok-x">עם ה-lock: בכל 5 הריצות שניהם עברו.</b></li>
-    </ul>
-  </div>
+  <p class="frag lk-result">בדמו הרצנו את שני הטסטים האלה 5 פעמים: <b class="bad-x">בלי lock</b>, בכל ריצה אחד מהם נכשל. <b class="ok-x">עם lock</b>, בכל ריצה שניהם עברו.</p>
   <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר. הנקודה: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. שלב 3: הקוד — lock הוא פשוט שם. Test Locks הגיעו ב-1.63. מקור: התיעוד הרשמי, Test locks. הדמו: tests/02-locks-a.spec.ts ו-tests/02-locks-b.spec.ts.</aside>
 </section>
 
 <!-- 13 · locks: new in 1.64 -->
-<section class="slide" data-files="tests/before-1.64/02-locks-describe.spec.ts|tests/02-locks-configure.spec.ts">
+<section class="slide" data-files="tests/before-1.64/02-locks-per-test.spec.ts|tests/02-locks-configure.spec.ts">
   <div class="eyebrow">test.describe.configure({ lock })</div>
   <h2>חדש ב-1.64: lock לכל הקובץ בשורה אחת</h2>
-  <p class="lead" style="margin:-6px 0 18px">אותם שני טסטים בדיוק, בשני קבצים. ההבדל היחיד הוא איך מגדירים את ה-lock לכולם.</p>
-  <div class="ba">
-    <div class="frag"><span class="tag he dimtag">עד 1.63</span>
-      <pre class="code" data-title="tests/before-1.64/02-locks-describe.spec.ts" data-src="tests/before-1.64/02-locks-describe.spec.ts#6-18"><code>test.describe('store settings', { lock: 'store-settings' }, () =&gt; {
-  test('switch theme to dark', async ({ request }) =&gt; {
-    await request.put('/api/settings', { data: { theme: 'dark' } });
-    const settings = await (await request.get('/api/settings')).json();
-    expect(settings).toEqual({ theme: 'dark' });
-  });
-
-  test('switch theme to light', async ({ request }) =&gt; {
-    await request.put('/api/settings', { data: { theme: 'light' } });
-    const settings = await (await request.get('/api/settings')).json();
-    expect(settings).toEqual({ theme: 'light' });
-  });
-});</code></pre>
-      <p class="ba-note">עוטפים את כל הטסטים ב-<code>describe</code> עם <code>{ lock }</code>.</p></div>
-    <div class="frag"><span class="tag he">ב-1.64</span>
-      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#6-18"><code>test.describe.configure({ lock: 'store-settings' });
-
-test('switch theme to dark', async ({ request }) =&gt; {
-  await request.put('/api/settings', { data: { theme: 'dark' } });
-  const settings = await (await request.get('/api/settings')).json();
-  expect(settings).toEqual({ theme: 'dark' });
+  <p class="lead" style="margin:-6px 0 18px">אותם שני טסטים בדיוק. עד 1.63 כתבנו את ה-lock על כל טסט, וב-1.64 כותבים אותו פעם אחת לכל הקובץ.</p>
+  <div class="ba lock-ba">
+    <div><span class="tag he dimtag">עד 1.63</span>
+      <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#8-14"><code>test('dark theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
+  await saveThemeAndCheck(request, 'dark');
 });
 
-test('switch theme to light', async ({ request }) =&gt; {
-  await request.put('/api/settings', { data: { theme: 'light' } });
-  const settings = await (await request.get('/api/settings')).json();
-  expect(settings).toEqual({ theme: 'light' });
+test('light theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
+  await saveThemeAndCheck(request, 'light');
 });</code></pre>
-      <p class="ba-note">שורה אחת בראש הקובץ, בלי לעטוף. זו אותה פקודה שכבר משמשת ל-<code>mode</code> ול-<code>retries</code>. בתוך <code>describe</code> היא חלה רק על הטסטים שבו.</p></div>
+      <p class="ba-note">אותו <code>lock</code> חוזר בכל טסט. טסט שנשכח בלי lock ירוץ במקביל לאחרים.</p></div>
+    <div class="frag"><span class="tag he">ב-1.64</span>
+      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#7-15"><code>test.describe.configure({ lock: 'store-settings' });
+
+test('dark theme', async ({ request }) =&gt; {
+  await saveThemeAndCheck(request, 'dark');
+});
+
+test('light theme', async ({ request }) =&gt; {
+  await saveThemeAndCheck(request, 'light');
+});</code></pre>
+      <p class="ba-note">שורה אחת בראש הקובץ, וכל הטסטים בו מקבלים את ה-lock. בתוך <code>describe</code> היא חלה רק על הטסטים שבו.</p></div>
   </div>
-  <aside class="notes" data-t="">lock על describe היה כבר ב-1.63 (release notes של 1.63). מה שחדש ב-1.64 הוא describe.configure({ lock }). שני הקבצים רצים ועוברים.</aside>
+  <p class="frag dim" style="margin-top:14px;font-size:15px">ב-1.63 אפשר היה גם לעטוף את כל הטסטים ב-<code>describe</code> עם lock. ב-1.64 כבר לא צריך לעטוף.</p>
+  <aside class="notes" data-t="">שני הקבצים רצים ועוברים, והטסטים בהם זהים (הלוגיקה בפונקציה saveThemeAndCheck ב-tests/helpers/theme.ts). גרסת ה-describe של 1.63 נמצאת ב-tests/before-1.64/02-locks-describe.spec.ts.</aside>
 </section>
 
 <!-- 13b · locks: good to know -->
