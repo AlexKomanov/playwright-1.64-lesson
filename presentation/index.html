@@ -711,7 +711,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
       <div class="term"><span class="pr">$</span> npm run test:shuffle
 <span class="pr">$</span> npm run test:shuffle:beforeall</div>
-      <p class="runs">הרצנו כל פקודה 10 פעמים. בלי <code>beforeAll</code>: <b class="bad-x">9 נכשלו</b>. עם <code>beforeAll</code>: <b class="ok-x">כל 10 עברו</b>.</p>
+      <p class="runs">בלי <code>beforeAll</code>, shuffle מערבב את הטסטים, ולכן <b class="bad-x">חלק מהריצות נכשלות</b>. עם <code>beforeAll</code> משותף הם רצים תמיד באותו סדר, ולכן <b class="ok-x">הם עוברים</b>, והבאג נשאר מוסתר.</p>
       <p class="dim" style="font-size:14px;margin-top:8px">אלה סקריפטים ב-<code>package.json</code>. כל אחד מריץ קובץ אחר מ-<code>tests/order-demo</code> עם <code>--shuffle</code>. הטסטים בשני הקבצים זהים, וההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
     </div>
   </div>
@@ -746,7 +746,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <p class="sum">שניהם עוברים. כל שאר הטסטים, שאין להם את ה-lock הזה, ממשיכים לרוץ במקביל כרגיל.</p>
     </div>
   </div>
-  <p class="frag lk-result">בדמו הרצנו את שני הטסטים האלה 5 פעמים: <b class="bad-x">בלי lock</b>, בכל ריצה אחד מהם נכשל. <b class="ok-x">עם lock</b>, בכל ריצה שניהם עברו.</p>
+  <p class="frag lk-result"><b class="bad-x">בלי lock</b> אחד הטסטים נכשל, כי השני דורס לו את ההגדרה באמצע. <b class="ok-x">עם lock</b> הם רצים אחד אחרי השני, ושניהם עוברים.</p>
   <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר. הנקודה: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. שלב 3: הקוד — lock הוא פשוט שם. Test Locks הגיעו ב-1.63. מקור: התיעוד הרשמי, Test locks. הדמו: tests/02-locks-a.spec.ts ו-tests/02-locks-b.spec.ts.</aside>
 </section>
 
