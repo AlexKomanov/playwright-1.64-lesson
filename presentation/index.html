@@ -243,6 +243,12 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .api-rows .card p { font-size: 15.5px; margin-top: 8px; }
 .api-rows .ba .code { font-size: 12.5px; padding: 26px 0 8px; }
 .api-rows .card > .tag { margin-bottom: 4px; }
+.webp-measure { font-size: 15px; margin-top: 10px; padding: 10px 14px; border-radius: 10px; background: rgba(255,181,71,.08); border: 1px solid rgba(255,181,71,.3); color: #e8dcc6; }
+.runs { font-size: 15px; margin-top: 10px; color: #d6e4dc; }
+.runs .bad-x { color: var(--bad); }
+.runs .ok-x { color: var(--accent); }
+.npm-note { font-size: 14px; max-width: 900px; margin: 12px auto 0; text-align: center; }
+.npm-note code { white-space: normal; }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -395,7 +401,6 @@ aside.notes { display: none; }
     <div class="card frag"><div><h3>ב-CI: גם ספריות מערכת</h3><div class="term"><span class="pr">$</span> npx playwright install --with-deps</div><p class="dim">מתקין גם את ספריות מערכת ההפעלה שהדפדפנים צריכים. לפי התיעוד, זה שימושי בעיקר בסביבות CI.</p></div></div>
     <div class="card frag why-card"><div><h3>למה צריך להוריד דפדפנים אחרי כל שדרוג?</h3><p>כל גרסה של Playwright צריכה גרסאות מסוימות של הדפדפנים. ב-1.64 אלה <span dir="ltr">Chromium 156</span>, <span dir="ltr">Firefox 157</span> ו-<span dir="ltr">WebKit 27.2</span>, וצריך להתקין אותן עם ה-CLI של Playwright.</p><p class="dim">הדפדפנים נשמרים בתיקייה משותפת לכל הפרויקטים, למשל <code>~/Library/Caches/ms-playwright</code> ב-macOS. גרסה שאף פרויקט כבר לא צריך נמחקת אוטומטית.</p></div></div>
   </div>
-  <p class="dim" style="margin-top:10px;font-size:14px">מקור: התיעוד הרשמי, <span dir="ltr">Updating Playwright</span> ו-<span dir="ltr">Browsers</span></p>
   <aside class="notes" data-t="">שלב 1: npm install -D @playwright/test@latest — זה מה שהתיעוד ממליץ (Updating Playwright), ואחריו playwright install --with-deps. שלב 2: דפדפנים. שלב 3: with-deps ל-CI. שלב 4: למה — "Each version of Playwright needs specific versions of browser binaries". בשקופית הבאה: מה קורה אם שוכחים.</aside>
 </section>
 
@@ -630,7 +635,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 <span class="pr">$</span> npx playwright test --project=firefox  <span class="cm"># firefox</span>
 <span class="pr">$</span> npx playwright test --project="*"      <span class="cm"># all (CI)</span></div>
       <div class="card frag" style="margin-top:16px;border-color:rgba(255,181,71,.35)">
-        <span class="tag warn">CI TIP · currents.dev</span>
+        <span class="tag warn">CI TIP</span>
         <p><b>הבעיה:</b> אחרי שסימנו את firefox ב-<code>default: false</code>, גם ה-CI שמריץ <code>npx playwright test</code> מפסיק להריץ אותו. שום טסט לא נכשל, אז אף אחד לא ישים לב.</p>
         <p style="margin-top:8px"><b>הפתרון:</b> ב-CI נריץ עם <code>--project="*"</code>, וככה כל הדפדפנים ממשיכים לרוץ.</p>
       </div>
@@ -663,6 +668,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 <span class="bad-t">  ✘ 4: cart total is $12.5</span>
 <span class="out">  ✓ 1: add an apple to the cart</span>
 <span class="pr">$</span> npm run test:shuffle -- 519956039   <span class="cm"># same order, same failure</span></div>
+  <p class="frag dim npm-note"><code>npm run test:shuffle</code> הוא סקריפט ב-<code>package.json</code> שמריץ: <code>playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle</code></p>
   <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 519956039 מריץ את הבננה, אחר כך את 3 ו-4 (נכשלים), ורק בסוף את התפוח.</aside>
 </section>
 
@@ -675,27 +681,24 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <div class="ico">🌙</div>
       <h3>מריצים בריצת הלילה, לא בכל PR</h3>
       <p>הכישלון ש-shuffle מוצא הוא אקראי. אם הוא ירוץ על כל PR, מפתח שבכלל לא נגע בטסטים האלה ייחסם. לכן נריץ אותו בלילה, ונשמור את ה-seed מהלוג כדי לשחזר את הכישלון.</p>
-      <div class="term"><span class="pr">$</span> npx playwright test --shuffle
-<span class="out">… shuffle seed 271828182</span></div>
-      <span class="tag info" style="margin-top:10px">currents.dev</span>
+      <div class="term"><span class="pr">$</span> npm run test:shuffle
+<span class="out">Running 4 tests using 1 worker,</span>
+<span class="out">shuffle seed 519956039</span></div>
     </div>
     <div class="card frag">
       <div class="ico">🧩</div>
       <h3>בלי <span dir="ltr">fullyParallel</span> מתערבבים רק הקבצים</h3>
       <p>shuffle תמיד משנה את סדר הקבצים. כדי שגם הטסטים בתוך אותו קובץ יתערבבו, הקובץ צריך לרוץ במצב parallel.</p>
       <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#9"><code>fullyParallel: true,</code></pre>
-      <span class="tag" style="margin-top:10px">Playwright CLI help</span>
     </div>
     <div class="card frag">
       <div class="ico">🔗</div>
       <h3>איפה shuffle לא יעזור: <span dir="ltr">beforeAll</span> משותף</h3>
       <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
       <div class="term"><span class="pr">$</span> npm run test:shuffle
-<span class="bad-t">  no beforeAll:     9/10 runs failed</span>
-<span class="pr">$</span> npm run test:shuffle:beforeall
-<span class="out">  shared beforeAll: 10/10 runs passed</span></div>
-      <p class="dim" style="font-size:14px;margin-top:10px">שני הקבצים נמצאים ב-<code>tests/order-demo</code>, עם אותם טסטים בדיוק. ההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
-      <span class="tag warn he" style="margin-top:10px">נבדק בקוד של Playwright ובדמו</span>
+<span class="pr">$</span> npm run test:shuffle:beforeall</div>
+      <p class="runs">הרצנו כל פקודה 10 פעמים. בלי <code>beforeAll</code>: <b class="bad-x">9 נכשלו</b>. עם <code>beforeAll</code>: <b class="ok-x">כל 10 עברו</b>.</p>
+      <p class="dim" style="font-size:14px;margin-top:8px">אלה סקריפטים ב-<code>package.json</code>. כל אחד מריץ קובץ אחר מ-<code>tests/order-demo</code> עם <code>--shuffle</code>. הטסטים בשני הקבצים זהים, וההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
     </div>
   </div>
   <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ order-demo זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
@@ -848,13 +851,14 @@ test('switch theme to light', async ({ request }) =&gt; {
   <div class="grid g2">
     <div>
       <span class="tag">NEW · type: 'webp'</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> צילום בלי שם נשמר תמיד כ-<code>.png</code>.</p>
-      <p class="ba-line"><span class="tag he">ב-1.64</span> אפשר לבחור WebP לכל הצילומים בלי שם:</p>
+      <p class="ba-line"><b>מה זה WebP?</b> פורמט תמונה, כמו PNG. ב-Playwright צילומי ההשוואה נשמרים בו בלי איבוד מידע (lossless), כך שההשוואה מדויקת בדיוק כמו עם PNG.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> צילום בלי שם נשמר תמיד כ-<code>.png</code>. WebP היה אפשרי רק עם שם שמסתיים ב-<code>.webp</code> (מגרסה 1.62).</p>
+      <p class="ba-line"><span class="tag he">ב-1.64</span> שורה אחת בקונפיג, וכל הצילומים בלי שם נשמרים כ-WebP:</p>
       <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#18-21"><code>expect: {
   // NEW in 1.64: store unnamed toHaveScreenshot() baselines as WebP
   toHaveScreenshot: { type: 'webp' },
 },</code></pre>
-      <p class="frag" style="font-size:16px">בדמו נוצר: <code>promo-banner-looks-right-1-chromium-darwin.webp</code></p>
+      <p class="frag webp-measure">מדדנו בדמו את אותם צילומי מסך בשני הפורמטים, ו-WebP יצא <b>גדול</b> יותר: דף החנות <span dir="ltr">81 KB</span> מול <span dir="ltr">48 KB</span> ב-PNG. לכן נמדוד על הפרויקט שלנו לפני שמחליפים.</p>
     </div>
     <div>
       <span class="tag warn">BREAKING · --update-snapshots=missing</span>
@@ -865,7 +869,7 @@ test('switch theme to light', async ({ request }) =&gt; {
       <p class="frag" style="font-size:16px">המצב הרגיל קיבל שם, <code>'default'</code>, ומתנהג כמו קודם: יוצר את הצילום החסר ומכשיל את הטסט. טיפ: נוסיף ב-CI בדיקה שמתריעה על קבצי תמונה חדשים, כי ריצה ירוקה כבר לא מבטיחה שלא נוספו כאלה.</p>
     </div>
   </div>
-  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר. ההתנהגות הקודמת לפי ה-release notes של 1.64.</aside>
+  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר. ההתנהגות הקודמת לפי ה-release notes של 1.64. WebP עם שם קיים מ-1.62. המדידה (צילום עמוד מלא, Chromium, macOS): shop 48KB PNG / 81KB WebP, settings 25/61, widgets 48/107. התיעוד: "Both formats are lossless". חיסכון בגודל מוזכר רק ל-page.screenshot עם quality נמוך (lossy).</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
@@ -959,7 +963,7 @@ test('switch theme to light', async ({ request }) =&gt; {
   <div class="grid g3" style="margin-top:10px">
     <div class="card frag"><p>המפתחים של האתר בוחרים אילו פעולות לחשוף. לכל כלי יש שם, תיאור, <span dir="ltr">JSON Schema</span> ופונקציה שמבצעת אותו.</p></div>
     <div class="card frag"><p>עדיין <b>ניסיוני</b>: ב-Chromium מפעילים עם <code>--enable-features=WebMCP</code>, ב-Firefox דרך prefs, וב-WebKit אין תמיכה.</p></div>
-    <div class="card frag"><p>אין LLM בטסט. קוראים לכלי עם קלט קבוע ובודקים את התוצאה — כמו טסט ל-API. ב-awesome-testing קוראים לזה <b dir="ltr">tool contract test</b>.</p></div>
+    <div class="card frag"><p>אין LLM בטסט. קוראים לכלי עם קלט קבוע ובודקים את התוצאה — כמו טסט ל-API.</p></div>
   </div>
   <aside class="notes" data-t="16:15 – 17:30">המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. להדגיש: תיאורים ותוצאות של כלים מגיעים מהעמוד — Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
 </section>
@@ -1026,7 +1030,7 @@ expect(cart).toMatchObject({ totalItems: 2, totalPrice: 15 });
 await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
   </div>
   <div class="term frag" style="margin-top:16px"><span class="pr">$</span> playwright-cli webmcp-list
-<span class="pr">$</span> playwright-cli webmcp-call search_catalog --params '{"query":"cats"}'   <span class="cm"># from the release notes</span></div>
+<span class="pr">$</span> playwright-cli webmcp-call search_catalog --params '{"query":"cats"}'</div>
   <aside class="notes" data-t="18:30 – 21:00">להריץ npm run test:webmcp. להראות את 3 הטסטים: רשימת הכלים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל.</aside>
 </section>
 
@@ -1117,7 +1121,7 @@ const all = config.projects.map(p =&gt; p.name);</code></pre>
 <span class="out">[global-setup] projects selected: chromium, webmcp  (configured: chromium, webmcp, firefox, …)</span></div></div>
     <div class="card frag"><span class="tag">credentials.create({ signCount })</span>
       <p>קובע מאיזה ערך מתחיל מונה החתימות של passkey וירטואלי. <code>credentials.create()</code> ו-<code>credentials.get()</code> מחזירים את הערך הנוכחי, והוא נשמר ונטען יחד עם ה-storage state.</p>
-      <p class="dim" style="margin-top:10px;font-size:15px">אין לזה דמו בריפו, כי זה דורש הגדרת passkey. המקור: ה-release notes של 1.64.</p></div>
+      <p class="dim" style="margin-top:10px;font-size:15px">אין לזה דמו בריפו, כי זה דורש הגדרת passkey.</p></div>
   </div>
   <aside class="notes" data-t="">filteredProjects: הקוד ב-global-setup מדפיס את שתי הרשימות בתחילת כל ריצה — זה בדיוק ההבדל בין לפני לאחרי. signCount: רק להזכיר.</aside>
 </section>
@@ -1176,7 +1180,6 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
     <div class="card frag"><p><b>כשהכול ירוק</b> — נוסיף ריצת לילה עם <code>--shuffle</code> ונשמור את ה-seed.</p></div>
     <div class="card frag"><p><b>נוסיף locks</b> רק במקומות שבהם טסטים חולקים משאב שאי אפשר לשכפל.</p></div>
   </div>
-  <p class="dim" style="margin-top:14px;font-size:15px">מבוסס על "Playwright 1.64: Shuffle, Test Locks and Breaking Changes" · currents.dev</p>
   <aside class="notes" data-t="26:45 – 27:45">סיכום מעשי.</aside>
 </section>
 
