@@ -249,6 +249,11 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .runs .ok-x { color: var(--accent); }
 .npm-note { font-size: 14px; max-width: 900px; margin: 12px auto 0; text-align: center; }
 .npm-note code { white-space: normal; }
+.lock-facts { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; }
+.lock-facts li { font-size: 15.5px; color: #c9d8d0; padding-inline-start: 18px; position: relative; }
+.lock-facts li::before { content: '▸'; position: absolute; inset-inline-start: 0; color: var(--accent); }
+.lock-facts .bad-x { color: var(--bad); font-weight: 600; }
+.lock-facts .ok-x { color: var(--accent); font-weight: 600; }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -705,7 +710,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 </section>
 
 <!-- 12 · locks: why -->
-<section class="slide lk2" data-files="tests/before-1.64/02-locks-per-test.spec.ts|tests/02-locks-a.spec.ts|tests/02-locks-b.spec.ts">
+<section class="slide lk2" data-files="tests/before-1.64/02-locks-per-test.spec.ts">
   <div class="eyebrow">TEST LOCKS</div>
   <h2>למה צריך <span dir="ltr">lock</span>?</h2>
   <p class="lead" style="margin:-6px 0 14px">שני טסטים משנים את אותה הגדרה בשרת (theme), ו-Playwright עלול להריץ אותם באותו זמן.</p>
@@ -739,7 +744,11 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
   const settings = await (await request.get('/api/settings')).json();
   expect(settings).toEqual({ theme: 'dark' });
 });</code></pre>
-    <p class="dim" style="font-size:15px;margin-top:8px">כך מגדירים lock על טסט אחד (קיים מאז 1.63). הטסט של B זהה, עם light. ה-lock הוא שם שאנחנו בוחרים. טסטים עם אותו שם אף פעם לא רצים באותו זמן, גם אם הם בקבצים שונים. בדמו, בלי ה-lock כל 3 הריצות נכשלו, ועם ה-lock כל 3 עברו.</p>
+    <ul class="lock-facts">
+      <li>זה הקוד של טסט A. טסט B זהה, רק עם light.</li>
+      <li><code>lock: 'store-settings'</code> הוא שם שאנחנו בוחרים. שני טסטים עם אותו שם לא ירוצו באותו זמן, גם אם הם בקבצים שונים.</li>
+      <li>הרצנו את שני הטסטים האלה 5 פעמים בכל גרסה. <b class="bad-x">בלי ה-lock: בכל 5 הריצות אחד מהם נכשל.</b> <b class="ok-x">עם ה-lock: בכל 5 הריצות שניהם עברו.</b></li>
+    </ul>
   </div>
   <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר. הנקודה: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. שלב 3: הקוד — lock הוא פשוט שם. Test Locks הגיעו ב-1.63. מקור: התיעוד הרשמי, Test locks. הדמו: tests/02-locks-a.spec.ts ו-tests/02-locks-b.spec.ts.</aside>
 </section>
