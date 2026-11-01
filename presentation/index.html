@@ -757,7 +757,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
   <p class="lead" style="margin:-6px 0 18px">אותם שני טסטים בדיוק. עד 1.63 כתבנו את ה-lock על כל טסט, וב-1.64 כותבים אותו פעם אחת לכל הקובץ.</p>
   <div class="ba lock-ba">
     <div><span class="tag he dimtag">עד 1.63</span>
-      <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#8-14"><code>test('dark theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
+      <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#16-22"><code>test('dark theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
   await saveThemeAndCheck(request, 'dark');
 });
 
@@ -766,7 +766,7 @@ test('light theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
 });</code></pre>
       <p class="ba-note">אותו <code>lock</code> חוזר בכל טסט. טסט שנשכח בלי lock ירוץ במקביל לאחרים.</p></div>
     <div class="frag"><span class="tag he">ב-1.64</span>
-      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#7-15"><code>test.describe.configure({ lock: 'store-settings' });
+      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#15-23"><code>test.describe.configure({ lock: 'store-settings' });
 
 test('dark theme', async ({ request }) =&gt; {
   await saveThemeAndCheck(request, 'dark');
@@ -778,7 +778,7 @@ test('light theme', async ({ request }) =&gt; {
       <p class="ba-note">שורה אחת בראש הקובץ, וכל הטסטים בו מקבלים את ה-lock. בתוך <code>describe</code> היא חלה רק על הטסטים שבו.</p></div>
   </div>
   <p class="frag dim" style="margin-top:14px;font-size:15px">ב-1.63 אפשר היה גם לעטוף את כל הטסטים ב-<code>describe</code> עם lock. ב-1.64 כבר לא צריך לעטוף.</p>
-  <aside class="notes" data-t="">שני הקבצים רצים ועוברים, והטסטים בהם זהים (הלוגיקה בפונקציה saveThemeAndCheck ב-tests/helpers/theme.ts). גרסת ה-describe של 1.63 נמצאת ב-tests/before-1.64/02-locks-describe.spec.ts.</aside>
+  <aside class="notes" data-t="">שני הקבצים רצים ועוברים, והטסטים בהם זהים (הלוגיקה בפונקציה saveThemeAndCheck שמוגדרת בתוך כל קובץ). גרסת ה-describe של 1.63 נמצאת ב-tests/before-1.64/02-locks-describe.spec.ts.</aside>
 </section>
 
 <!-- 13b · locks: good to know -->
