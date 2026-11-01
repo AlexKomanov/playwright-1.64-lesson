@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// BEFORE 1.64 — the same checks as tests/01-within.spec.ts, written without locator.within().
+// BEFORE 1.64 — the same checks as tests/within/with-1-64/within.spec.ts, written without locator.within().
 // This still works in 1.64. It's here so the slides can show "before" and "after" side by side.
 
 // Before: start from the parent (the dialog) and build the locator again inside it.

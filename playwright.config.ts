@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   reporter: [['list'], ['html', { open: 'never' }]],
-  globalSetup: './tests/global-setup.ts',
+  globalSetup: './tests/filtered-projects/with-1-64/global-setup.ts',
 
   use: {
     baseURL: 'http://localhost:3164',
@@ -30,7 +30,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/order-demo/**', '**/lock-scope/**', '**/webmcp.spec.ts'],
+      testIgnore: ['**/shuffle/**', '**/locks/**', '**/webmcp/**'],
     },
     {
       // WebMCP is experimental: needs a flag
@@ -41,39 +41,39 @@ export default defineConfig({
           args: ['--enable-features=WebMCP'],
         },
       },
-      testMatch: '**/webmcp.spec.ts',
+      testMatch: '**/webmcp/**/*.spec.ts',
     },
 
     // ---- NEW in 1.64: configured, but NOT part of a plain `npx playwright test` ----
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testMatch: '**/01-within.spec.ts',
+      testMatch: '**/within/with-1-64/*.spec.ts',
       default: false,
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testMatch: '**/01-within.spec.ts',
+      testMatch: '**/within/with-1-64/*.spec.ts',
       default: false,
     },
     {
-      // How long a file-level lock is held — prints a timeline
-      name: 'lock-scope',
-      testMatch: '**/lock-scope/**/*.spec.ts',
+      // Two tests that change the same setting — with and without a lock
+      name: 'locks',
+      testMatch: '**/locks/**/*.spec.ts',
       default: false,
     },
     {
       // Order-dependent tests on purpose — run with --shuffle to expose them
-      name: 'order-demo',
-      testMatch: '**/order-demo/**',
+      name: 'shuffle',
+      testMatch: '**/shuffle/**/*.spec.ts',
       default: false,
     },
     {
       // BEFORE 1.64: only a font size for the action title, and no fps option.
       // fontSize still works in 1.64 but is deprecated ("Use style.title instead").
       name: 'video-before',
-      testMatch: '**/01-within.spec.ts',
+      testMatch: '**/within/with-1-64/*.spec.ts',
       default: false,
       use: {
         ...devices['Desktop Chrome'],
@@ -89,7 +89,7 @@ export default defineConfig({
     {
       // NEW in 1.64: video fps + CSS-styled action decorations
       name: 'video',
-      testMatch: '**/01-within.spec.ts',
+      testMatch: '**/within/with-1-64/*.spec.ts',
       default: false,
       use: {
         ...devices['Desktop Chrome'],

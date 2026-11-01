@@ -10,8 +10,8 @@
 |---|---|
 | `presentation/index.html` | המצגת. קובץ HTML אחד שנפתח ישירות בדפדפן |
 | `demo-app/` | **PW Shop**: אפליקציית דמו קטנה על Node, בלי ספריות חיצוניות |
-| `tests/` | קובץ טסט לכל חידוש |
-| `tests/before-1.64/` | אותן בדיקות כמו שכתבו אותן לפני 1.64. רצות גם היום, כדי להשוות לפני ואחרי |
+| `tests/<חידוש>/with-1-64/` | הטסטים של החידוש, כמו שכותבים אותם ב-1.64 |
+| `tests/<חידוש>/before-1-64/` | אותן בדיקות כמו שכתבו אותן לפני 1.64. רצות גם היום, כדי להשוות לפני ואחרי |
 | `playwright.config.ts` | פרויקטים עם `default: false`, הקלטת וידאו ב-60fps, צילומי מסך ב-WebP |
 | `LESSON_PLAN.md` | מערך השיעור: מבנה, דמואים ומקורות |
 
@@ -29,38 +29,48 @@ npx playwright install chromium
 ```bash
 npm test               # הפרויקטים שרצים כברירת מחדל: chromium + webmcp
 npm run demo           # רק אפליקציית הדמו, בכתובת http://localhost:3164
-npm run test:shuffle   # טסטים שתלויים זה בזה, בסדר אקראי (כדאי להריץ כמה פעמים)
-npm run test:shuffle -- <seed>      # משחזר את הסדר של ריצה שנכשלה
-npm run test:shuffle:beforeall      # אותם טסטים עם beforeAll משותף: shuffle לא מערבב אותם
-npm run test:lock-scope:mixed       # lock על קובץ שלם: טסט אחר מחכה לכל הקובץ (מדפיס ציר זמן)
-npm run test:lock-scope:split       # אותם טסטים מפוצלים לשני קבצים: ה-lock תפוס רק שנייה
-npm run test:webmcp    # טסטים ל-page.webmcp (Chromium עם --enable-features=WebMCP)
-npm run test:video     # הקלטת וידאו ב-60fps עם עיצוב CSS לסימון הפעולות
-npm run test:video:before           # אותה הקלטה עם האפשרות של לפני 1.64 (fontSize)
-npm run test:before    # רק הבדיקות של לפני 1.64 (tests/before-1.64)
-npm run test:all       # כל הפרויקטים, כולל firefox ו-webkit
+npm run test:all       # כל הפרויקטים הרגילים, כולל firefox, webkit והקלטות הווידאו
 npm run report         # פתיחת ה-HTML report
+```
+
+הדמואים של כל חידוש רצים ישירות עם `npx playwright test`:
+
+```bash
+npx playwright test within                       # locator.within(), עם 1.64 ולפני
+npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle            # סדר אקראי
+npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle <seed>     # אותו סדר שוב
+npx playwright test cart-order-beforeall --project=shuffle --workers=1 --shuffle       # עם beforeAll משותף
+npx playwright test without-lock --project=locks --workers=2   # בלי lock: אחד הטסטים נכשל
+npx playwright test with-lock --project=locks --workers=2      # עם lock: שניהם עוברים
+npx playwright test --project=webmcp             # page.webmcp (Chromium עם --enable-features=WebMCP)
+npx playwright test --project=video              # וידאו ב-60fps עם עיצוב CSS
+npx playwright test --project=video-before       # אותה הקלטה עם האפשרות של לפני 1.64 (fontSize)
+npx playwright test before-1-64                  # רק הקוד של לפני 1.64
 ```
 
 לא צריך להרים את השרת לפני הטסטים, `webServer` בקונפיג עושה את זה לבד.
 כדי להריץ את `test:all` נתקין קודם גם את שאר הדפדפנים: `npx playwright install`.
+הדמואים של shuffle ושל locks נכשלים בכוונה (זה מה שהם מדגימים), ולכן הם רצים רק בפקודות משלהם ולא ב-`test:all`.
 
 ## איזה קובץ מדגים מה
 
+לכל חידוש יש תיקייה ב-`tests/`. בתוכה `with-1-64/` עם הקוד של 1.64, וכשהיה לחידוש תחליף קודם, גם `before-1-64/` עם הקוד הישן.
+
 | חידוש ב-1.64 | איפה |
 |---|---|
-| `locator.within()` | `tests/01-within.spec.ts` · לפני: `tests/before-1.64/01-within.spec.ts` |
+| `locator.within()` | `tests/within/` |
 | `testProject.default` | `playwright.config.ts` |
-| `--shuffle` | `tests/order-demo/cart-order.spec.ts` (בלי `beforeAll`), `tests/order-demo/cart-order-beforeall.spec.ts` (עם `beforeAll`) |
-| `test.describe.configure({ lock })`, lock מובנה `'exclusive'` | `tests/02-locks-configure.spec.ts`, `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` · לפני (1.63): `tests/before-1.64/02-locks-per-test.spec.ts`, `tests/before-1.64/02-locks-describe.spec.ts` |
-| כמה זמן lock על קובץ תופס | `tests/lock-scope/` (`mixed/`, `split/`, `other-settings.spec.ts`) |
-| צילומי מסך ב-WebP, `--update-snapshots=missing` | `playwright.config.ts`, `tests/03-new-apis.spec.ts` |
+| `--shuffle` | `tests/shuffle/` (`cart-order.spec.ts` בלי `beforeAll`, `cart-order-beforeall.spec.ts` עם) |
+| `test.describe.configure({ lock })` | `tests/locks/` (`with-lock.spec.ts`, ולהשוואה `without-lock.spec.ts`) |
+| צילומי מסך ב-WebP, `--update-snapshots=missing` | `tests/snapshots/`, `playwright.config.ts` |
 | הקלטת וידאו: `fps`, `style` | `playwright.config.ts` (פרויקט `video`) · לפני: פרויקט `video-before` |
 | WebMCP: הגדרת הכלים בצד האתר | `demo-app/public/index.html` |
-| WebMCP: `page.webmcp` | `tests/webmcp.spec.ts` |
-| `page.getByRef()`, `content({ includeShadow })`, cookies ב-`APIRequestContext` | `tests/03-new-apis.spec.ts` · לפני: `tests/before-1.64/03-new-apis.spec.ts` |
-| `fullConfig.filteredProjects` | `tests/global-setup.ts` |
-| Breaking Changes: `screen` מהגדרות המכשיר, iframe מוסתר | `tests/04-breaking-changes.spec.ts` |
+| WebMCP: `page.webmcp` | `tests/webmcp/` |
+| `page.getByRef()` | `tests/get-by-ref/` |
+| `page.content({ includeShadow })` | `tests/include-shadow/` |
+| cookies ב-`APIRequestContext` | `tests/request-cookies/` |
+| `fullConfig.filteredProjects` | `tests/filtered-projects/` (global setup) |
+| Breaking Changes: `screen` מהגדרות המכשיר, iframe מוסתר | `tests/breaking-changes/` |
 
 ## המצגת
 
@@ -93,7 +103,7 @@ Lesson kit for **Playwright 1.64**: an interactive Hebrew slide deck (`presentat
 npm install
 npx playwright install chromium
 npm test            # chromium + webmcp projects
-npm run test:all    # every project (install all browsers first: npx playwright install)
+npm run test:all    # all regular projects incl. firefox/webkit (install all browsers first: npx playwright install)
 ```
 
 See the tables above for the npm scripts and the feature-to-file map.

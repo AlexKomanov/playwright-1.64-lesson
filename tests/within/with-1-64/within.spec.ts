@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // NEW in 1.64: locator.within(parent)
 // "this button, within that dialog" — reads in the natural order.
 
-// It changes the shared theme too, so it joins the 'store-settings' lock (see 02-locks-*.spec.ts)
+// It changes the shared theme too, so it takes the 'store-settings' lock (see tests/locks/with-1-64/)
 test('save settings', { lock: 'store-settings' }, async ({ page }) => {
   await page.goto('/settings');
   await page.getByRole('button', { name: 'Open store settings' }).click();
@@ -38,4 +38,4 @@ test('third column of every row', async ({ page }) => {
   await expect(thirdColumn).toHaveText(['Apple', 'Banana', 'Cherry']);
 });
 
-// The "before 1.64" versions of these tests: tests/before-1.64/01-within.spec.ts
+// The "before 1.64" versions of these tests: tests/within/before-1-64/within.spec.ts

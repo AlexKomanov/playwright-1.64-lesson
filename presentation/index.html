@@ -260,6 +260,11 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .lk-result .bad-x { color: var(--bad); }
 .lk-result .ok-x { color: var(--accent); }
 .lock-ba .code { font-size: 13.5px; }
+.lock-ex .code { font-size: 14.5px; }
+.lock-ex .term { font-size: 15px; margin-top: 6px; }
+.video-cmds { font-size: 13.5px; margin-top: 12px; padding: 30px 14px 10px; }
+.cmd-copy { margin-left: 10px; padding: 0 7px; font: 600 13px var(--mono); line-height: 20px; color: var(--accent); background: rgba(69,224,111,.1); border: 1px solid rgba(69,224,111,.35); border-radius: 6px; cursor: pointer; vertical-align: 1px; opacity: .7; }
+.cmd-copy:hover { opacity: 1; background: rgba(69,224,111,.22); }
 /* ---------- fps widget ---------- */
 .fps { direction: ltr; display: grid; gap: 16px; }
 .fps .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; font-family: var(--mono); color: var(--dim); }
@@ -487,7 +492,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 5 · within: the problem -->
-<section class="slide" data-files="demo-app/public/settings.html|tests/01-within.spec.ts">
+<section class="slide" data-files="demo-app/public/settings.html|tests/within/with-1-64/within.spec.ts">
   <div class="eyebrow">THE PROBLEM</div>
   <h2>שני כפתורי <span dir="ltr">Save</span> באותו עמוד</h2>
   <div class="split">
@@ -526,7 +531,7 @@ aside.notes { display: none; }
 </section>
 
 <!-- 6 · within: code -->
-<section class="slide" data-files="tests/01-within.spec.ts|tests/before-1.64/01-within.spec.ts">
+<section class="slide" data-files="tests/within/">
   <div class="eyebrow">LOCATOR.WITHIN() · BEFORE / AFTER</div>
   <h2>הקוד: לפני ואחרי <span dir="ltr">within()</span></h2>
   <span class="frag" data-hl="5-6" data-cap='שני לוקייטורים נפרדים: אחד לכל כפתורי ה-<span dir="ltr">Save</span> בעמוד, ואחד לדיאלוג. עדיין לא לחצנו על כלום.'></span>
@@ -535,7 +540,7 @@ aside.notes { display: none; }
   <span class="frag" data-hl="14-15" data-cap='מוודאים שהדיאלוג נסגר ושה-theme נשמר.'></span>
   <div class="ba">
     <div><span class="tag he">ב-1.64</span>
-      <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#7-22"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
+      <pre class="code" data-title="tests/within/with-1-64/within.spec.ts" data-src="tests/within/with-1-64/within.spec.ts#7-22"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
   await page.goto('/settings');
   await page.getByRole('button', { name: 'Open store settings' }).click();
 
@@ -551,8 +556,8 @@ aside.notes { display: none; }
   await expect(dialog).toBeHidden();
   await expect(page.locator('#theme')).toHaveText('light');
 });</code></pre></div>
-    <div class="frag"><span class="tag he dimtag">עד 1.63</span>
-      <pre class="code" data-title="tests/before-1.64/01-within.spec.ts" data-src="tests/before-1.64/01-within.spec.ts#7-17"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
+    <div class="frag"><span class="tag he dimtag">עד 1.64</span>
+      <pre class="code" data-title="tests/within/before-1-64/within.spec.ts" data-src="tests/within/before-1-64/within.spec.ts#7-17"><code>test('save settings', { lock: 'store-settings' }, async ({ page }) =&gt; {
   await page.goto('/settings');
   await page.getByRole('button', { name: 'Open store settings' }).click();
 
@@ -565,31 +570,31 @@ aside.notes { display: none; }
 });</code></pre>
       <p class="ba-note">מתחילים מההורה ובונים את הלוקייטור מחדש בתוכו: <code>dialog.getByRole(...)</code>. עובד גם היום, אבל עם <code>within()</code> משתמשים בשני הלוקייטורים שכבר יש לנו.</p></div>
   </div>
-  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות בצד של 1.64. בסוף (חץ) מופיע הקוד של עד 1.63 — אותו טסט, מתחיל מהדיאלוג. שני הקבצים רצים: npx playwright test 01-within.</aside>
+  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות בצד של 1.64. בסוף (חץ) מופיע הקוד של עד 1.64 — אותו טסט, מתחיל מהדיאלוג. שני הקבצים רצים: npx playwright test within.</aside>
 </section>
 
 <!-- 7 · within: table column -->
-<section class="slide col-slide" data-files="tests/01-within.spec.ts|tests/before-1.64/01-within.spec.ts|demo-app/public/index.html">
+<section class="slide col-slide" data-files="tests/within/|demo-app/public/index.html">
   <div class="eyebrow">RELATIVE LOCATORS · PER PARENT</div>
   <h2>עוד דוגמה: עמודה שלמה בטבלה</h2>
   <div class="split" style="grid-template-columns: 1.6fr 1fr">
     <div>
       <div class="col-step frag">
         <span class="tag bad he">בלי <span dir="ltr">within</span> ← רק <span dir="ltr">Apple</span></span>
-        <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#27-28"><code>const thirdCell = page.getByRole('cell').nth(2);
+        <pre class="code" data-title="tests/within/with-1-64/within.spec.ts" data-src="tests/within/with-1-64/within.spec.ts#27-28"><code>const thirdCell = page.getByRole('cell').nth(2);
 await expect(thirdCell).toHaveText('Apple');</code></pre>
         <p><code>nth(2)</code> נספר על כל התאים בטבלה, ולכן מקבלים תא אחד.</p>
       </div>
       <div class="col-step frag">
         <span class="tag he">ב-1.64: עם <span dir="ltr">within</span> ← כל העמודה</span>
-        <pre class="code" data-title="tests/01-within.spec.ts" data-src="tests/01-within.spec.ts#36-38"><code>const thirdColumn = page.getByRole('cell').nth(2)
+        <pre class="code" data-title="tests/within/with-1-64/within.spec.ts" data-src="tests/within/with-1-64/within.spec.ts#36-38"><code>const thirdColumn = page.getByRole('cell').nth(2)
   .within(page.getByRole('row'));
 await expect(thirdColumn).toHaveText(['Apple', 'Banana', 'Cherry']);</code></pre>
         <p><code>nth(2)</code> נספר בתוך כל שורה בנפרד: תא אחד מכל שורה.</p>
       </div>
       <div class="col-step frag">
-        <span class="tag he dimtag">עד 1.63</span>
-        <pre class="code" data-title="tests/before-1.64/01-within.spec.ts" data-src="tests/before-1.64/01-within.spec.ts#23-27"><code>const rows = page.getByRole('row').filter({ has: page.getByRole('cell') });
+        <span class="tag he dimtag">עד 1.64</span>
+        <pre class="code" data-title="tests/within/before-1-64/within.spec.ts" data-src="tests/within/before-1-64/within.spec.ts#23-27"><code>const rows = page.getByRole('row').filter({ has: page.getByRole('cell') });
 const names: string[] = [];
 for (const row of await rows.all())
   names.push(await row.getByRole('cell').nth(2).innerText());
@@ -622,24 +627,24 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 </section>
 
 <!-- 9 · default projects -->
-<section class="slide" data-files="playwright.config.ts|tests/global-setup.ts">
+<section class="slide" data-files="playwright.config.ts|tests/filtered-projects/with-1-64/global-setup.ts">
   <div class="eyebrow">testProject.default</div>
   <h2>פרויקט שמוגדר בקונפיג — אבל <span class="accent">לא רץ</span> אוטומטית</h2>
   <div class="split">
     <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#48-59"><code>{
   name: 'firefox',
   use: { ...devices['Desktop Firefox'] },
-  testMatch: '**/01-within.spec.ts',
+  testMatch: '**/within/with-1-64/*.spec.ts',
   default: false,
 },
 {
   name: 'webkit',
   use: { ...devices['Desktop Safari'] },
-  testMatch: '**/01-within.spec.ts',
+  testMatch: '**/within/with-1-64/*.spec.ts',
   default: false,
 },</code></pre>
     <div>
-      <div class="frag ba-before"><span class="tag he dimtag">עד 1.63</span>
+      <div class="frag ba-before"><span class="tag he dimtag">עד 1.64</span>
         <div class="term"><span class="pr">$</span> npx playwright test --project=chromium  <span class="cm"># every run</span></div></div>
       <span class="tag he">ב-1.64</span>
       <div class="term frag"><span class="pr">$</span> npx playwright test                    <span class="cm"># chromium</span>
@@ -653,11 +658,11 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
     </div>
   </div>
   <span class="frag" data-hl="5,11" data-cap='firefox ו-webkit מוגדרים בקונפיג, אבל <code>default: false</code> מוציא אותם מהרצה רגילה. הם ירוצו רק כשנבקש אותם עם <code>--project</code>.'></span>
-  <aside class="notes" data-t="6:15 – 7:30">בדמו שלנו: firefox, webkit, order-demo ו-video הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
+  <aside class="notes" data-t="6:15 – 7:30">בדמו שלנו: firefox, webkit, shuffle, locks, video ו-video-before הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
 </section>
 
 <!-- 10 · shuffle -->
-<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|>npm run test:shuffle">
+<section class="slide" data-files="tests/shuffle/with-1-64/cart-order.spec.ts">
   <div class="eyebrow">--shuffle [seed]</div>
   <h2>סדר אקראי — תופס טסטים <span class="accent">שתלויים זה בזה</span></h2>
   <div class="shuf" id="shuf">
@@ -672,22 +677,19 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
     <button class="btn-ui" id="replayBtn" disabled>↺ replay same seed</button>
     <button class="btn-ui" id="resetBtn">reset</button>
   </div>
-  <div class="term frag" style="max-width:820px;margin:0 auto"><span class="pr">$</span> npm run test:shuffle
-<span class="out">Running 4 tests using 1 worker, shuffle seed 519956039</span>
-<span class="out">  ✓ 2: add a banana to the cart</span>
-<span class="bad-t">  ✘ 3: cart shows two items</span>
-<span class="bad-t">  ✘ 4: cart total is $12.5</span>
+  <div class="term frag" style="max-width:1000px;margin:0 auto"><span class="pr">$</span> npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle
+<span class="out">Running 4 tests using 1 worker, shuffle seed 354875837</span>
 <span class="out">  ✓ 1: add an apple to the cart</span>
-<span class="pr">$</span> npm run test:shuffle -- 519956039   <span class="cm"># same order, same failure</span></div>
-  <div class="frag npm-note">
-    <p><code>npm run test:shuffle</code> הוא סקריפט ב-<code>package.json</code>. זו הפקודה שהוא מריץ:</p>
-    <div class="term one-line">playwright test tests/order-demo/cart-order.spec.ts --project=order-demo --workers=1 --shuffle</div>
-  </div>
-  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 519956039 מריץ את הבננה, אחר כך את 3 ו-4 (נכשלים), ורק בסוף את התפוח.</aside>
+<span class="bad-t">  ✘ 4: cart total is $12.5</span>
+<span class="bad-t">  ✘ 3: cart shows two items</span>
+<span class="out">  ✓ 2: add a banana to the cart</span>
+<span class="cm"># the same seed again → the same order, the same failure</span>
+<span class="pr">$</span> npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle 354875837</div>
+  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 354875837 מריץ את התפוח, אחר כך את 4 ו-3 לפני הבננה (נכשלים), ורק בסוף את הבננה. שם הקובץ לפני --shuffle, אחרת Playwright קורא אותו כ-seed.</aside>
 </section>
 
 <!-- 11 · shuffle gotchas -->
-<section class="slide" data-files="tests/order-demo/cart-order.spec.ts|tests/order-demo/cart-order-beforeall.spec.ts|playwright.config.ts">
+<section class="slide" data-files="tests/shuffle/with-1-64/cart-order.spec.ts|tests/shuffle/with-1-64/cart-order-beforeall.spec.ts|playwright.config.ts">
   <div class="eyebrow">SHUFFLE · IN PRACTICE</div>
   <h2>shuffle בפרויקט אמיתי: 3 דברים שכדאי לדעת</h2>
   <div class="grid g3 shuf-tips">
@@ -695,9 +697,9 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <div class="ico">🌙</div>
       <h3>מריצים בריצת הלילה, לא בכל PR</h3>
       <p>הכישלון ש-shuffle מוצא הוא אקראי. אם הוא ירוץ על כל PR, מפתח שבכלל לא נגע בטסטים האלה ייחסם. לכן נריץ אותו בלילה, ונשמור את ה-seed מהלוג כדי לשחזר את הכישלון.</p>
-      <div class="term"><span class="pr">$</span> npm run test:shuffle
-<span class="out">Running 4 tests using 1 worker,</span>
-<span class="out">shuffle seed 519956039</span></div>
+      <div class="term"><span class="pr">$</span> npx playwright test --shuffle
+<span class="out">Running 19 tests using 5 workers,</span>
+<span class="out">shuffle seed 427311825</span></div>
     </div>
     <div class="card frag">
       <div class="ico">🧩</div>
@@ -709,17 +711,15 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <div class="ico">🔗</div>
       <h3>איפה shuffle לא יעזור: <span dir="ltr">beforeAll</span> משותף</h3>
       <p>טסטים שחולקים <code>beforeAll</code> רצים כקבוצה, לפי הסדר שבו נכתבו. shuffle מערבב את הקבוצות, אבל לא את הטסטים שבתוכן. לכן תלות בין שני טסטים כאלה shuffle לא יתפוס.</p>
-      <div class="term"><span class="pr">$</span> npm run test:shuffle
-<span class="pr">$</span> npm run test:shuffle:beforeall</div>
       <p class="runs">בלי <code>beforeAll</code>, shuffle מערבב את הטסטים, ולכן <b class="bad-x">חלק מהריצות נכשלות</b>. עם <code>beforeAll</code> משותף הם רצים תמיד באותו סדר, ולכן <b class="ok-x">הם עוברים</b>, והבאג נשאר מוסתר.</p>
-      <p class="dim" style="font-size:14px;margin-top:8px">אלה סקריפטים ב-<code>package.json</code>. כל אחד מריץ קובץ אחר מ-<code>tests/order-demo</code> עם <code>--shuffle</code>. הטסטים בשני הקבצים זהים, וההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
+      <p class="dim" style="font-size:14px;margin-top:8px">שני הקבצים נמצאים ב-<code>tests/shuffle/with-1-64</code>, עם אותם טסטים בדיוק. ההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
     </div>
   </div>
-  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ order-demo זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
+  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ cart-order-beforeall.spec.ts זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
 </section>
 
 <!-- 12 · locks: why -->
-<section class="slide lk2" data-files="tests/before-1.64/02-locks-per-test.spec.ts">
+<section class="slide lk2" data-files="tests/locks/with-1-64/without-lock.spec.ts|tests/locks/with-1-64/with-lock.spec.ts">
   <div class="eyebrow">TEST LOCKS</div>
   <h2>למה צריך <span dir="ltr">lock</span>?</h2>
   <p class="lead" style="margin:-6px 0 14px">שני טסטים משנים את אותה הגדרה בשרת (theme), ו-Playwright עלול להריץ אותם באותו זמן.</p>
@@ -747,109 +747,59 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
     </div>
   </div>
   <p class="frag lk-result"><b class="bad-x">בלי lock</b> אחד הטסטים נכשל, כי השני דורס לו את ההגדרה באמצע. <b class="ok-x">עם lock</b> הם רצים אחד אחרי השני, ושניהם עוברים.</p>
-  <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר. הנקודה: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. שלב 3: הקוד — lock הוא פשוט שם. Test Locks הגיעו ב-1.63. מקור: התיעוד הרשמי, Test locks. הדמו: tests/02-locks-a.spec.ts ו-tests/02-locks-b.spec.ts.</aside>
+  <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. Test Locks הגיעו ב-1.63.</aside>
 </section>
 
-<!-- 13 · locks: new in 1.64 -->
-<section class="slide" data-files="tests/before-1.64/02-locks-per-test.spec.ts|tests/02-locks-configure.spec.ts">
+<!-- 13 · locks: the example -->
+<section class="slide lock-ex" data-files="tests/locks/with-1-64/with-lock.spec.ts|tests/locks/with-1-64/without-lock.spec.ts">
   <div class="eyebrow">test.describe.configure({ lock })</div>
-  <h2>חדש ב-1.64: lock לכל הקובץ בשורה אחת</h2>
-  <p class="lead" style="margin:-6px 0 18px">אותם שני טסטים בדיוק. עד 1.63 כתבנו את ה-lock על כל טסט, וב-1.64 כותבים אותו פעם אחת לכל הקובץ.</p>
-  <div class="ba lock-ba">
-    <div><span class="tag he dimtag">עד 1.63</span>
-      <pre class="code" data-title="tests/before-1.64/02-locks-per-test.spec.ts" data-src="tests/before-1.64/02-locks-per-test.spec.ts#16-22"><code>test('dark theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
-  await saveThemeAndCheck(request, 'dark');
+  <h2>הדוגמה: אותם שני טסטים, עם lock ובלי</h2>
+  <span class="frag" data-hl="1" data-cap='חדש ב-1.64: שורה אחת בראש הקובץ, וכל הטסטים בו מקבלים את אותו lock. עד 1.64 היה צריך לכתוב <code>{ lock: &apos;store-settings&apos; }</code> על כל טסט בנפרד.'></span>
+  <span class="frag" data-hl="3-7,9-13" data-cap='שני הטסטים משנים את אותה הגדרה בשרת ובודקים אותה. בלי ה-lock הם רצים באותו זמן, וכל אחד יכול לדרוס את ההגדרה של השני.'></span>
+  <div class="split" style="grid-template-columns: 1.2fr 1fr">
+    <div>
+      <pre class="code" data-title="tests/locks/with-1-64/with-lock.spec.ts" data-src="tests/locks/with-1-64/with-lock.spec.ts#6-18"><code>test.describe.configure({ lock: 'store-settings' });
+
+test('switch theme to dark', async ({ request }) =&gt; {
+  await request.put('/api/settings', { data: { theme: 'dark' } });
+  const settings = await (await request.get('/api/settings')).json();
+  expect(settings).toEqual({ theme: 'dark' });
 });
 
-test('light theme', { lock: 'store-settings' }, async ({ request }) =&gt; {
-  await saveThemeAndCheck(request, 'light');
+test('switch theme to light', async ({ request }) =&gt; {
+  await request.put('/api/settings', { data: { theme: 'light' } });
+  const settings = await (await request.get('/api/settings')).json();
+  expect(settings).toEqual({ theme: 'light' });
 });</code></pre>
-      <p class="ba-note">אותו <code>lock</code> חוזר בכל טסט. טסט שנשכח בלי lock ירוץ במקביל לאחרים.</p></div>
-    <div class="frag"><span class="tag he">ב-1.64</span>
-      <pre class="code" data-title="tests/02-locks-configure.spec.ts" data-src="tests/02-locks-configure.spec.ts#15-23"><code>test.describe.configure({ lock: 'store-settings' });
-
-test('dark theme', async ({ request }) =&gt; {
-  await saveThemeAndCheck(request, 'dark');
-});
-
-test('light theme', async ({ request }) =&gt; {
-  await saveThemeAndCheck(request, 'light');
-});</code></pre>
-      <p class="ba-note">שורה אחת בראש הקובץ, וכל הטסטים בו מקבלים את ה-lock. בתוך <code>describe</code> היא חלה רק על הטסטים שבו.</p></div>
-  </div>
-  <p class="frag dim" style="margin-top:14px;font-size:15px">ב-1.63 אפשר היה גם לעטוף את כל הטסטים ב-<code>describe</code> עם lock. ב-1.64 כבר לא צריך לעטוף.</p>
-  <aside class="notes" data-t="">שני הקבצים רצים ועוברים, והטסטים בהם זהים (הלוגיקה בפונקציה saveThemeAndCheck שמוגדרת בתוך כל קובץ). גרסת ה-describe של 1.63 נמצאת ב-tests/before-1.64/02-locks-describe.spec.ts.</aside>
-</section>
-
-<!-- 13b · locks: good to know -->
-<section class="slide" data-files="tests/02-locks-b.spec.ts">
-  <div class="eyebrow">TEST LOCKS · GOOD TO KNOW</div>
-  <h2>כדאי לדעת לפני שמוסיפים lock</h2>
-  <div class="grid g3 lk-tips">
-    <div class="card frag"><div class="ico">⏳</div><h3>lock = המתנה</h3>
-      <p>טסטים עם אותו lock מחכים זה לזה, ולכן הריצה נהיית איטית יותר. נשים lock רק על משאב שבאמת משותף לכולם, כמו הגדרה גלובלית של החנות או חשבון יחיד בשירות חיצוני.</p></div>
-    <div class="card frag"><div class="ico">👤</div><h3>הכי טוב: בלי משאב משותף</h3>
-      <p>אם כל טסט עובד על נתונים משלו, אין על מה להתנגש. למשל, במקום ששני טסטים ישנו את ההגדרות של אותו משתמש, כל טסט יוצר לעצמו משתמש חדש בהתחלה. ככה לא צריך lock בכלל.</p></div>
-    <div class="card frag"><div class="ico">📄</div><h3>lock על קובץ תופס את כל הקובץ</h3>
-      <p>כשהקובץ לא רץ במצב parallel, ה-lock תפוס עד שכל הטסטים בקובץ מסתיימים, גם אלה שלא צריכים אותו. דוגמה עם זמנים אמיתיים בשקופית הבאה.</p></div>
-  </div>
-  <div class="frag excl">
-    <p><b>ויש גם lock מובנה בשם <code>'exclusive'</code>:</b> הטסט מתחיל רק כשאף טסט אחר לא רץ, ועד שהוא מסתיים אף טסט אחר לא מתחיל. מתאים למשל לבדיקות ביצועים, או לטסט שמאתחל שירות משותף.</p>
-    <pre class="code" data-title="tests/02-locks-b.spec.ts" data-src="tests/02-locks-b.spec.ts#16-19"><code>test('reset settings in isolation', { lock: 'exclusive' }, async ({ request }) =&gt; {
-  const res = await request.put('/api/settings', { data: { theme: 'light' } });
-  expect(await res.json()).toEqual({ theme: 'light' });
-});</code></pre>
-  </div>
-  <aside class="notes" data-t="">כרטיס 1: lock מאט — רק כשצריך. כרטיס 2: המלצה מ-currents.dev — עדיף לבודד נתונים (משתמש לכל טסט) מאשר לנעול. כרטיס 3: מהתיעוד — במצב default/serial ה-lock מוחזק לכל הקובץ. exclusive מהתיעוד של 1.63.</aside>
-</section>
-
-<!-- 13c · locks: file-level lock demo -->
-<section class="slide" data-files="tests/lock-scope/mixed/settings-and-browse.spec.ts|tests/lock-scope/split/|tests/lock-scope/other-settings.spec.ts">
-  <div class="eyebrow">TEST LOCKS · DEMO</div>
-  <h2>דוגמה: כמה זמן lock על קובץ תופס</h2>
-  <p class="lead" style="margin:-6px 0 16px">יש לנו טסט נוסף שצריך את אותו lock: <span dir="ltr">another settings test</span>. נבדוק כמה זמן הוא מחכה, בשני מבנים של אותם טסטים בדיוק.</p>
-  <div class="grid g2 scope-demo">
-    <div class="card frag">
-      <span class="tag bad he">קובץ אחד: הגדרות וגם גלישה</span>
-      <ul class="ftree">
-        <li class="locked">🔒 <span dir="ltr">mixed/settings-and-browse.spec.ts</span>
-          <ul><li>settings test <span class="need" dir="rtl">(צריך lock)</span> · 1s</li><li>browse products · 2s</li><li>view the cart · 2s</li></ul></li>
-      </ul>
-      <div class="term"><span class="pr">$</span> npm run test:lock-scope:mixed
-<span class="out">  [0.4s → 1.4s]  worker 0  settings test (needs the lock)</span>
-<span class="out">  [1.4s → 3.4s]  worker 0  browse products</span>
-<span class="out">  [3.4s → 5.4s]  worker 0  view the cart</span>
-<span class="bad-t">  [5.4s → 6.5s]  worker 0  another settings test</span>
-<span class="out">  4 passed (6.6s)</span></div>
-      <p class="sum">הטסט הנוסף חיכה <b>5.4 שניות</b>, עד שכל הקובץ הסתיים. רק השנייה הראשונה באמת הייתה צריכה את ה-lock.</p>
+      <p class="dim" style="font-size:15px;margin-top:8px">הקובץ <code>without-lock.spec.ts</code> זהה, רק בלי השורה הראשונה.</p>
     </div>
-    <div class="card frag">
-      <span class="tag he">שני קבצים: רק מה שצריך lock נעול</span>
-      <ul class="ftree">
-        <li class="locked">🔒 <span dir="ltr">split/settings.spec.ts</span><ul><li>settings test <span class="need" dir="rtl">(צריך lock)</span> · 1s</li></ul></li>
-        <li>📄 <span dir="ltr">split/browse.spec.ts</span><ul><li>browse products · 2s</li><li>view the cart · 2s</li></ul></li>
-      </ul>
-      <div class="term"><span class="pr">$</span> npm run test:lock-scope:split
-<span class="out">  [0.4s → 1.4s]  worker 0  another settings test</span>
-<span class="out">  [0.4s → 2.4s]  worker 1  browse products</span>
-<span class="out">  [1.4s → 2.4s]  worker 0  settings test (needs the lock)</span>
-<span class="out">  [2.4s → 4.4s]  worker 1  view the cart</span>
-<span class="out">  4 passed (4.6s)</span></div>
-      <p class="sum">ה-lock תפוס רק <b>שנייה</b> בכל פעם, והטסטים בלי lock רצים במקביל. כל הריצה: <span dir="ltr">4.6s</span> במקום <span dir="ltr">6.6s</span>.</p>
+    <div>
+      <div class="frag"><span class="tag bad he">בלי lock</span>
+        <div class="term"><span class="pr">$</span> npx playwright test without-lock --project=locks --workers=2
+<span class="out">Running 2 tests using 2 workers</span>
+<span class="out">  ✓ switch theme to light</span>
+<span class="bad-t">  ✘ switch theme to dark</span>
+<span class="bad-t">  1 failed</span><span class="out">  1 passed</span></div></div>
+      <div class="frag" style="margin-top:14px"><span class="tag he">עם lock</span>
+        <div class="term"><span class="pr">$</span> npx playwright test with-lock --project=locks --workers=2
+<span class="out">Running 2 tests using 2 workers</span>
+<span class="out">  ✓ switch theme to dark</span>
+<span class="out">  ✓ switch theme to light</span>
+<span class="out">  2 passed</span></div></div>
     </div>
   </div>
-  <aside class="notes" data-t="">להריץ את שתי הפקודות בטרמינל. הפלט בשקופית הוא ריצה אמיתית (3 ריצות לכל גרסה, אותן תוצאות). להסביר: בקובץ במצב default הטסטים רצים ברצף ב-worker אחד, וה-lock מוחזק לכל הקובץ — כך כתוב בתיעוד. הפתרון: להוציא את הטסטים שלא צריכים lock לקובץ נפרד.</aside>
+  <aside class="notes" data-t="">שני הטסטים מתחילים באותו רגע, ולכן בלי lock הם מתנגשים גם בלי שום המתנה בקוד. מדדנו: בלי lock אחד נכשל בכל ריצה (5/5), עם lock שניהם עוברים בכל ריצה (5/5). הפלט בשקופית אמיתי (קיצרנו רק את הנתיב של כל טסט). </aside>
 </section>
 
 <!-- 14 · snapshots -->
-<section class="slide" data-files="playwright.config.ts|tests/03-new-apis.spec.ts">
+<section class="slide" data-files="tests/snapshots/with-1-64/webp.spec.ts|playwright.config.ts">
   <div class="eyebrow">SNAPSHOTS</div>
   <h2>צילומי מסך: פורמט WebP, ושינוי ב-<span dir="ltr">missing</span></h2>
   <div class="grid g2">
     <div>
       <span class="tag">NEW · type: 'webp'</span>
       <p class="ba-line"><b>מה זה WebP?</b> פורמט תמונה, כמו PNG. ב-Playwright צילומי ההשוואה נשמרים בו בלי איבוד מידע (lossless), כך שההשוואה מדויקת בדיוק כמו עם PNG.</p>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> צילום בלי שם נשמר תמיד כ-<code>.png</code>. WebP היה אפשרי רק עם שם שמסתיים ב-<code>.webp</code> (מגרסה 1.62).</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> צילום בלי שם נשמר תמיד כ-<code>.png</code>. WebP היה אפשרי רק עם שם שמסתיים ב-<code>.webp</code> (מגרסה 1.62).</p>
       <p class="ba-line"><span class="tag he">ב-1.64</span> שורה אחת בקונפיג, וכל הצילומים בלי שם נשמרים כ-WebP:</p>
       <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#18-21"><code>expect: {
   // NEW in 1.64: store unnamed toHaveScreenshot() baselines as WebP
@@ -859,14 +809,14 @@ test('light theme', async ({ request }) =&gt; {
     </div>
     <div>
       <span class="tag warn">BREAKING · --update-snapshots=missing</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> טסט שרק יצר צילום חסר <b>נכשל</b>.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> טסט שרק יצר צילום חסר <b>נכשל</b>.</p>
       <p class="ba-line"><span class="tag he">ב-1.64</span> הוא <b>עובר</b>:</p>
       <div class="term"><span class="pr">$</span> npx playwright test --update-snapshots=missing
 <span class="out">  ✓ promo banner looks right</span></div>
       <p class="frag" style="font-size:16px">המצב הרגיל קיבל שם, <code>'default'</code>, ומתנהג כמו קודם: יוצר את הצילום החסר ומכשיל את הטסט. טיפ: נוסיף ב-CI בדיקה שמתריעה על קבצי תמונה חדשים, כי ריצה ירוקה כבר לא מבטיחה שלא נוספו כאלה.</p>
     </div>
   </div>
-  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test 03-new-apis -g banner --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר. ההתנהגות הקודמת לפי ה-release notes של 1.64. WebP עם שם קיים מ-1.62. המדידה (צילום עמוד מלא, Chromium, macOS): shop 48KB PNG / 81KB WebP, settings 25/61, widgets 48/107. התיעוד: "Both formats are lossless". חיסכון בגודל מוזכר רק ל-page.screenshot עם quality נמוך (lossy).</aside>
+  <aside class="notes" data-t="12:00 – 13:00">להריץ: npx playwright test snapshots --update-snapshots=missing ולהראות את קובץ ה-webp שנוצר. ההתנהגות הקודמת לפי ה-release notes של 1.64. WebP עם שם קיים מ-1.62. המדידה (צילום עמוד מלא, Chromium, macOS): shop 48KB PNG / 81KB WebP, settings 25/61, widgets 48/107. התיעוד: "Both formats are lossless". חיסכון בגודל מוזכר רק ל-page.screenshot עם quality נמוך (lossy).</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
@@ -879,7 +829,7 @@ test('light theme', async ({ request }) =&gt; {
 </section>
 
 <!-- 16 · video -->
-<section class="slide" data-files="playwright.config.ts|>npm run test:video|>npm run test:video:before">
+<section class="slide" data-files="playwright.config.ts">
   <div class="eyebrow">use.video</div>
   <h2>בוחרים קצב פריימים, ומעצבים עם CSS</h2>
   <span class="frag" data-hl="4" data-cap='<code>fps: 60</code> קובע את קצב הפריימים של ההקלטה. ב-Firefox וב-WebKit המקסימום כרגע הוא 25.'></span>
@@ -905,7 +855,7 @@ test('light theme', async ({ request }) =&gt; {
         <div class="row r25">25 fps<div class="rail"><div class="dot"></div></div></div>
         <div class="row r60">60 fps<div class="rail"><div class="dot"></div></div></div>
       </div>
-      <div class="frag" style="margin-top:14px"><span class="tag he dimtag">עד 1.63</span>
+      <div class="frag" style="margin-top:14px"><span class="tag he dimtag">עד 1.64</span>
         <pre class="code" style="font-size:13px" data-title="project 'video-before'" data-src="playwright.config.ts#80-86"><code>video: {
   mode: 'on',
   size: { width: 1280, height: 720 },
@@ -914,13 +864,15 @@ test('light theme', async ({ request }) =&gt; {
   },
 },</code></pre>
         <p class="ba-note">רק גודל גופן לשם הפעולה, ובלי <code>fps</code>. ב-1.64 <code>fontSize</code> עדיין עובד אבל מסומן deprecated.</p></div>
+      <div class="term frag video-cmds"><span class="pr">$</span> npx playwright test --project=video
+<span class="pr">$</span> npx playwright test --project=video-before</div>
       <ul class="clean" style="margin-top:10px">
         <li class="frag">הסמן נשאר על המסך גם אחרי ניווט, וזז בתנועה טבעית</li>
         <li class="frag">קידוד VP9 במקום VP8: פחות עומס על ה-CPU, וקבצים קטנים יותר</li>
       </ul>
     </div>
   </div>
-  <aside class="notes" data-t="13:15 – 16:00">להריץ: npm run test:video ואז npm run test:video:before, ולהשוות את שני קבצי ה-video.webm ב-test-results. fontSize מסומן ב-types של 1.64 כ-"@deprecated Use style.title instead".</aside>
+  <aside class="notes" data-t="13:15 – 16:00">להריץ: npx playwright test --project=video ואז npx playwright test --project=video-before, ולהשוות את שני קבצי ה-video.webm ב-test-results. fontSize מסומן ב-types של 1.64 כ-"@deprecated Use style.title instead".</aside>
 </section>
 
 <!-- 17 · DIVIDER webmcp -->
@@ -996,8 +948,8 @@ test('light theme', async ({ request }) =&gt; {
 </section>
 
 <!-- 20 · webmcp test -->
-<section class="slide" data-files="tests/webmcp.spec.ts|playwright.config.ts|>npm run test:webmcp">
-  <div class="eyebrow">tests/webmcp.spec.ts</div>
+<section class="slide" data-files="tests/webmcp/with-1-64/webmcp.spec.ts|playwright.config.ts">
+  <div class="eyebrow">tests/webmcp/with-1-64/webmcp.spec.ts</div>
   <h2>בצד של הטסט: <span dir="ltr">page.webmcp</span></h2>
   <div class="grid g2" style="grid-template-columns: 1fr 1.6fr">
     <pre class="code" data-title="playwright.config.ts" data-src="playwright.config.ts#36-45"><code>  // WebMCP is experimental: needs a flag
@@ -1008,9 +960,9 @@ test('light theme', async ({ request }) =&gt; {
       args: ['--enable-features=WebMCP'],
     },
   },
-  testMatch: '**/webmcp.spec.ts',
+  testMatch: '**/webmcp/**/*.spec.ts',
 },</code></pre>
-    <pre class="code" data-title="tests/webmcp.spec.ts" data-src="tests/webmcp.spec.ts#17-19,27-34,36-37"><code>const tools = await page.webmcp.tools();
+    <pre class="code" data-title="tests/webmcp/with-1-64/webmcp.spec.ts" data-src="tests/webmcp/with-1-64/webmcp.spec.ts#17-19,27-37"><code>const tools = await page.webmcp.tools();
 const names = tools.map(t =&gt; t.name).sort();
 expect(names).toEqual(['add_to_cart', 'get_cart', 'search_products']);
 // …
@@ -1026,28 +978,29 @@ expect(cart).toMatchObject({ totalItems: 2, totalPrice: 15 });
 // Don't trust the tool's own report only — check the visible UI and the backend too.
 await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
   </div>
-  <div class="term frag" style="margin-top:16px"><span class="pr">$</span> playwright-cli webmcp-list
+  <div class="term frag" style="margin-top:16px"><span class="pr">$</span> npx playwright test --project=webmcp
+<span class="pr">$</span> playwright-cli webmcp-list
 <span class="pr">$</span> playwright-cli webmcp-call search_catalog --params '{"query":"cats"}'</div>
-  <aside class="notes" data-t="18:30 – 21:00">להריץ npm run test:webmcp. להראות את 3 הטסטים: רשימת הכלים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל.</aside>
+  <aside class="notes" data-t="18:30 – 21:00">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: רשימת הכלים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל.</aside>
 </section>
 
 <!-- 21 · getByRef -->
-<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/before-1.64/03-new-apis.spec.ts|demo-app/public/widgets.html">
+<section class="slide" data-files="tests/get-by-ref/|demo-app/public/widgets.html">
   <div class="eyebrow">page.getByRef()</div>
   <h2>מה-snapshot של ה-AI ישר לאלמנט בדף</h2>
   <div class="split" style="grid-template-columns: 1.5fr 1fr">
     <div>
       <div class="yaml">- textbox "Email" <span class="ref">[ref=e21]</span><br><span class="target">- button "Subscribe" <span class="ref">[ref=e22]</span></span><br>- iframe "Chat widget" <span class="ref">[ref=e23]</span></div>
       <div class="frag" style="margin-top:12px"><span class="tag he">ב-1.64</span>
-        <pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#7-13"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
+        <pre class="code" data-title="tests/get-by-ref/with-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/with-1-64/get-by-ref.spec.ts#8-14"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
 // e.g.  - button "Subscribe" [ref=e23]
 const ref = snapshot
   .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
 console.log(`Subscribe button has ref ${ref}`);
 
 await page.getByRef(ref).click();</code></pre></div>
-      <div class="frag" style="margin-top:10px"><span class="tag he dimtag">עד 1.63</span>
-        <pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#8-10"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
+      <div class="frag" style="margin-top:10px"><span class="tag he dimtag">עד 1.64</span>
+        <pre class="code" data-title="tests/get-by-ref/before-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/before-1-64/get-by-ref.spec.ts#7-9"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
 await expect(page.locator('#subscribed'))
   .toHaveText('Subscribed!');</code></pre>
         <p class="ba-note">ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי role ושם.</p></div>
@@ -1067,17 +1020,17 @@ await expect(page.locator('#subscribed'))
 </section>
 
 <!-- 22 · more APIs: shadow + cookies -->
-<section class="slide" data-files="tests/03-new-apis.spec.ts|tests/before-1.64/03-new-apis.spec.ts">
+<section class="slide" data-files="tests/include-shadow/|tests/request-cookies/">
   <div class="eyebrow">MORE NEW APIs</div>
   <h2>עוד APIs חדשים: Shadow DOM ו-cookies</h2>
   <div class="api-rows">
     <div class="card frag"><span class="tag">page.content({ includeShadow })</span>
       <div class="ba">
-        <div><span class="tag he dimtag">עד 1.63</span><pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#16-19"><code>const html = await page.content();
+        <div><span class="tag he dimtag">עד 1.64</span><pre class="code" data-title="tests/include-shadow/before-1-64/include-shadow.spec.ts" data-src="tests/include-shadow/before-1-64/include-shadow.spec.ts#7-10"><code>const html = await page.content();
 expect(html).not.toContain('shadowrootmode'); // no shadow root in the HTML
 await expect(page.locator('promo-banner'))
   .toContainText('Free shipping on orders over $50');</code></pre></div>
-        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#21-22,27-28"><code>const plain = await page.content();
+        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/include-shadow/with-1-64/include-shadow.spec.ts" data-src="tests/include-shadow/with-1-64/include-shadow.spec.ts#8-9,14-15"><code>const plain = await page.content();
 const withShadow = await page.content({ includeShadow: true });
 // …
 expect(withShadow).toContain('shadowrootmode="open"');
@@ -1086,11 +1039,11 @@ expect(withShadow).toContain('Free shipping on orders over $50');</code></pre></
       <p>קודם ה-shadow root לא נכנס ל-HTML, ואת הטקסט קראנו דרך לוקייטור. עכשיו הוא חלק מה-HTML.</p></div>
     <div class="card frag"><span class="tag">APIRequestContext cookies</span>
       <div class="ba">
-        <div><span class="tag he dimtag">עד 1.63</span><pre class="code" data-title="tests/before-1.64/03-new-apis.spec.ts" data-src="tests/before-1.64/03-new-apis.spec.ts#24-27"><code>const res = await request.get('/api/whoami', {
+        <div><span class="tag he dimtag">עד 1.64</span><pre class="code" data-title="tests/request-cookies/before-1-64/request-cookies.spec.ts" data-src="tests/request-cookies/before-1-64/request-cookies.spec.ts#6-9"><code>const res = await request.get('/api/whoami', {
   headers: { Cookie: 'session-id=alex' },
 });
 expect(await res.json()).toEqual({ user: 'alex' });</code></pre></div>
-        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/03-new-apis.spec.ts" data-src="tests/03-new-apis.spec.ts#35-42"><code>await request.addCookies([
+        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/request-cookies/with-1-64/request-cookies.spec.ts" data-src="tests/request-cookies/with-1-64/request-cookies.spec.ts#8-15"><code>await request.addCookies([
   { name: 'session-id', value: 'alex', url: baseURL! },
 ]);
 const me = await (await request.get('/api/whoami')).json();
@@ -1101,19 +1054,19 @@ await request.clearCookies({ name: 'session-id' });</code></pre></div>
       </div>
       <p>קודם שלחנו header של Cookie בכל בקשה. עכשיו ל-<code>request</code> יש מתודות cookies כמו ל-BrowserContext.</p></div>
   </div>
-  <aside class="notes" data-t="">שני הקבצים רצים: npx playwright test 03-new-apis ו-npx playwright test tests/before-1.64.</aside>
+  <aside class="notes" data-t="">שני הקבצים רצים: npx playwright test include-shadow request-cookies (כל אחד מריץ את התיקיות with-1-64 ו-before-1-64).</aside>
 </section>
 
 <!-- 22b · more APIs: filteredProjects + signCount -->
-<section class="slide" data-files="tests/global-setup.ts">
+<section class="slide" data-files="tests/filtered-projects/with-1-64/global-setup.ts">
   <div class="eyebrow">MORE NEW APIs</div>
   <h2>ועוד שניים: <span dir="ltr">filteredProjects</span> ו-<span dir="ltr">signCount</span></h2>
   <div class="grid g2">
     <div class="card frag"><span class="tag">fullConfig.filteredProjects</span>
-      <pre class="code" data-title="tests/global-setup.ts" data-src="tests/global-setup.ts#9-10"><code>const selected = config.filteredProjects.map(p =&gt; p.name);
+      <pre class="code" data-title="tests/filtered-projects/with-1-64/global-setup.ts" data-src="tests/filtered-projects/with-1-64/global-setup.ts#6-7"><code>const selected = config.filteredProjects.map(p =&gt; p.name);
 const all = config.projects.map(p =&gt; p.name);</code></pre>
       <p class="ba-line" style="margin-top:10px"><span class="tag he">ב-1.64</span> <code>filteredProjects</code>: רק הפרויקטים שנשארו אחרי <code>--project</code> ו-<code>default: false</code>.</p>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> היה רק <code>config.projects</code>: כל הפרויקטים בקונפיג, גם אלה שלא ירוצו.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> היה רק <code>config.projects</code>: כל הפרויקטים בקונפיג, גם אלה שלא ירוצו.</p>
       <div class="term" style="margin-top:8px"><span class="pr">$</span> npx playwright test
 <span class="out">[global-setup] projects selected: chromium, webmcp  (configured: chromium, webmcp, firefox, …)</span></div></div>
     <div class="card frag"><span class="tag">credentials.create({ signCount })</span>
@@ -1124,7 +1077,7 @@ const all = config.projects.map(p =&gt; p.name);</code></pre>
 </section>
 
 <!-- 23 · breaking -->
-<section class="slide brk" data-files="tests/04-breaking-changes.spec.ts|tests/03-new-apis.spec.ts">
+<section class="slide brk" data-files="tests/breaking-changes/with-1-64/breaking-changes.spec.ts|tests/snapshots/with-1-64/webp.spec.ts">
   <div class="eyebrow">BREAKING CHANGES ⚠️</div>
   <h2>4 <span dir="ltr">Breaking Changes</span> — כדאי לבדוק לפני שמשדרגים</h2>
   <div class="grid g2">
@@ -1133,18 +1086,18 @@ const all = config.projects.map(p =&gt; p.name);</code></pre>
     <div class="card frag"><h3>📸 <span dir="ltr">--update-snapshots=missing</span></h3><p>טסט שרק יוצר snapshot חסר עובר עכשיו בהצלחה. המצב הרגיל נקרא מעכשיו <code>'default'</code>.</p></div>
     <div class="card frag"><h3>⚛️ JSX בטסטים</h3><p>JSX בקבצי הטסט מתקמפל עכשיו לפי <code>tsconfig.json</code>, כולל ההגדרות <code>jsx</code> ו-<code>jsxImportSource</code>. ברירת המחדל היא <span dir="ltr">automatic runtime</span> של <code>react/jsx-runtime</code>.</p></div>
   </div>
-  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים ב-04-breaking-changes.spec.ts. בדמו: הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי.</aside>
+  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים ב-tests/breaking-changes/with-1-64/breaking-changes.spec.ts. בדמו: הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי.</aside>
 </section>
 
 <!-- 24 · breaking code -->
-<section class="slide" data-files="tests/04-breaking-changes.spec.ts|demo-app/public/widgets.html">
-  <div class="eyebrow">tests/04-breaking-changes.spec.ts</div>
+<section class="slide" data-files="tests/breaking-changes/with-1-64/breaking-changes.spec.ts|demo-app/public/widgets.html">
+  <div class="eyebrow">tests/breaking-changes/with-1-64/breaking-changes.spec.ts</div>
   <h2>איך זה נראה בטסט</h2>
   <div class="grid g2">
     <div><span class="tag warn">screen</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> <span dir="ltr">window.screen</span> היה בגודל ה-viewport, <span dir="ltr">1280×720</span>.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> <span dir="ltr">window.screen</span> היה בגודל ה-viewport, <span dir="ltr">1280×720</span>.</p>
       <p class="ba-line"><span class="tag he">ב-1.64</span> הוא מגיע מהגדרות המכשיר, <span dir="ltr">1920×1080</span>. כדי לחזור להתנהגות הקודמת: <code>screen: undefined</code>.</p>
-      <pre class="code" data-title="tests/04-breaking-changes.spec.ts" data-src="tests/04-breaking-changes.spec.ts#6-8,15-19"><code>await page.goto('/widgets');
+      <pre class="code" data-title="tests/breaking-changes/with-1-64/breaking-changes.spec.ts" data-src="tests/breaking-changes/with-1-64/breaking-changes.spec.ts#6-8,15-19"><code>await page.goto('/widgets');
 await expect(page.locator('#screen-size')).toHaveText('1920×1080');
 await expect(page.locator('#viewport-size')).toHaveText('1280×720');
 // …
@@ -1154,9 +1107,9 @@ const context = await browser.newContext({
   baseURL,
 });</code></pre></div>
     <div><span class="tag warn">hidden iframe</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.63</span> כפתור בתוך iframe מוסתר נחשב <b>visible</b>.</p>
+      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> כפתור בתוך iframe מוסתר נחשב <b>visible</b>.</p>
       <p class="ba-line"><span class="tag he">ב-1.64</span> הוא נחשב <b>hidden</b>.</p>
-      <pre class="code" data-title="tests/04-breaking-changes.spec.ts" data-src="tests/04-breaking-changes.spec.ts#29-35"><code>const chatButton = page
+      <pre class="code" data-title="tests/breaking-changes/with-1-64/breaking-changes.spec.ts" data-src="tests/breaking-changes/with-1-64/breaking-changes.spec.ts#29-35"><code>const chatButton = page
   .frameLocator('#hidden-frame')
   .getByRole('button', { name: 'Chat with us' });
 
@@ -1264,6 +1217,29 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
     pre.prepend(b);
   });
 
+  // ---------- copy button next to every terminal command ----------
+  document.querySelectorAll('.term').forEach(term => {
+    term.innerHTML = term.innerHTML.split('\n').map(line => {
+      if (!line.trimStart().startsWith('<span class="pr">$</span>')) return line;
+      const tmp = document.createElement('div');
+      tmp.innerHTML = line;
+      tmp.querySelectorAll('.cm').forEach(c => c.remove()); // comments are not part of the command
+      const cmd = tmp.textContent.replace(/^\s*\$\s*/, '').trim();
+      const attr = cmd.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+      return `${line}<button class="cmd-copy" title="העתקה לטרמינל" data-cmd="${attr}">⧉</button>`;
+    }).join('\n');
+  });
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.cmd-copy');
+    if (!btn) return;
+    e.stopPropagation();
+    navigator.clipboard?.writeText(btn.dataset.cmd).then(() => {
+      btn.textContent = '✓';
+      setTimeout(() => (btn.textContent = '⧉'), 1200);
+    });
+    btn.blur();
+  });
+
   // ---------- test-file references (bottom corner of a slide) ----------
   document.querySelectorAll('.slide[data-files]').forEach(slide => {
     const box = document.createElement('div');
@@ -1271,8 +1247,8 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
     // What each file is, so viewers know where to look in the repo
     const kindOf = f =>
       f.startsWith('>') ? ['cmd', 'הרצה'] :
-      f.startsWith('tests/before-1.64/') ? ['before', 'טסט · עד 1.63'] :
-      f === 'tests/global-setup.ts' ? ['config', 'global setup'] :
+      f.includes('/before-1-64/') ? ['before', 'טסט · עד 1.64'] :
+      f.endsWith('global-setup.ts') ? ['config', 'global setup'] :
       f.startsWith('tests/') ? ['test', f.endsWith('/') ? 'טסטים' : 'טסט'] :
       f.startsWith('demo-app/public/') ? ['page', f.endsWith('/') ? 'דפי הדמו' : 'דף בדמו'] :
       f === 'demo-app/server.js' ? ['server', 'שרת הדמו'] :
@@ -1291,7 +1267,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
       chip.className = `fr-chip k-${cls}`;
       chip.innerHTML = `<span class="fr-kind"></span><span class="fr-path"></span>`;
       chip.querySelector('.fr-kind').textContent = label;
-      chip.querySelector('.fr-path').textContent = f;
+      chip.querySelector('.fr-path').textContent = f.replace(/^tests\//, ''); // the label already says it's a test
       box.append(chip);
     });
     slide.append(box);
@@ -1436,7 +1412,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
-  // Same rules as tests/order-demo/cart-order.spec.ts: #1 empties the cart and adds an apple, #2 adds a banana
+  // Same rules as tests/shuffle/with-1-64/cart-order.spec.ts: #1 empties the cart and adds an apple, #2 adds a banana
   function cartAt(order, id) {
     let cart = [];
     for (const t of order.slice(0, order.indexOf(id))) {

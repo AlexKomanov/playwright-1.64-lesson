@@ -29,39 +29,38 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 |---|---|---|---|
 | 0:00–1:30 | 1–2 | פתיחה ומבנה השיעור | — |
 | 1:30–3:30 | 3–6 | התקנה ושדרוג (ולמה צריך להוריד דפדפנים), הורדת הריפו, ואפליקציית הדמו PW Shop | `git clone`, `npm install`, `npm run demo`, לעבור על 3 העמודים |
-| 3:30–6:30 | 7–10 | **`locator.within()`** | `npx playwright test 01-within --headed` |
+| 3:30–6:30 | 7–10 | **`locator.within()`** | `npx playwright test within --headed` |
 | 6:30–7:45 | 11–12 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
-| 7:45–9:45 | 13–14 | **`--shuffle`** | `npm run test:shuffle` כמה פעמים, שחזור עם `npm run test:shuffle -- <seed>`, ואז `npm run test:shuffle:beforeall` להשוואה |
-| 9:45–12:00 | 15–18 | **Test Locks** (`describe.configure({ lock })`) | להוריד את ה-lock משני קבצי 02-locks ולהריץ, ואז להחזיר |
-| 12:00–13:00 | 19 | WebP ו-`--update-snapshots=missing` | `npx playwright test 03-new-apis -g banner --update-snapshots=missing` |
-| 13:00–15:30 | 20–21 | **הקלטת וידאו** | `npm run test:video` ולפתוח את `video.webm` מ-test-results |
-| 15:30–20:30 | 22–25 | **WebMCP** | `npm run test:webmcp` |
-| 20:30–23:30 | 26–28 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test 03-new-apis` |
-| 23:30–26:45 | 29–30 | **4 Breaking Changes** | `npx playwright test 04-breaking-changes` |
-| 26:45–28:30 | 31–33 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
+| 7:45–9:45 | 13–14 | **`--shuffle`** | `npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle` כמה פעמים, שחזור עם ה-seed, ואז `cart-order-beforeall` להשוואה |
+| 9:45–11:30 | 15–16 | **Test Locks** (`describe.configure({ lock })`) | `npx playwright test without-lock --project=locks --workers=2` ואז `with-lock` |
+| 11:30–12:30 | 17 | WebP ו-`--update-snapshots=missing` | `npx playwright test snapshots --update-snapshots=missing` |
+| 12:30–15:00 | 18–19 | **הקלטת וידאו** | `npx playwright test --project=video` ולפתוח את `video.webm` מ-test-results |
+| 15:00–20:00 | 20–23 | **WebMCP** | `npx playwright test --project=webmcp` |
+| 20:00–23:00 | 24–26 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test get-by-ref include-shadow request-cookies` |
+| 23:00–26:15 | 27–28 | **4 Breaking Changes** | `npx playwright test breaking-changes` |
+| 26:15–28:00 | 29–31 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
 
 ## מפת קבצים לפי פיצ'ר
 
-לכל פיצ'ר שהיה לו קודם תחליף יש גם גרסת "לפני 1.64" שרצה: `tests/before-1.64/` ופרויקט `video-before`. WebMCP, `getByRef` ו-`signCount` הם APIs חדשים לגמרי.
+לכל חידוש יש תיקייה ב-`tests/` עם `with-1-64/`, ולכל חידוש שהיה לו קודם תחליף גם `before-1-64/` עם הקוד הישן שרץ (within, getByRef, includeShadow, cookies). לוידאו יש פרויקט `video-before`. WebMCP ו-`signCount` הם APIs חדשים לגמרי.
 
 | פיצ'ר | קובץ |
 |---|---|
-| `locator.within()` | `tests/01-within.spec.ts` |
+| `locator.within()` | `tests/within/` |
 | `default: false`, video `fps` + `style`, WebP | `playwright.config.ts` |
-| `fullConfig.filteredProjects` | `tests/global-setup.ts` |
-| Test locks לקובץ שלם + `exclusive` | `tests/02-locks-a.spec.ts`, `tests/02-locks-b.spec.ts` |
-| כמה זמן lock על קובץ תופס | `tests/lock-scope/` (פרויקט `lock-scope`, `npm run test:lock-scope:mixed` / `:split`) |
-| `--shuffle` | `tests/order-demo/cart-order.spec.ts` ו-`tests/order-demo/cart-order-beforeall.spec.ts` (פרויקט `order-demo`) |
+| `fullConfig.filteredProjects` | `tests/filtered-projects/` |
+| Test locks לקובץ שלם | `tests/locks/` (פרויקט `locks`) |
+| `--shuffle` | `tests/shuffle/` (פרויקט `shuffle`) |
 | WebMCP (צד העמוד) | `demo-app/public/index.html` |
-| WebMCP (צד הטסט) | `tests/webmcp.spec.ts` (פרויקט `webmcp`) |
-| `getByRef`, `includeShadow`, cookies של APIRequestContext, צילום WebP | `tests/03-new-apis.spec.ts` |
-| `screen` מתיאור המכשיר, iframe מוסתר | `tests/04-breaking-changes.spec.ts` |
+| WebMCP (צד הטסט) | `tests/webmcp/` (פרויקט `webmcp`) |
+| `getByRef`, `includeShadow`, cookies של APIRequestContext, צילום WebP | `tests/get-by-ref/`, `tests/include-shadow/`, `tests/request-cookies/`, `tests/snapshots/` |
+| `screen` מתיאור המכשיר, iframe מוסתר | `tests/breaking-changes/` |
 
 ## מה נבדק בפועל (23 באוקטובר 2026, עם @playwright/test 1.64.1 על macOS)
 - `npx playwright test`: 17/17 עברו (פרויקטים `chromium` ו-`webmcp`).
 - `--project=firefox`: 3/3 עברו. `--project=video`: 3/3 עברו ונוצרו קבצי `video.webm`.
 - `--shuffle` (4 טסטים בכל קובץ): בלי `beforeAll` 9 מתוך 10 ריצות נכשלו, ו-seed `519956039` משחזר את הכישלון. עם `beforeAll` משותף 10 מתוך 10 ריצות עברו (27 באוקטובר 2026).
-- Locks: בלי ה-lock הטסטים של 02-locks נכשלו ב-3 מתוך 3 ריצות. עם ה-lock עברו 3 מתוך 3.
+- Locks: בלי lock אחד משני הטסטים נכשל בכל אחת מ-5 ריצות (2 workers). עם lock שניהם עברו בכל 5 הריצות. גם בלי שום המתנה בקוד ההתנגשות קורית, כי שני הטסטים מתחילים באותו רגע.
 - lock על קובץ שלם (3 ריצות לכל גרסה, אותן תוצאות): כשהטסטים האיטיים באותו קובץ נעול, הטסט האחר עם אותו lock חיכה 5.4 שניות (ריצה 6.6s). אחרי פיצול לשני קבצים ה-lock תפוס כשנייה (ריצה 4.6s).
 - צילום המסך נשמר כ-`promo-banner-looks-right-1-chromium-darwin.webp`. על Linux/Windows הוא ייווצר מחדש בריצה הראשונה עם `--update-snapshots=missing`.
 
