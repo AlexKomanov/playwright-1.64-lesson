@@ -318,6 +318,36 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .aria-modes .yaml { white-space: pre; font-size: 13.5px; padding: 10px 16px; margin-top: 6px; }
 .aria-code { margin-top: 14px; align-items: start; }
 .aria-code .code { font-size: 13px; }
+/* shadow + cookies slide */
+.api2 { display: grid; gap: 14px; }
+.api2 .card { padding: 14px 20px; }
+.api2-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: center; margin-top: 6px; }
+.api2-text p { font-size: 16px; margin: 6px 0; color: #c9d8d0; }
+.api2-text .tag { margin: 0 0 0 4px; vertical-align: 1px; }
+.shadow-demo .sd-label { font-family: var(--mono); font-size: 13px; color: var(--accent); direction: ltr; text-align: left; margin-bottom: 4px; }
+.sd-html { min-height: 140px; font-family: var(--mono); font-size: 14px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 12px 16px; text-align: left; white-space: pre; color: #e4efe9; }
+.sd-inner { display: block; max-height: 0; opacity: 0; overflow: hidden; margin-left: 18px; color: var(--accent); background: rgba(69,224,111,.08); border-left: 3px solid var(--accent); padding-left: 10px; transition: max-height .7s ease, opacity .5s ease .2s, margin .5s; }
+.sd-note { font-size: 14px; margin-top: 6px; color: var(--dim); }
+.sd-after { display: none; }
+.slide[data-k="1"] .sd-inner, .slide[data-k="2"] .sd-inner, .slide[data-k="3"] .sd-inner { max-height: 120px; opacity: 1; margin: 4px 0 4px 18px; }
+.slide[data-k="1"] .sd-before, .slide[data-k="2"] .sd-before, .slide[data-k="3"] .sd-before { display: none; }
+.slide[data-k="1"] .sd-after, .slide[data-k="2"] .sd-after, .slide[data-k="3"] .sd-after { display: inline; }
+.jar-demo { display: grid; grid-template-columns: 180px 1fr; gap: 14px; align-items: center; }
+.jar { position: relative; height: 112px; border: 2px solid var(--line); border-top-width: 6px; border-radius: 10px 10px 22px 22px; background: rgba(255,255,255,.03); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.jar-title { position: absolute; top: 4px; font: 11px var(--mono); color: var(--dim); }
+.cookie { white-space: nowrap; font: 12px var(--mono); color: var(--warn); background: rgba(255,181,71,.12); border: 1px solid rgba(255,181,71,.5); border-radius: 8px; padding: 3px 7px; opacity: 0; transform: translateY(-30px); transition: opacity .4s, transform .5s cubic-bezier(.3,1.4,.6,1); }
+.jar-empty { font-size: 13px; color: var(--dim); }
+.slide[data-k="2"] .cookie { opacity: 1; transform: none; }
+.slide[data-k="2"] .jar-empty { display: none; }
+.slide[data-k="3"] .cookie { opacity: 0; transform: translateY(-30px); }
+.jar-steps { font: 13px var(--mono); display: grid; gap: 5px; text-align: left; }
+.js { display: flex; justify-content: space-between; gap: 10px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 5px 10px; transition: opacity .4s; }
+.js .call { color: #e4efe9; }
+.js .res.bad { color: var(--bad); }
+.js .res.ok { color: var(--accent); }
+.js1, .js2 { opacity: .12; }
+.slide[data-k="2"] .js1, .slide[data-k="3"] .js1, .slide[data-k="3"] .js2 { opacity: 1; }
+.slide[data-k="2"] .js0, .slide[data-k="3"] .js0, .slide[data-k="3"] .js1 { opacity: .45; }
 .sub-done { opacity: 0; transition: opacity .4s .4s; color: #1b7a33; font-weight: 700; font-size: 14px; }
 
 /* ---------- breaking ---------- */
@@ -1114,39 +1144,49 @@ await expect(page.locator('#subscribed'))
 <!-- 22 · more APIs: shadow + cookies -->
 <section class="slide" data-files="tests/include-shadow/|tests/request-cookies/">
   <div class="eyebrow">MORE NEW APIs</div>
-  <h2>עוד APIs חדשים: Shadow DOM ו-cookies</h2>
-  <div class="api-rows">
-    <div class="card frag"><span class="tag">page.content({ includeShadow })</span>
-      <div class="ba">
-        <div><span class="tag he dimtag">עד 1.64</span><pre class="code" data-title="tests/include-shadow/before-1-64/include-shadow.spec.ts" data-src="tests/include-shadow/before-1-64/include-shadow.spec.ts#7-10"><code>const html = await page.content();
-expect(html).not.toContain('shadowrootmode'); // no shadow root in the HTML
-await expect(page.locator('promo-banner'))
-  .toContainText('Free shipping on orders over $50');</code></pre></div>
-        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/include-shadow/with-1-64/include-shadow.spec.ts" data-src="tests/include-shadow/with-1-64/include-shadow.spec.ts#8-9,14-15"><code>const plain = await page.content();
-const withShadow = await page.content({ includeShadow: true });
-// …
-expect(withShadow).toContain('shadowrootmode="open"');
-expect(withShadow).toContain('Free shipping on orders over $50');</code></pre></div>
+  <h2>עוד שני APIs חדשים: Shadow DOM ו-cookies</h2>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <div class="api2">
+    <div class="card">
+      <span class="tag" dir="ltr">page.content({ includeShadow: true })</span>
+      <div class="api2-row">
+        <div class="api2-text">
+          <p><b>Shadow DOM</b> הוא רכיב שסוגר את התוכן שלו בתוך "קופסה" משלו, מופרדת משאר הדף. בדמו, הבאנר <code dir="ltr">&lt;promo-banner&gt;</code> בנוי כך.</p>
+          <p><code dir="ltr">page.content()</code> מחזיר את ה-HTML של הדף. <span class="tag he dimtag">עד 1.64</span> הקופסה יצאה <b>ריקה</b>. <span class="tag he">ב-1.64</span> עם <code dir="ltr">includeShadow: true</code> מקבלים גם את מה שבתוכה.</p>
+        </div>
+        <div class="shadow-demo">
+          <div class="sd-label"><span class="sd-before">page.content()</span><span class="sd-after">page.content({ includeShadow: true })</span></div>
+          <div class="sd-html" dir="ltr">&lt;promo-banner&gt;<div class="sd-inner">&lt;template shadowrootmode="open"&gt;
+  &lt;style&gt;…&lt;/style&gt;
+  &lt;p&gt;Free shipping on orders over $50&lt;/p&gt;
+&lt;/template&gt;</div>&lt;/promo-banner&gt;</div>
+          <div class="sd-note"><span class="sd-before">הקופסה ריקה: הטקסט לא נמצא ב-HTML</span><span class="sd-after">התוכן של הקופסה נכנס ל-HTML</span></div>
+        </div>
       </div>
-      <p>קודם ה-shadow root לא נכנס ל-HTML, ואת הטקסט קראנו דרך לוקייטור. עכשיו הוא חלק מה-HTML.</p></div>
-    <div class="card frag"><span class="tag">APIRequestContext cookies</span>
-      <div class="ba">
-        <div><span class="tag he dimtag">עד 1.64</span><pre class="code" data-title="tests/request-cookies/before-1-64/request-cookies.spec.ts" data-src="tests/request-cookies/before-1-64/request-cookies.spec.ts#6-9"><code>const res = await request.get('/api/whoami', {
-  headers: { Cookie: 'session-id=alex' },
-});
-expect(await res.json()).toEqual({ user: 'alex' });</code></pre></div>
-        <div><span class="tag he">ב-1.64</span><pre class="code" data-title="tests/request-cookies/with-1-64/request-cookies.spec.ts" data-src="tests/request-cookies/with-1-64/request-cookies.spec.ts#8-15"><code>await request.addCookies([
-  { name: 'session-id', value: 'alex', url: baseURL! },
-]);
-const me = await (await request.get('/api/whoami')).json();
-expect(me).toEqual({ user: 'alex' });
-console.log(await request.cookies(baseURL!));
-
-await request.clearCookies({ name: 'session-id' });</code></pre></div>
+    </div>
+    <div class="card">
+      <span class="tag" dir="ltr">request.addCookies() · cookies() · clearCookies()</span>
+      <div class="api2-row">
+        <div class="api2-text">
+          <p><code dir="ltr">request</code> שולח בקשות ישר לשרת, בלי דפדפן, ויש לו "צנצנת" cookies משלו. <span class="tag he dimtag">עד 1.64</span> לא היה אפשר לשים בה cookie בעצמנו, אז הוספנו header של <code dir="ltr">Cookie</code> לכל בקשה בנפרד.</p>
+          <p><span class="tag he">ב-1.64</span> שמים cookie פעם אחת, וכל הבקשות הבאות שולחות אותו. אפשר גם לקרוא את מה שבצנצנת ולמחוק ממנה.</p>
+        </div>
+        <div class="jar-demo">
+          <div class="jar"><div class="jar-title">cookies</div><div class="cookie" dir="ltr">🍪 session-id=alex</div><div class="jar-empty">ריקה</div></div>
+          <div class="jar-steps" dir="ltr">
+            <div class="js js0"><span class="call">GET /api/whoami</span><span class="res bad">401 not logged in</span></div>
+            <div class="js js1"><span class="call">addCookies(session-id=alex)</span></div>
+            <div class="js js1"><span class="call">GET /api/whoami</span><span class="res ok">{ user: 'alex' }</span></div>
+            <div class="js js2"><span class="call">clearCookies({ name: 'session-id' })</span></div>
+            <div class="js js2"><span class="call">GET /api/whoami</span><span class="res bad">401 not logged in</span></div>
+          </div>
+        </div>
       </div>
-      <p>קודם שלחנו header של Cookie בכל בקשה. עכשיו ל-<code>request</code> יש מתודות cookies כמו ל-BrowserContext.</p></div>
+    </div>
   </div>
-  <aside class="notes" data-t="">שני הקבצים רצים: npx playwright test include-shadow request-cookies (כל אחד מריץ את התיקיות with-1-64 ו-before-1-64).</aside>
+  <aside class="notes" data-t="22:00 – 23:00">שתי האנימציות מבוססות על ריצה אמיתית על הדמו. page.content() מחזיר &lt;promo-banner&gt;&lt;/promo-banner&gt; ריק; עם includeShadow מקבלים &lt;template shadowrootmode="open"&gt; עם הטקסט. /api/whoami מחזיר 401 בלי cookie, { user: 'alex' } אחרי addCookies, ושוב 401 אחרי clearCookies. הקוד המלא: tests/include-shadow/ ו-tests/request-cookies/ (with-1-64 ו-before-1-64). לחיצה 1: הקופסה נפתחת. לחיצה 2: addCookies. לחיצה 3: clearCookies.</aside>
 </section>
 
 <!-- 22b · more APIs: filteredProjects + signCount -->
