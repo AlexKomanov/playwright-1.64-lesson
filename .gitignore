@@ -7,3 +7,4 @@ playwright/.cache/
 .claude/
 CLAUDE.md
 scripts/
+.playwright-cli/

@@ -142,6 +142,9 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .wm-call { font-size: 15px; padding: 32px 16px 12px; margin: 8px 0; }
 .wm-why { border-color: var(--accent); background: rgba(69,224,111,.08); color: #dcefe3; }
 .wm-why b { color: var(--accent); }
+.wm-run { margin-top: 14px; align-items: start; }
+.wm-run .term { font-size: 13px; padding: 30px 14px 10px; margin-top: 4px; }
+.wm-run .ba-line { font-size: 15px; }
 .snapfiles { list-style: none; margin: 6px 0 8px; padding: 8px 12px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; font-size: 14px; }
 .snapfiles li { display: flex; align-items: center; gap: 10px; padding: 4px 0; color: #c9d8d0; }
 .snapfiles [dir="ltr"] { font-family: var(--mono); font-size: 12.5px; }
@@ -312,6 +315,9 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .slide[data-k="1"] .yaml .target, .slide[data-k="2"] .yaml .target { background: rgba(255,181,71,.15); outline: 1px solid rgba(255,181,71,.5); border-radius: 6px; }
 .slide[data-k="2"] .sub-btn { box-shadow: 0 0 0 4px rgba(69,224,111,1), 0 0 26px rgba(69,224,111,.85); }
 .slide[data-k="2"] .sub-done { opacity: 1; }
+.aria-modes .yaml { white-space: pre; font-size: 13.5px; padding: 10px 16px; margin-top: 6px; }
+.aria-code { margin-top: 14px; align-items: start; }
+.aria-code .code { font-size: 13px; }
 .sub-done { opacity: 0; transition: opacity .4s .4s; color: #1b7a33; font-weight: 700; font-size: 14px; }
 
 /* ---------- breaking ---------- */
@@ -1038,9 +1044,9 @@ test('switch theme to light', async ({ request }) =&gt; {
   },
   testMatch: '**/webmcp/**/*.spec.ts',
 },</code></pre>
-    <pre class="code" data-title="tests/webmcp/with-1-64/webmcp.spec.ts" data-src="tests/webmcp/with-1-64/webmcp.spec.ts#17-19,27-37"><code>const tools = await page.webmcp.tools();
-const names = tools.map(t =&gt; t.name).sort();
-expect(names).toEqual(['add_to_cart', 'get_cart', 'search_products']);
+    <pre class="code" data-title="tests/webmcp/with-1-64/webmcp.spec.ts" data-src="tests/webmcp/with-1-64/webmcp.spec.ts#17-19,23-33"><code>const tools = await page.webmcp.tools();
+const names = tools.map(t =&gt; t.name);
+expect(names).toContain('add_to_cart');
 // …
 const result = await page.webmcp.callTool('add_to_cart', {
   productId: 2,
@@ -1054,45 +1060,55 @@ expect(cart).toMatchObject({ totalItems: 2, totalPrice: 15 });
 // Don't trust the tool's own report only — check the visible UI and the backend too.
 await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
   </div>
-  <div class="term frag" style="margin-top:16px"><span class="pr">$</span> npx playwright test --project=webmcp
-<span class="pr">$</span> playwright-cli webmcp-list
-<span class="pr">$</span> playwright-cli webmcp-call search_catalog --params '{"query":"cats"}'</div>
-  <aside class="notes" data-t="18:30 – 21:00">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: רשימת הכלים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל.</aside>
+  <div class="grid g2 wm-run" style="grid-template-columns: 1fr 1.6fr">
+    <div class="frag">
+      <p class="ba-line"><b>מריצים את הטסטים:</b></p>
+      <div class="term"><span class="pr">$</span> npx playwright test --project=webmcp</div>
+    </div>
+    <div class="frag">
+      <p class="ba-line"><b dir="ltr">playwright-cli</b>: שולטים בדפדפן מהטרמינל, פקודה אחרי פקודה, בלי לכתוב טסט. נוח כדי לראות אילו כלים האתר חושף ולנסות אחד מהם לפני שכותבים טסט. את הדגל של WebMCP הוא קורא מ-<code dir="ltr">.playwright/cli.config.json</code> שבריפו:</p>
+      <div class="term"><span class="pr">$</span> npx @playwright/cli@latest open http://localhost:3164/
+<span class="pr">$</span> npx @playwright/cli@latest webmcp-list
+<span class="pr">$</span> npx @playwright/cli@latest webmcp-call search_products --params '{"query":"ban"}'</div>
+    </div>
+  </div>
+  <aside class="notes" data-t="18:30 – 21:00">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: הכלי add_to_cart קיים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל. playwright-cli (גרסה 0.1.23) קורא את הדגל של WebMCP מ-.playwright/cli.config.json שבריפו. webmcp-list מחזיר את 3 הכלים עם התיאור וה-schema, ו-webmcp-call search_products עם "ban" מחזיר את Banana (נבדק). close סוגר את הדפדפן.</aside>
 </section>
 
 <!-- 21 · getByRef -->
 <section class="slide" data-files="tests/get-by-ref/|demo-app/public/widgets.html">
   <div class="eyebrow">page.getByRef()</div>
   <h2>מה-snapshot של ה-AI ישר לאלמנט בדף</h2>
-  <div class="split" style="grid-template-columns: 1.5fr 1fr">
-    <div>
-      <div class="yaml">- textbox "Email" <span class="ref">[ref=e21]</span><br><span class="target">- button "Subscribe" <span class="ref">[ref=e22]</span></span><br>- iframe "Chat widget" <span class="ref">[ref=e23]</span></div>
-      <div class="frag" style="margin-top:12px"><span class="tag he">ב-1.64</span>
-        <pre class="code" data-title="tests/get-by-ref/with-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/with-1-64/get-by-ref.spec.ts#8-14"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
-// e.g.  - button "Subscribe" [ref=e23]
+  <p class="snap-why"><code dir="ltr">page.ariaSnapshot()</code> מחזיר את הדף כטקסט: רשימה של האלמנטים לפי תפקיד ושם, כמו שקורא מסך רואה אותם. במצב <code dir="ltr">'ai'</code> זה הפורמט שמותאם לסוכני AI: לכל אלמנט יש גם <b>מזהה קצר</b>, למשל <code dir="ltr">[ref=e27]</code>. הסוכן אומר "תלחץ על e27", וב-1.64 אפשר להפוך את המזהה הזה ללוקייטור.</p>
+  <div class="grid g2 aria-modes">
+    <div><span class="tag dimtag" dir="ltr">ariaSnapshot()</span>
+      <div class="yaml">- heading "Newsletter" [level=2]
+- textbox "Email":
+  - /placeholder: you@example.com
+- button "Subscribe"</div></div>
+    <div><span class="tag" dir="ltr">ariaSnapshot({ mode: 'ai' })</span>
+      <div class="yaml">- heading "Newsletter" [level=2] <span class="ref">[ref=e24]</span>
+- generic <span class="ref">[ref=e25]</span>:
+  - textbox "Email" <span class="ref">[ref=e26]</span>:
+    - /placeholder: you@example.com
+<span class="target">  - button "Subscribe" <span class="ref">[ref=e27]</span> [cursor=pointer]</span></div></div>
+  </div>
+  <div class="grid g2 aria-code">
+    <div class="frag"><span class="tag he">ב-1.64</span>
+      <pre class="code" data-title="tests/get-by-ref/with-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/with-1-64/get-by-ref.spec.ts#8-14"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
+// e.g.  - button "Subscribe" [ref=e27] [cursor=pointer]
 const ref = snapshot
   .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
 console.log(`Subscribe button has ref ${ref}`);
 
 await page.getByRef(ref).click();</code></pre></div>
-      <div class="frag" style="margin-top:10px"><span class="tag he dimtag">עד 1.64</span>
-        <pre class="code" data-title="tests/get-by-ref/before-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/before-1-64/get-by-ref.spec.ts#7-9"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
+    <div class="frag"><span class="tag he dimtag">עד 1.64</span>
+      <pre class="code" data-title="tests/get-by-ref/before-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/before-1-64/get-by-ref.spec.ts#7-9"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
 await expect(page.locator('#subscribed'))
   .toHaveText('Subscribed!');</code></pre>
-        <p class="ba-note">ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי role ושם.</p></div>
-    </div>
-    <div class="mock">
-      <div class="bar-top"><b>PW</b>Shop<span class="url">localhost:3164/widgets</span></div>
-      <div class="body" style="min-height:150px">
-        <div style="font-weight:700;margin-bottom:10px">Newsletter</div>
-        <span class="field" style="display:inline-block;width:180px">you@example.com</span>
-        <span class="btn sub-btn">Subscribe</span>
-        <span class="sub-done">Subscribed!</span>
-      </div>
-    </div>
+      <p class="ba-note">אין מזהים, אז ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי תפקיד ושם.</p></div>
   </div>
-  <p class="frag dim" style="margin-top:12px;font-size:15px">את ה-ref מקבלים מ-<code>ariaSnapshot</code> במצב <code>'ai'</code>. המספרים בשקופית הם רק דוגמה.</p>
-  <aside class="notes" data-t="21:00 – 22:00">שימושי במיוחד כשסוכן AI כבר "ראה" את העמוד דרך snapshot והחזיר ref — עכשיו אפשר להשתמש בו ישירות בקוד.</aside>
+  <aside class="notes" data-t="21:00 – 22:00">שני ה-snapshots הם קטע אמיתי מ-/widgets (החלק של Newsletter). ההגדרה מהתיעוד של 1.64: mode 'ai' "returns a snapshot optimized for AI consumption: including element references like [ref=e2] and snapshots of iframes". המספרים תלויים בדף, ולכן הטסט מוציא את ה-ref מה-snapshot ולא כותב אותו קבוע. שימושי כשסוכן AI כבר "ראה" את העמוד והחזיר ref.</aside>
 </section>
 
 <!-- 22 · more APIs: shadow + cookies -->

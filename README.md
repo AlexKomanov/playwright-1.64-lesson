@@ -43,6 +43,8 @@ npx playwright test cart-order-beforeall --project=shuffle --workers=1 --shuffle
 npx playwright test without-lock --project=locks --workers=2   # בלי lock: אחד הטסטים נכשל
 npx playwright test with-lock --project=locks --workers=2      # עם lock: שניהם עוברים
 npx playwright test --project=webmcp             # page.webmcp (Chromium עם --enable-features=WebMCP)
+npx @playwright/cli@latest open http://localhost:3164/   # playwright-cli: הדפדפן מהטרמינל (הדגל של WebMCP נקרא מ-.playwright/cli.config.json)
+npx @playwright/cli@latest webmcp-list            # אילו כלי WebMCP הדף חושף
 npx playwright test --project=video              # וידאו ב-60fps עם עיצוב CSS
 npx playwright test --project=video-before       # אותה הקלטה עם האפשרות של לפני 1.64 (fontSize)
 npx playwright test before-1-64                  # רק הקוד של לפני 1.64
