@@ -1227,20 +1227,20 @@ await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
   </div>
   <div class="grid g2 aria-code">
     <div class="frag"><span class="tag he">ב-1.64</span>
-      <pre class="code" data-title="tests/get-by-ref/with-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/with-1-64/get-by-ref.spec.ts#8-14"><code>const snapshot = await page.ariaSnapshot({ mode: 'ai' });
-// e.g.  - button "Subscribe" [ref=e27] [cursor=pointer]
-const ref = snapshot
-  .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
-console.log(`Subscribe button has ref ${ref}`);
+      <pre class="code" data-title="tests/get-by-ref/with-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/with-1-64/get-by-ref.spec.ts#8-14"><code>// 1. The 'ai' snapshot gives every element a ref
+const snapshot = await page.ariaSnapshot({ mode: 'ai' });
+expect(snapshot).toContain('button "Subscribe" [ref=e27]');
 
-await page.getByRef(ref).click();</code></pre></div>
+// 2. Use that ref as a locator (works only after a snapshot was taken)
+await page.getByRef('e27').click();
+await expect(page.locator('#subscribed')).toHaveText('Subscribed!');</code></pre></div>
     <div class="frag"><span class="tag he dimtag">עד 1.64</span>
       <pre class="code" data-title="tests/get-by-ref/before-1-64/get-by-ref.spec.ts" data-src="tests/get-by-ref/before-1-64/get-by-ref.spec.ts#7-9"><code>await page.getByRole('button', { name: 'Subscribe' }).click();
 await expect(page.locator('#subscribed'))
   .toHaveText('Subscribed!');</code></pre>
       <p class="ba-note">אין מזהים, אז ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי תפקיד ושם.</p></div>
   </div>
-  <aside class="notes" data-t="21:00 – 22:00">שני ה-snapshots הם קטע אמיתי מ-/widgets (החלק של Newsletter). ההגדרה מהתיעוד של 1.64: mode 'ai' "returns a snapshot optimized for AI consumption: including element references like [ref=e2] and snapshots of iframes". המספרים תלויים בדף, ולכן הטסט מוציא את ה-ref מה-snapshot ולא כותב אותו קבוע. שימושי כשסוכן AI כבר "ראה" את העמוד והחזיר ref.</aside>
+  <aside class="notes" data-t="21:00 – 22:00">שני ה-snapshots הם קטע אמיתי מ-/widgets (החלק של Newsletter). ההגדרה מהתיעוד של 1.64: mode 'ai' "returns a snapshot optimized for AI consumption: including element references like [ref=e2] and snapshots of iframes". בדקנו: בדף הזה ה-ref של Subscribe הוא תמיד e27 (3 ריצות), ו-getByRef("e27") בלי snapshot לפני כן נכשל ב-timeout. ה-toContain בטסט מוודא שה-ref עדיין e27, כך ששינוי בדף ייתן שגיאה ברורה. שימושי כשסוכן AI כבר "ראה" את העמוד והחזיר ref.</aside>
 </section>
 
 <!-- 22 · more APIs: shadow + cookies -->

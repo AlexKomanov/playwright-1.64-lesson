@@ -5,12 +5,11 @@ import { test, expect } from '@playwright/test';
 test('getByRef: click the element an AI snapshot pointed at', async ({ page }) => {
   await page.goto('/widgets');
 
+  // 1. The 'ai' snapshot gives every element a ref
   const snapshot = await page.ariaSnapshot({ mode: 'ai' });
-  // e.g.  - button "Subscribe" [ref=e27] [cursor=pointer]
-  const ref = snapshot
-    .match(/button "Subscribe" \[ref=(\w+)\]/)![1];
-  console.log(`Subscribe button has ref ${ref}`);
+  expect(snapshot).toContain('button "Subscribe" [ref=e27]');
 
-  await page.getByRef(ref).click();
+  // 2. Use that ref as a locator (works only after a snapshot was taken)
+  await page.getByRef('e27').click();
   await expect(page.locator('#subscribed')).toHaveText('Subscribed!');
 });
