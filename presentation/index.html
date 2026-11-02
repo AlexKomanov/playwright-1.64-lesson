@@ -136,12 +136,15 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .snap-modes .term { font-size: 14px; padding: 30px 16px 12px; margin: 6px 0; }
 .ci-tip { margin-top: 16px; padding: 14px 20px; border: 2px solid var(--warn); border-radius: 14px; background: rgba(255,181,71,.1); font-size: 18px; color: #f3e6d0; }
 .ci-tip b { color: var(--warn); }
-.wm-compare .card { padding: 18px 22px; font-size: 17px; }
-.wm-compare .card p { margin: 10px 0; }
+.wm-compare .card { padding: 12px 20px; font-size: 16px; }
+.wm-compare .card p { margin: 6px 0; }
 .wm-steps { margin: 6px 0; padding-inline-start: 22px; line-height: 1.8; color: #c9d8d0; }
 .wm-call { font-size: 15px; padding: 32px 16px 12px; margin: 8px 0; }
 .wm-why { border-color: var(--accent); background: rgba(69,224,111,.08); color: #dcefe3; }
 .wm-why b { color: var(--accent); }
+.wm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: center; margin-top: 12px; padding: 12px 20px; font-size: 15.5px; color: #c9d8d0; }
+.wm-list .term { font-size: 12.5px; padding: 28px 14px 10px; margin: 0; white-space: pre; }
+.wm-list b { color: #fff; }
 .wm-run { margin-top: 14px; align-items: start; }
 .wm-run .term { font-size: 13px; padding: 30px 14px 10px; margin-top: 4px; }
 .wm-run .ba-line { font-size: 15px; }
@@ -1086,8 +1089,15 @@ test('switch theme to light', async ({ request }) =&gt; {
       <p class="dim">תשובה מסודרת, בלי לנחש מהמסך.</p>
     </div>
   </div>
+  <div class="card frag wm-list">
+    <div><b>ואיך יודעים אילו כלים יש?</b> הדף רושם כל כלי בדפדפן עם <code dir="ltr">registerTool</code>, והדפדפן שומר רשימה. הסוכן מבקש את הרשימה ומקבל לכל כלי שם, תיאור ואיזה קלט הוא צריך. אנחנו רואים את אותה רשימה עם <code dir="ltr">playwright-cli webmcp-list</code> או בטסט עם <code dir="ltr">page.webmcp.tools()</code>:</div>
+    <div class="term" dir="ltr"><span class="out">Found 3 WebMCP tool(s).</span>
+- add_to_cart: Adds a product to the cart. Changes the cart contents.
+- get_cart [readOnly]: Returns the current cart
+- search_products [readOnly]: Search the catalog by product name</div>
+  </div>
   <div class="ci-tip frag wm-why"><b>ומה הקשר ל-Playwright?</b> אם האתר שלנו חושף כלים כאלה, צריך לבדוק שהם עובדים. ב-1.64 יש <code dir="ltr">page.webmcp</code>: מקבלים את רשימת הכלים של הדף וקוראים לכלי עם קלט קבוע, <b>בלי מודל AI בטסט</b>, כמו טסט ל-API. התכונה עדיין ניסיונית: ב-Chromium צריך את הדגל <code dir="ltr">--enable-features=WebMCP</code>.</div>
-  <aside class="notes" data-t="16:15 – 17:30">הדוגמה אמיתית: הכלי add_to_cart מוגדר ב-demo-app/public/index.html, והתוצאה { totalItems: 2, totalPrice: 15 } היא מה שהטסט ב-tests/webmcp/with-1-64/webmcp.spec.ts בודק. המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. ב-Playwright MCP הכלים של הדף מוצעים לסוכן כ-webmcp_&lt;tool&gt;. Firefox דרך prefs, WebKit בלי תמיכה. תיאורים ותוצאות של כלים מגיעים מהעמוד, ולכן Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
+  <aside class="notes" data-t="16:15 – 17:30">הדוגמה אמיתית: הכלי add_to_cart מוגדר ב-demo-app/public/index.html, והתוצאה { totalItems: 2, totalPrice: 15 } היא מה שהטסט ב-tests/webmcp/with-1-64/webmcp.spec.ts בודק. רשימת הכלים היא פלט אמיתי (מקוצר) של playwright-cli webmcp-list על הדמו. המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. ב-Playwright MCP הכלים של הדף מוצעים לסוכן כ-webmcp_&lt;tool&gt;. Firefox דרך prefs, WebKit בלי תמיכה. תיאורים ותוצאות של כלים מגיעים מהעמוד, ולכן Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
 </section>
 
 <!-- 19 · webmcp page code -->
