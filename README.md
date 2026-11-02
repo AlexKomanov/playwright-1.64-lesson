@@ -47,10 +47,16 @@ npx @playwright/cli@latest open http://localhost:3164/   # playwright-cli: הד�
 npx @playwright/cli@latest webmcp-list            # אילו כלי WebMCP הדף חושף
 ```
 
-בלי Playwright (macOS): פותחים Chrome עם הדגל בפרופיל נפרד, ובקונסול של DevTools מריצים `await document.modelContext.getTools()`:
+בלי Playwright: פותחים Chrome עם הדגל בפרופיל נפרד (בלי `--no-first-run` Chrome מציג מסך פתיחה ולא פותח את הדף), ובקונסול של DevTools מריצים `await document.modelContext.getTools()`:
 
 ```bash
-open -na "Google Chrome" --args --enable-features=WebMCP --user-data-dir=/tmp/chrome-webmcp http://localhost:3164/
+open -na "Google Chrome" --args --enable-features=WebMCP --user-data-dir=/tmp/chrome-webmcp --no-first-run http://localhost:3164/
+```
+
+ב-Windows (ב-cmd):
+
+```bat
+start chrome --enable-features=WebMCP --user-data-dir=%TEMP%\chrome-webmcp --no-first-run http://localhost:3164/
 ```
 
 ```bash
