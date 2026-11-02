@@ -404,6 +404,20 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .ok-c { color: var(--accent); }
 .v-old { color: var(--accent); } .v-new { color: var(--bad); display: none; }
 .slide[data-k="2"] .v-old { display: none; } .slide[data-k="2"] .v-new { display: inline; }
+.fr-table { display: grid; gap: 10px; margin-top: 6px; }
+.fr-row { display: grid; grid-template-columns: 290px 330px 1fr; gap: 20px; align-items: center; padding: 14px 20px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); opacity: .12; transition: opacity .45s, border-color .45s; }
+.fr-how { display: grid; gap: 4px; }
+.fr-how code { font-size: 15px; justify-self: start; }
+.fr-how span { font-size: 14px; color: var(--dim); }
+.fr-flow { display: flex; align-items: center; gap: 12px; font-size: 17px; }
+.fr-step { padding: 6px 12px; border-radius: 10px; background: rgba(255,255,255,.05); }
+.fr-arrow { color: var(--dim); }
+.fr-res { font-weight: 800; padding: 6px 12px; border-radius: 10px; }
+.fr-res.bad { color: var(--bad); background: rgba(255,92,108,.1); }
+.fr-res.ok { color: var(--accent); background: rgba(69,224,111,.12); }
+.fr-why { font-size: 15.5px; color: #c9d8d0; }
+.slide[data-k="1"] .fr1, .slide[data-k="2"] .fr1, .slide[data-k="2"] .fr2, .slide[data-k="3"] .fr1, .slide[data-k="3"] .fr2, .slide[data-k="3"] .fr3, .slide[data-k="4"] .fr-row { opacity: 1; }
+.slide[data-k="3"] .fr3, .slide[data-k="4"] .fr3 { border-color: var(--accent); box-shadow: 0 0 24px rgba(69,224,111,.18); }
 .sub-done { opacity: 0; transition: opacity .4s .4s; color: #1b7a33; font-weight: 700; font-size: 14px; }
 
 /* ---------- breaking ---------- */
@@ -932,39 +946,30 @@ test('switch theme to light', async ({ request }) =&gt; {
 <!-- 14b · missing snapshots: default vs missing -->
 <section class="slide" data-files="tests/snapshots/with-1-64/webp.spec.ts">
   <div class="eyebrow">SNAPSHOTS · BREAKING</div>
-  <h2>מה קורה כשעוד אין צילום להשוואה?</h2>
-  <p class="snap-why"><code>toHaveScreenshot()</code> משווה את המסך לצילום שמור. בריצה הראשונה של טסט חדש אין עדיין צילום כזה, ולכן אין מול מה להשוות. Playwright שומר את הצילום הנוכחי כצילום הבסיס, ו<b>מכשיל את הטסט</b> כדי שמישהו יסתכל על התמונה לפני שהיא נחשבת לנכונה.</p>
-  <div class="grid g2 snap-modes">
-    <div>
-      <span class="tag">בלי הדגל</span>
-      <p class="ba-line">הריצה הרגילה, בלי <code dir="ltr">--update-snapshots</code>. ההתנהגות שלה לא השתנתה. ב-1.64 היא רק קיבלה שם, <code dir="ltr">default</code>, כך שאפשר לכתוב גם <code dir="ltr">--update-snapshots=default</code> וזה אותו דבר.</p>
-      <div class="term"><span class="pr">$</span> npx playwright test snapshots
-<span class="out"><span class="bad-t">  ✘</span> promo banner looks right
-  Error: A snapshot doesn't exist at
-  …/promo-banner-looks-right-1-chromium-darwin.webp,
-  writing actual.
-<span class="bad-t">  1 failed</span></span></div>
-      <p class="ba-line">הצילום נשמר, והטסט נכשל. בריצה הבאה יש מול מה להשוות, והטסט עובר.</p>
+  <h2>טסט חדש עם צילום מסך: מה קורה בריצה הראשונה?</h2>
+  <p class="snap-why"><code dir="ltr">toHaveScreenshot()</code> משווה את הדף לתמונה שמורה. לטסט חדש עוד אין תמונה, אז בריצה הראשונה Playwright <b>שומר</b> את התמונה. השאלה היחידה היא אם הטסט עובר או נכשל:</p>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <div class="fr-table">
+    <div class="fr-row fr1">
+      <div class="fr-how"><code dir="ltr">npx playwright test</code><span>ריצה רגילה</span></div>
+      <div class="fr-flow"><span class="fr-step">📸 שומר תמונה</span><span class="fr-arrow">←</span><span class="fr-res bad">✘ נכשל</span></div>
+      <div class="fr-why">כדי שמישהו יסתכל על התמונה לפני שסומכים עליה. <b>לא השתנה.</b></div>
     </div>
-    <div>
-      <span class="tag warn">עם הדגל</span>
-      <p class="ba-line"><b>בשביל מה הדגל?</b> כתבנו טסט חדש ורוצים ליצור לו את הצילום הראשון. <code dir="ltr">missing</code> יוצר <b>רק</b> צילומים שעוד לא קיימים, ולא נוגע בצילומים שכבר שמורים:</p>
-      <ul class="snapfiles">
-        <li><span class="sf-ico add">+</span><span dir="ltr">promo-banner-looks-right-1-chromium-darwin.webp</span><span class="sf-what">לא היה, <b>נוצר</b></span></li>
-        <li><span class="sf-ico keep">=</span><span class="sf-name">צילום שכבר שמור ולא תואם</span><span class="sf-what"><b>לא משתנה</b>, והטסט נכשל</span></li>
-      </ul>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> גם עם הדגל הזה הטסט <b>נכשל</b>, בדיוק כמו בריצה בלי הדגל.</p>
-      <p class="ba-line"><span class="tag he">ב-1.64</span> הצילום נשמר והטסט <b>עובר</b>:</p>
-      <div class="term"><span class="pr">$</span> npx playwright test snapshots --update-snapshots=missing
-<span class="out">  A snapshot doesn't exist at …, writing actual.
-<span class="ok-t">  ✓</span> promo banner looks right
-<span class="ok-t">  1 passed</span></span></div>
+    <div class="fr-row fr2">
+      <div class="fr-how"><code dir="ltr">--update-snapshots=missing</code><span><span class="tag he dimtag">עד 1.64</span></span></div>
+      <div class="fr-flow"><span class="fr-step">📸 שומר תמונה</span><span class="fr-arrow">←</span><span class="fr-res bad">✘ נכשל</span></div>
+      <div class="fr-why">הדגל אומר "צור את התמונות שחסרות", ובכל זאת הטסט נכשל.</div>
+    </div>
+    <div class="fr-row fr3">
+      <div class="fr-how"><code dir="ltr">--update-snapshots=missing</code><span><span class="tag he">ב-1.64</span></span></div>
+      <div class="fr-flow"><span class="fr-step">📸 שומר תמונה</span><span class="fr-arrow">←</span><span class="fr-res ok">✓ עובר</span></div>
+      <div class="fr-why"><b>זה השינוי:</b> ביקשנו ליצור תמונות חסרות, הוא יצר, והטסט עובר.</div>
     </div>
   </div>
-  <div class="ci-tip frag">
-    <b>⚠️ טיפ ל-CI:</b> ב-CI נריץ <b>בלי</b> <code dir="ltr">--update-snapshots=missing</code>. ככה טסט חדש שאין לו צילום שמור ב-repo ייכשל, ולא יעבור בירוק עם צילום שנוצר על שרת ה-CI ואף אחד לא בדק.
-  </div>
-  <aside class="notes" data-t="12:30 – 13:15">שני הפלטים אמיתיים מהריצה על הדמו (קיצרנו רק את הנתיב). "Running tests without the flag defaults to 'default'" – מתוך npx playwright test --help. ההתנהגות של missing עד 1.64 לפי ה-release notes של 1.64. להדגים: למחוק את קובץ ה-webp, להריץ בלי דגל (נכשל), שוב (עובר). מטרת missing מתוך התיעוד (updateSnapshots ב-types של 1.64): "Missing snapshots are created, for example when authoring a new test". בדקנו: צילום קיים שלא תואם לא נדרס עם missing, והטסט נכשל.</aside>
+  <div class="ci-tip frag">⚠️ <b>ב-CI לא משתמשים בדגל הזה.</b> אחרת טסט בלי תמונה שמורה יעבור בירוק, עם תמונה שאף אחד לא בדק.</div>
+  <aside class="notes" data-t="12:30 – 13:15">שלוש השורות נבדקו בריצה אמיתית על tests/snapshots (בלי דגל: "A snapshot doesn't exist ... writing actual" ו-1 failed; עם missing ב-1.64: 1 passed). השורה של עד 1.64 לפי ה-release notes של 1.64. התיעוד של updateSnapshots: missing = "Missing snapshots are created, for example when authoring a new test". הדגל גם לא נוגע בתמונות שכבר שמורות (בדקנו). השם 'default' לריצה בלי דגל קיים מ-1.64, לא צריך להזכיר.</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
