@@ -79,7 +79,7 @@ npx playwright test before-1-64                  # רק הקוד של לפני 1
 | `testProject.default` | `playwright.config.ts` |
 | `--shuffle` | `tests/shuffle/` (`cart-order.spec.ts` בלי `beforeAll`, `cart-order-beforeall.spec.ts` עם) |
 | `test.describe.configure({ lock })` | `tests/locks/` (`with-lock.spec.ts`, ולהשוואה `without-lock.spec.ts`) |
-| צילומי מסך ב-WebP, `--update-snapshots=missing` | `tests/snapshots/`, `playwright.config.ts` |
+| צילומי מסך ב-WebP | `tests/snapshots/`, `playwright.config.ts` (את השינוי ב-`--update-snapshots=missing` רואים על אותו טסט: מוחקים את קובץ ה-`.webp` ומריצים) |
 | הקלטת וידאו: `fps`, `style` | `playwright.config.ts` (פרויקט `video`) · לפני: פרויקט `video-before` |
 | WebMCP: הגדרת הכלים בצד האתר | `demo-app/public/index.html` |
 | WebMCP: `page.webmcp` | `tests/webmcp/` |

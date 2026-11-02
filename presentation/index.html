@@ -545,7 +545,7 @@ aside.notes { display: none; }
     <div class="card frag"><div class="t">02</div><h3>🎯 Test Runner</h3><p>default, shuffle, locks, WebP</p></div>
     <div class="card frag"><div class="t">03</div><h3>🎬 הקלטת וידאו</h3><p>fps, CSS, VP9</p></div>
     <div class="card frag"><div class="t">04</div><h3>🧰 WebMCP</h3><p>בודקים את הכלים שהאתר חושף לסוכני AI</p></div>
-    <div class="card frag"><div class="t">05</div><h3>✨ <span dir="ltr">APIs</span> חדשים</h3><p><span dir="ltr">Breaking Changes</span>, ואיך משדרגים בלי הפתעות</p></div>
+    <div class="card frag"><div class="t">05</div><h3>✨ <span dir="ltr">APIs</span> חדשים ושדרוג</h3><p><span dir="ltr">getByRef, Shadow DOM, cookies, Breaking Changes</span>, ואיך משדרגים בלי הפתעות</p></div>
   </div>
   <div class="bar"><i></i></div>
   <aside class="notes" data-t="0:45 – 1:30">מעבר מהיר על המבנה. חמישה חלקים, כל אחד עם דמו חי. להדגיש: "נריץ הכל על PW Shop — חנות קטנה שבנינו בדיוק בשביל השיעור."</aside>
@@ -564,7 +564,7 @@ aside.notes { display: none; }
     <div class="card frag"><div><h3>ב-CI: גם ספריות מערכת</h3><div class="term"><span class="pr">$</span> npx playwright install --with-deps</div><p class="dim">מתקין גם את ספריות מערכת ההפעלה שהדפדפנים צריכים. לפי התיעוד, זה שימושי בעיקר בסביבות CI.</p></div></div>
     <div class="card frag why-card"><div><h3>למה צריך להוריד דפדפנים אחרי כל שדרוג?</h3><p>כל גרסה של Playwright צריכה גרסאות מסוימות של הדפדפנים. ב-1.64 אלה <span dir="ltr">Chromium 156</span>, <span dir="ltr">Firefox 157</span> ו-<span dir="ltr">WebKit 27.2</span>, וצריך להתקין אותן עם ה-CLI של Playwright.</p><p class="dim">הדפדפנים נשמרים בתיקייה משותפת לכל הפרויקטים, למשל <code>~/Library/Caches/ms-playwright</code> ב-macOS. גרסה שאף פרויקט כבר לא צריך נמחקת אוטומטית.</p></div></div>
   </div>
-  <aside class="notes" data-t="">שלב 1: npm install -D @playwright/test@latest — זה מה שהתיעוד ממליץ (Updating Playwright), ואחריו playwright install --with-deps. שלב 2: דפדפנים. שלב 3: with-deps ל-CI. שלב 4: למה — "Each version of Playwright needs specific versions of browser binaries". בשקופית הבאה: מה קורה אם שוכחים.</aside>
+  <aside class="notes" data-t="1:30 – 2:15">שלב 1: npm install -D @playwright/test@latest — זה מה שהתיעוד ממליץ (Updating Playwright), ואחריו playwright install --with-deps. שלב 2: דפדפנים. שלב 3: with-deps ל-CI. שלב 4: למה — "Each version of Playwright needs specific versions of browser binaries". בשקופית הבאה: מה קורה אם שוכחים.</aside>
 </section>
 
 <!-- 2a2 · forgot to install browsers -->
@@ -586,7 +586,7 @@ aside.notes { display: none; }
 <span class="out">║ &lt;3 Playwright Team                                         ║</span>
 <span class="out">╚════════════════════════════════════════════════════════════╝</span></div>
   <p class="frag" style="margin-top:14px">הפתרון הוא בדיוק מה שכתוב בהודעה: <code>npx playwright install</code>. המספר <span dir="ltr">1248</span> בנתיב הוא גרסת ה-Chromium ש-1.64 צריך.</p>
-  <aside class="notes" data-t="">הפלט הזה הוא אמיתי: הרצנו טסט מהדמו כשהתיקייה של הדפדפנים ריקה (PLAYWRIGHT_BROWSERS_PATH לתיקייה ריקה). קיצרנו רק את הנתיב בשורה השנייה.</aside>
+  <aside class="notes" data-t="2:15 – 2:45">הפלט הזה הוא אמיתי: הרצנו טסט מהדמו כשהתיקייה של הדפדפנים ריקה (PLAYWRIGHT_BROWSERS_PATH לתיקייה ריקה). קיצרנו רק את הנתיב בשורה השנייה.</aside>
 </section>
 
 <!-- 2b · GET THE CODE -->
@@ -604,7 +604,7 @@ aside.notes { display: none; }
     <div class="card frag"><div><h3>מריצים את הטסטים, בטרמינל נוסף</h3><div class="term"><span class="pr">$</span> npx playwright test
 <span class="out">28 passed</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
   </div>
-  <aside class="notes" data-t="">להראות את הריפו ב-GitHub. להדגיש: npm run demo רק בשביל לראות את האפליקציה בדפדפן — הטסטים מרימים את השרת לבד.</aside>
+  <aside class="notes" data-t="2:45 – 3:15">להראות את הריפו ב-GitHub. להדגיש: npm run demo רק בשביל לראות את האפליקציה בדפדפן — הטסטים מרימים את השרת לבד.</aside>
 </section>
 
 <!-- 3 · DEMO APP -->
@@ -626,7 +626,7 @@ aside.notes { display: none; }
 <span class="out">[global-setup] projects selected: chromium, webmcp</span>
 <span class="out">  28 passed (5.3s)</span></div>
   </div>
-  <aside class="notes" data-t="1:30 – 2:30">להראות את התיקייה. הקונפיג מרים את השרת לבד (webServer), אז לא חייבים להריץ npm run demo — זה רק כדי לראות את האפליקציה בדפדפן.</aside>
+  <aside class="notes" data-t="3:15 – 4:00">להראות את התיקייה. הקונפיג מרים את השרת לבד (webServer), אז לא חייבים להריץ npm run demo — זה רק כדי לראות את האפליקציה בדפדפן.</aside>
 </section>
 
 <!-- 4 · DIVIDER within -->
@@ -635,7 +635,7 @@ aside.notes { display: none; }
   <div class="num">01 / LOCATORS</div>
   <h1 dir="ltr">locator.within()</h1>
   <p class="lead">למצוא את הכפתור — אבל רק בתוך הדיאלוג</p>
-  <aside class="notes" data-t="2:30 – 2:45">כניסה לחלק הראשון.</aside>
+  <aside class="notes" data-t="4:00 – 4:15">כניסה לחלק הראשון.</aside>
 </section>
 
 <!-- 5 · within: the problem -->
@@ -674,7 +674,7 @@ aside.notes { display: none; }
       </div>
     </div>
   </div>
-  <aside class="notes" data-t="2:45 – 3:45">שלב 1: שני הכפתורים נצבעים — זו הבעיה. שלב 2: השגיאה האמיתית ש-Playwright מחזיר (צילמנו אותה מהרצה על הדמו). שלב 3: הדיאלוג מסומן. שלב 4: רק ה-Save שבתוך הדיאלוג. הדוגמה לקוחה ישירות מה-release notes הרשמיים.</aside>
+  <aside class="notes" data-t="4:15 – 5:00">שלב 1: שני הכפתורים נצבעים — זו הבעיה. שלב 2: השגיאה האמיתית ש-Playwright מחזיר (צילמנו אותה מהרצה על הדמו). שלב 3: הדיאלוג מסומן. שלב 4: רק ה-Save שבתוך הדיאלוג. הדוגמה לקוחה ישירות מה-release notes הרשמיים.</aside>
 </section>
 
 <!-- 6 · within: code -->
@@ -717,7 +717,7 @@ aside.notes { display: none; }
 });</code></pre>
       <p class="ba-note">מתחילים מההורה ובונים את הלוקייטור מחדש בתוכו: <code>dialog.getByRole(...)</code>. עובד גם היום, אבל עם <code>within()</code> משתמשים בשני הלוקייטורים שכבר יש לנו.</p></div>
   </div>
-  <aside class="notes" data-t="3:45 – 4:45">לעבור שורה-שורה עם ההדגשות בצד של 1.64. בסוף (חץ) מופיע הקוד של עד 1.64 — אותו טסט, מתחיל מהדיאלוג. שני הקבצים רצים: npx playwright test within.</aside>
+  <aside class="notes" data-t="5:00 – 5:45">לעבור שורה-שורה עם ההדגשות בצד של 1.64. בסוף (חץ) מופיע הקוד של עד 1.64 — אותו טסט, מתחיל מהדיאלוג. שני הקבצים רצים: npx playwright test within.</aside>
 </section>
 
 <!-- 7 · within: table column -->
@@ -761,7 +761,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       </div>
     </div>
   </div>
-  <aside class="notes" data-t="4:45 – 6:00">שלב 1: בלי within — רק Apple מסומן באדום, כי nth(2) נספר על כל התאים בטבלה. שלב 2: עם within — כל עמודת NAME מסומנת בירוק, תא אחד מכל שורה. התוצאות בשקופית הן מהרצה אמיתית על הדמו (allTextContents). בקוד יש גם טסט "לפני 1.64" עם לולאה להשוואה.</aside>
+  <aside class="notes" data-t="5:45 – 6:45">שלב 1: בלי within — רק Apple מסומן באדום, כי nth(2) נספר על כל התאים בטבלה. שלב 2: עם within — כל עמודת NAME מסומנת בירוק, תא אחד מכל שורה. התוצאות בשקופית הן מהרצה אמיתית על הדמו (allTextContents). בקוד יש גם טסט "לפני 1.64" עם לולאה להשוואה.</aside>
 </section>
 
 <!-- 8 · DIVIDER runner -->
@@ -770,7 +770,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
   <div class="num">02 / TEST RUNNER</div>
   <h1>ה-<span dir="ltr">Test Runner</span></h1>
   <p class="lead"><span dir="ltr">default projects · --shuffle · locks · WebP</span></p>
-  <aside class="notes" data-t="6:00 – 6:15">החלק עם הכי הרבה חידושים בגרסה.</aside>
+  <aside class="notes" data-t="6:45 – 7:00">החלק עם הכי הרבה חידושים בגרסה.</aside>
 </section>
 
 <!-- 9 · default projects -->
@@ -801,11 +801,12 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
         <span class="tag warn">CI TIP</span>
         <p><b>הבעיה:</b> אחרי שסימנו את firefox ב-<code>default: false</code>, גם ה-CI שמריץ <code>npx playwright test</code> מפסיק להריץ אותו. שום טסט לא נכשל, אז אף אחד לא ישים לב.</p>
         <p style="margin-top:8px"><b>הפתרון:</b> ב-CI נריץ עם <code>--project="*"</code>, וככה כל הדפדפנים ממשיכים לרוץ.</p>
+        <p class="dim" style="margin-top:6px;font-size:14px">בריפו של השיעור <code dir="ltr">"*"</code> מריץ גם את הדמואים של shuffle ו-locks, שנכשלים בכוונה. לכן כאן יש <code dir="ltr">npm run test:all</code> עם רשימה מפורשת.</p>
       </div>
     </div>
   </div>
   <span class="frag" data-hl="5,11" data-cap='firefox ו-webkit מוגדרים בקונפיג, אבל <code>default: false</code> מוציא אותם מהרצה רגילה. הם ירוצו רק כשנבקש אותם עם <code>--project</code>.'></span>
-  <aside class="notes" data-t="6:15 – 7:30">בדמו שלנו: firefox, webkit, shuffle, locks, video ו-video-before הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
+  <aside class="notes" data-t="7:00 – 8:15">בדמו שלנו: firefox, webkit, shuffle, locks, video ו-video-before הם default:false. להריץ npx playwright test ולהראות את השורה של global-setup שמדפיסה אילו פרויקטים נבחרו.</aside>
 </section>
 
 <!-- 10 · shuffle -->
@@ -832,7 +833,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
 <span class="out">  ✓ 2: add a banana to the cart</span>
 <span class="cm"># the same seed again → the same order, the same failure</span>
 <span class="pr">$</span> npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle 354875837</div>
-  <aside class="notes" data-t="7:30 – 9:00">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 354875837 מריץ את התפוח, אחר כך את 4 ו-3 לפני הבננה (נכשלים), ורק בסוף את הבננה. שם הקובץ לפני --shuffle, אחרת Playwright קורא אותו כ-seed.</aside>
+  <aside class="notes" data-t="8:15 – 9:30">ללחוץ כמה פעמים על shuffle: כל פעם ש-3 או 4 רצים לפני ש-1 ו-2 סיימו, הם נהיים אדומים. ואז replay — אותו seed, אותו סדר. הכרטיסים הם 4 הטסטים האמיתיים מ-cart-order.spec.ts, והחישוב של ✓/✘ זהה למה שקורה בדמו. הפלט בטרמינל הוא ריצה אמיתית: seed 354875837 מריץ את התפוח, אחר כך את 4 ו-3 לפני הבננה (נכשלים), ורק בסוף את הבננה. שם הקובץ לפני --shuffle, אחרת Playwright קורא אותו כ-seed.</aside>
 </section>
 
 <!-- 11 · shuffle gotchas -->
@@ -862,7 +863,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
       <p class="dim" style="font-size:14px;margin-top:8px">שני הקבצים נמצאים ב-<code>tests/shuffle/with-1-64</code>, עם אותם טסטים בדיוק. ההבדל היחיד הוא ה-<code>beforeAll</code>.</p>
     </div>
   </div>
-  <aside class="notes" data-t="9:00 – 9:45">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ cart-order-beforeall.spec.ts זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
+  <aside class="notes" data-t="9:30 – 10:15">כרטיס 1: למה לא על כל PR — כישלון אקראי חוסם אנשים שלא קשורים. כרטיס 2: בלי fullyParallel רק סדר הקבצים משתנה. כרטיס 3: המסר הוא לא "תורידו beforeAll", אלא "דעו איפה shuffle עיוור". בקוד של Playwright (createTestGroups) טסטים במצב parallel עם beforeAll/afterAll משותף נארזים בקבוצות לפי סדר הכתיבה, ו-shuffle מערבב רק קבוצות. בקובץ cart-order-beforeall.spec.ts זה הסתיר את התלות; כשהורדנו את ה-beforeAll, הטסט התלוי נכשל בחלק מהריצות.</aside>
 </section>
 
 <!-- 12 · locks: why -->
@@ -894,7 +895,7 @@ expect(names).toEqual(['Apple', 'Banana', 'Cherry']);</code></pre>
     </div>
   </div>
   <p class="frag lk-result"><b class="bad-x">בלי lock</b> אחד הטסטים נכשל, כי השני דורס לו את ההגדרה באמצע. <b class="ok-x">עם lock</b> הם רצים אחד אחרי השני, ושניהם עוברים.</p>
-  <aside class="notes" data-t="">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. Test Locks הגיעו ב-1.63.</aside>
+  <aside class="notes" data-t="10:15 – 11:00">שלב 1: בלי lock — לעבור על 4 השורות לפי הסדר: A נכשל בלי באג. שלב 2: עם lock — B מחכה, A מסיים ומשחרר, B רץ. אנלוגיה: מפתח יחיד לחדר ישיבות. Test Locks הגיעו ב-1.63.</aside>
 </section>
 
 <!-- 13 · locks: the example -->
@@ -935,7 +936,7 @@ test('switch theme to light', async ({ request }) =&gt; {
 <span class="out">  2 passed</span></div></div>
     </div>
   </div>
-  <aside class="notes" data-t="">שני הטסטים מתחילים באותו רגע, ולכן בלי lock הם מתנגשים גם בלי שום המתנה בקוד. מדדנו: בלי lock אחד נכשל בכל ריצה (5/5), עם lock שניהם עוברים בכל ריצה (5/5). הפלט בשקופית אמיתי (קיצרנו רק את הנתיב של כל טסט). </aside>
+  <aside class="notes" data-t="11:00 – 12:00">שני הטסטים מתחילים באותו רגע, ולכן בלי lock הם מתנגשים גם בלי שום המתנה בקוד. מדדנו: בלי lock אחד נכשל בכל ריצה (5/5), עם lock שניהם עוברים בכל ריצה (5/5). הפלט בשקופית אמיתי (קיצרנו רק את הנתיב של כל טסט). </aside>
 </section>
 
 <!-- 14 · snapshots -->
@@ -1003,7 +1004,7 @@ test('switch theme to light', async ({ request }) =&gt; {
     <div class="card frag cy cy-ok"><div class="cy-i">🔄</div><h3>שינוי בכוונה? מעדכנים</h3><div class="term cy-term"><span class="pr">$</span> npx playwright test --update-snapshots</div><p>ועושים commit שוב.</p></div>
   </div>
   <p class="frag cy-bug">באג? מתקנים את הקוד, והתמונה נשארת כמו שהיא.</p>
-  <aside class="notes" data-t="">נבדק על הדמו: שינוי של $50 ל-$40 בבאנר הכשיל את הטסט ("42 pixels ... are different"), ו-show-report מציג expected / actual / diff. --update-snapshots בלי ערך = 'changed': מעדכן רק תמונות שלא תואמות. שם הקובץ כולל דפדפן ומערכת הפעלה (-chromium-darwin), ולכן ב-CI על Linux צריך תמונות שנוצרו על Linux.</aside>
+  <aside class="notes" data-t="13:15 – 14:00">נבדק על הדמו: שינוי של $50 ל-$40 בבאנר הכשיל את הטסט ("42 pixels ... are different"), ו-show-report מציג expected / actual / diff. --update-snapshots בלי ערך = 'changed': מעדכן רק תמונות שלא תואמות. שם הקובץ כולל דפדפן ומערכת הפעלה (-chromium-darwin), ולכן ב-CI על Linux צריך תמונות שנוצרו על Linux.</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
@@ -1012,7 +1013,7 @@ test('switch theme to light', async ({ request }) =&gt; {
   <div class="num">03 / VIDEO</div>
   <h1>הקלטת וידאו</h1>
   <p class="lead"><span dir="ltr">fps · CSS styles · persistent cursor · VP9</span></p>
-  <aside class="notes" data-t="13:00 – 13:15"></aside>
+  <aside class="notes" data-t="14:00 – 14:15"></aside>
 </section>
 
 <!-- 16 · video -->
@@ -1059,7 +1060,7 @@ test('switch theme to light', async ({ request }) =&gt; {
       </ul>
     </div>
   </div>
-  <aside class="notes" data-t="13:15 – 16:00">להריץ: npx playwright test --project=video ואז npx playwright test --project=video-before, ולהשוות את שני קבצי ה-video.webm ב-test-results. fontSize מסומן ב-types של 1.64 כ-"@deprecated Use style.title instead".</aside>
+  <aside class="notes" data-t="14:15 – 15:15">להריץ: npx playwright test --project=video ואז npx playwright test --project=video-before, ולהשוות את שני קבצי ה-video.webm ב-test-results. fontSize מסומן ב-types של 1.64 כ-"@deprecated Use style.title instead".</aside>
 </section>
 
 <!-- 16b · video: what point / highlight / title are -->
@@ -1084,7 +1085,7 @@ test('switch theme to light', async ({ request }) =&gt; {
 },</code></pre>
     <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> הסימונים היו קיימים, אבל אפשר היה לשנות רק את גודל הגופן של שם הפעולה (<code dir="ltr">fontSize</code>). הסמן (החץ) הוא לא חלק מ-<code dir="ltr">style</code>.</p>
   </div>
-  <aside class="notes" data-t="">הפריים נלקח מ-test-results/within-with-1-64-within-save-settings-video/video.webm (הפריים הראשון, חתוך לחלק העליון). להריץ npx playwright test --project=video ולפתוח את הווידאו.</aside>
+  <aside class="notes" data-t="15:15 – 16:00">הפריים נלקח מ-test-results/within-with-1-64-within-save-settings-video/video.webm (הפריים הראשון, חתוך לחלק העליון). להריץ npx playwright test --project=video ולפתוח את הווידאו.</aside>
 </section>
 
 <!-- 17 · DIVIDER webmcp -->
@@ -1160,7 +1161,7 @@ test('switch theme to light', async ({ request }) =&gt; {
   <span class="frag" data-hl="4-11" data-cap='שם, תיאור ו-JSON Schema לקלט. זה מה שסוכן ה-AI רואה כשהוא מחליט אם להשתמש בכלי ואיך.'></span>
   <span class="frag" data-hl="12-17" data-cap='<code>execute</code> היא הפונקציה שרצה כשקוראים לכלי. היא פונה ל-API של החנות ומעדכנת את העגלה על המסך.'></span>
   <span class="frag" data-hl="14" data-cap='אם המוצר לא קיים מחזירים <code>isError: true</code>, כדי שגם הסוכן וגם הטסט יבינו שהפעולה נכשלה.'></span>
-  <aside class="notes" data-t="17:30 – 18:30">אותה צורה ש-Playwright משתמש בה בטסטים של עצמו (tests/library/webmcp.spec.ts). שורה 14: שגיאה מוחזרת עם isError, כדי שלא תיראה כמו הצלחה (המלצה מ-awesome-testing).</aside>
+  <aside class="notes" data-t="17:30 – 18:15">אותה צורה ש-Playwright משתמש בה בטסטים של עצמו (tests/library/webmcp.spec.ts). שורה 14: שגיאה מוחזרת עם isError, כדי שלא תיראה כמו הצלחה (המלצה מ-awesome-testing).</aside>
 </section>
 
 <!-- 20 · webmcp test -->
@@ -1206,7 +1207,7 @@ await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
 <span class="pr">$</span> npx @playwright/cli@latest webmcp-call search_products --params '{"query":"ban"}'</div>
     </div>
   </div>
-  <aside class="notes" data-t="18:30 – 21:00">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: הכלי add_to_cart קיים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל. playwright-cli (גרסה 0.1.23) קורא את הדגל של WebMCP מ-.playwright/cli.config.json שבריפו. webmcp-list מחזיר את 3 הכלים עם התיאור וה-schema, ו-webmcp-call search_products עם "ban" מחזיר את Banana (נבדק). close סוגר את הדפדפן.</aside>
+  <aside class="notes" data-t="18:15 – 19:30">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: הכלי add_to_cart קיים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל. playwright-cli (גרסה 0.1.23) קורא את הדגל של WebMCP מ-.playwright/cli.config.json שבריפו. webmcp-list מחזיר את 3 הכלים עם התיאור וה-schema, ו-webmcp-call search_products עם "ban" מחזיר את Banana (נבדק). close סוגר את הדפדפן.</aside>
 </section>
 
 <!-- 21 · getByRef -->
@@ -1242,7 +1243,7 @@ await expect(page.locator('#subscribed'))
   .toHaveText('Subscribed!');</code></pre>
       <p class="ba-note">אין מזהים, אז ממירים בעצמנו את השורה מה-snapshot ללוקייטור לפי תפקיד ושם.</p></div>
   </div>
-  <aside class="notes" data-t="21:00 – 22:00">שני ה-snapshots הם קטע אמיתי מ-/widgets (החלק של Newsletter). ההגדרה מהתיעוד של 1.64: mode 'ai' "returns a snapshot optimized for AI consumption: including element references like [ref=e2] and snapshots of iframes". בדקנו: בדף הזה ה-ref של Subscribe הוא תמיד e27 (3 ריצות), ו-getByRef("e27") בלי snapshot לפני כן נכשל ב-timeout. ה-toContain בטסט מוודא שה-ref עדיין e27, כך ששינוי בדף ייתן שגיאה ברורה. שימושי כשסוכן AI כבר "ראה" את העמוד והחזיר ref.</aside>
+  <aside class="notes" data-t="19:30 – 20:30">שני ה-snapshots הם קטע אמיתי מ-/widgets (החלק של Newsletter). ההגדרה מהתיעוד של 1.64: mode 'ai' "returns a snapshot optimized for AI consumption: including element references like [ref=e2] and snapshots of iframes". בדקנו: בדף הזה ה-ref של Subscribe הוא תמיד e27 (3 ריצות), ו-getByRef("e27") בלי snapshot לפני כן נכשל ב-timeout. ה-toContain בטסט מוודא שה-ref עדיין e27, כך ששינוי בדף ייתן שגיאה ברורה. שימושי כשסוכן AI כבר "ראה" את העמוד והחזיר ref.</aside>
 </section>
 
 <!-- 22 · more APIs: shadow + cookies -->
@@ -1292,7 +1293,7 @@ await expect(page.locator('#subscribed'))
       </div>
     </div>
   </div>
-  <aside class="notes" data-t="22:00 – 23:00">שתי האנימציות מבוססות על ריצה אמיתית על הדמו. page.content() מחזיר &lt;promo-banner&gt;&lt;/promo-banner&gt; ריק; עם includeShadow מקבלים &lt;template shadowrootmode="open"&gt; עם הטקסט. /api/whoami מחזיר 401 בלי cookie, { user: 'alex' } אחרי addCookies, ושוב 401 אחרי clearCookies. הקוד המלא: tests/include-shadow/ ו-tests/request-cookies/ (with-1-64 ו-before-1-64). לחיצה 1: הקופסה נפתחת. לחיצה 2: addCookies ובקשה ראשונה עם ה-cookie. לחיצה 3: בקשה נוספת שלוקחת את אותו cookie מהצנצנת (נבדק: שתי בקשות whoami ברצף מחזירות alex). לחיצה 4: clearCookies.</aside>
+  <aside class="notes" data-t="20:30 – 21:45">שתי האנימציות מבוססות על ריצה אמיתית על הדמו. page.content() מחזיר &lt;promo-banner&gt;&lt;/promo-banner&gt; ריק; עם includeShadow מקבלים &lt;template shadowrootmode="open"&gt; עם הטקסט. /api/whoami מחזיר 401 בלי cookie, { user: 'alex' } אחרי addCookies, ושוב 401 אחרי clearCookies. הקוד המלא: tests/include-shadow/ ו-tests/request-cookies/ (with-1-64 ו-before-1-64). לחיצה 1: הקופסה נפתחת. לחיצה 2: addCookies ובקשה ראשונה עם ה-cookie. לחיצה 3: בקשה נוספת שלוקחת את אותו cookie מהצנצנת (נבדק: שתי בקשות whoami ברצף מחזירות alex). לחיצה 4: clearCookies.</aside>
 </section>
 
 <!-- 22b · more APIs: filteredProjects + signCount -->
@@ -1333,7 +1334,7 @@ await expect(page.locator('#subscribed'))
       </div>
     </div>
   </div>
-  <aside class="notes" data-t="22:30 – 23:30">filteredProjects: שתי השורות הן פלט אמיתי של global-setup בריפו: "npx playwright test" → chromium, webmcp; "--project=firefox" → firefox (configured: כל ה-8). signCount מהתיעוד של 1.64: "The counter is incremented by one on every successful navigator.credentials.get() assertion, so the first assertion reports signCount + 1", ו-"continue from the signature counter the relying party has already seen". המטרה של המונה (זיהוי passkey מועתק) מתקן WebAuthn. לחיצה 1: --project=firefox. לחיצה 2: create() בלי signCount. לחיצה 3: עם signCount.</aside>
+  <aside class="notes" data-t="21:45 – 22:45">filteredProjects: שתי השורות הן פלט אמיתי של global-setup בריפו: "npx playwright test" → chromium, webmcp; "--project=firefox" → firefox (configured: כל ה-8). signCount מהתיעוד של 1.64: "The counter is incremented by one on every successful navigator.credentials.get() assertion, so the first assertion reports signCount + 1", ו-"continue from the signature counter the relying party has already seen". המטרה של המונה (זיהוי passkey מועתק) מתקן WebAuthn. לחיצה 1: --project=firefox. לחיצה 2: create() בלי signCount. לחיצה 3: עם signCount.</aside>
 </section>
 
 <!-- 23 · breaking -->
@@ -1346,7 +1347,7 @@ await expect(page.locator('#subscribed'))
     <div class="card frag bk"><h3>📸 <span dir="ltr">--update-snapshots=missing</span> עובר</h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">טסט שרק יצר צילום חסר <b>עובר</b> עכשיו, במקום להיכשל. ריצה רגילה, בלי הדגל, עדיין נכשלת.</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v">סקריפט CI שרץ עם <code dir="ltr">missing</code> יוצא ירוק גם כשנוצרו צילומים חדשים.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">ב-CI מריצים בלי הדגל (ראינו בשקופית של צילומי המסך).</span></div></div>
     <div class="card frag bk"><h3>⚛️ JSX בטסטים לפי <span dir="ltr">tsconfig.json</span></h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">JSX הוא התחביר של React (<code dir="ltr">&lt;Button /&gt;</code>). Playwright מקמפל אותו עכשיו לפי <code dir="ltr">jsx</code> ו-<code dir="ltr">jsxImportSource</code> שב-<code dir="ltr">tsconfig.json</code>. בלי הגדרה: <code dir="ltr">react/jsx-runtime</code>.</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v">רלוונטי רק למי שכותב JSX בקבצי הטסט, למשל ב-component testing. מי שלא, לא מושפע.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">בודקים שההגדרות ב-<code dir="ltr">tsconfig.json</code> מתאימות לספרייה שלנו.</span></div></div>
   </div>
-  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים בשקופית הבאה (tests/breaking-changes/with-1-64/breaking-changes.spec.ts). בדמו: window.screen הוא 1920×1080 וה-viewport 1280×720; הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי. ה-JSX: לפי ה-release notes של 1.64; אין לזה דמו בריפו.</aside>
+  <aside class="notes" data-t="22:45 – 24:15">את שני הראשונים מדגימים בשקופית הבאה (tests/breaking-changes/with-1-64/breaking-changes.spec.ts). בדמו: window.screen הוא 1920×1080 וה-viewport 1280×720; הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי. ה-JSX: לפי ה-release notes של 1.64; אין לזה דמו בריפו.</aside>
 </section>
 
 <!-- 24 · breaking code -->
@@ -1394,7 +1395,7 @@ await expect(chatButton).toBeHidden();   // …but hidden
 expect(await chatButton.isVisible()).toBe(false);</code></pre>
     </div>
   </div>
-  <aside class="notes" data-t="">לחיצה 1: המסך גדל ל-1920×1080 (ההתנהגות של 1.64). לחיצה 2: הכפתור ב-iframe עובר ל"לא נראה". הערכים אמיתיים: הטסט עובר ב-1.64 עם 1920×1080 ו-1280×720, ועם screen: undefined מקבלים 1280×720 (הטסט השני בקובץ).</aside>
+  <aside class="notes" data-t="24:15 – 25:30">לחיצה 1: המסך גדל ל-1920×1080 (ההתנהגות של 1.64). לחיצה 2: הכפתור ב-iframe עובר ל"לא נראה". הערכים אמיתיים: הטסט עובר ב-1.64 עם 1920×1080 ו-1280×720, ועם screen: undefined מקבלים 1280×720 (הטסט השני בקובץ).</aside>
 </section>
 
 <!-- 25 · upgrade checklist -->
@@ -1407,7 +1408,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     <div class="card frag"><p><b>כשהכול ירוק</b> — נוסיף ריצת לילה עם <code dir="ltr">--shuffle</code>. כל לילה ירוץ בסדר אקראי <b>אחר</b>, וזו בדיוק המטרה. ה-seed נדפס בלוג של הריצה: אם משהו נכשל, נריץ <code dir="ltr">--shuffle &lt;seed&gt;</code> ונקבל בדיוק את אותו סדר כדי לשחזר את הכישלון.</p></div>
     <div class="card frag"><p><b>נוסיף locks</b> רק במקומות שבהם טסטים חולקים משאב שאי אפשר לשכפל.</p></div>
   </div>
-  <aside class="notes" data-t="26:45 – 27:45">סיכום מעשי.</aside>
+  <aside class="notes" data-t="25:30 – 26:30">סיכום מעשי.</aside>
 </section>
 
 <!-- 26 · sources -->
@@ -1423,6 +1424,9 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     <li>API: WebMCP · <a href="https://playwright.dev/docs/api/class-webmcp" target="_blank" rel="noopener">playwright.dev/docs/api/class-webmcp</a></li>
     <li>API: Locator.within · <a href="https://playwright.dev/docs/api/class-locator#locator-within" target="_blank" rel="noopener">playwright.dev/docs/api/class-locator</a></li>
     <li>Test locks · <a href="https://playwright.dev/docs/test-parallel#test-locks" target="_blank" rel="noopener">playwright.dev/docs/test-parallel</a></li>
+    <li>API: Credentials (signCount) · <a href="https://playwright.dev/docs/api/class-credentials" target="_blank" rel="noopener">playwright.dev/docs/api/class-credentials</a></li>
+    <li>WebAuthn: signature counter · <a href="https://www.w3.org/TR/webauthn-2/#signature-counter" target="_blank" rel="noopener">w3.org/TR/webauthn-2</a></li>
+    <li>Playwright CLI · <a href="https://www.npmjs.com/package/@playwright/cli" target="_blank" rel="noopener">npmjs.com/package/@playwright/cli</a></li>
     <li>Playwright tests: webmcp.spec.ts · <a href="https://github.com/microsoft/playwright/blob/main/tests/library/webmcp.spec.ts" target="_blank" rel="noopener">github.com/microsoft/playwright</a></li>
     <li>Currents · <a href="https://currents.dev/posts/playwright-1-64-shuffle-test-locks-and-breaking-changes" target="_blank" rel="noopener">Shuffle, Test Locks and Breaking Changes</a></li>
     <li>Awesome Testing · <a href="https://www.awesome-testing.com/2026/10/understanding-webmcp-with-playwright-and-ai-agents" target="_blank" rel="noopener">Understanding WebMCP with Playwright</a></li>
@@ -1430,7 +1434,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
     <li>Medium · <a href="https://medium.com/@amol9patil/playwright-1-64-what-changed-why-its-better-and-should-you-use-it-72eb11f7322b" target="_blank" rel="noopener">Playwright 1.64: What Changed</a></li>
     <li>TestDino · <a href="https://testdino.com/blog/playwright-1-64-release" target="_blank" rel="noopener">WebMCP, Shuffle, and locator.within() Explained</a></li>
   </ul>
-  <aside class="notes" data-t="27:45 – 28:00">להפנות לתיאור הסרטון.</aside>
+  <aside class="notes" data-t="26:30 – 26:45">להפנות לתיאור הסרטון.</aside>
 </section>
 
 <!-- 27 · closing -->
@@ -1440,7 +1444,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre>
   <p class="lead">כל הקוד ואפליקציית הדמו נמצאים בריפו:</p>
   <p style="margin:6px 0 0"><a class="repo-link" style="font-size:22px" href="https://github.com/AlexKomanov/playwright-1.64-lesson" target="_blank" rel="noopener" dir="ltr">github.com/AlexKomanov/playwright-1.64-lesson</a></p>
   <div class="term" style="max-width:720px;margin:24px auto 0;text-align:left"><span class="pr">$</span> git clone https://github.com/AlexKomanov/playwright-1.64-lesson.git</div>
-  <aside class="notes" data-t="28:00 – 28:30">סגירה + קריאה להירשם.</aside>
+  <aside class="notes" data-t="26:45 – 27:15">סגירה + קריאה להירשם.</aside>
 </section>
 
 </main>
