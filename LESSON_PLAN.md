@@ -33,12 +33,12 @@ npx playwright test                    # ריצת בדיקה: 17 טסטים אמ
 | 6:30–7:45 | 11–12 | **`testProject.default`** | `npx playwright test` ואחריו `--project=firefox` |
 | 7:45–9:45 | 13–14 | **`--shuffle`** | `npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle` כמה פעמים, שחזור עם ה-seed, ואז `cart-order-beforeall` להשוואה |
 | 9:45–11:30 | 15–16 | **Test Locks** (`describe.configure({ lock })`) | `npx playwright test without-lock --project=locks --workers=2` ואז `with-lock` |
-| 11:30–12:30 | 17 | WebP ו-`--update-snapshots=missing` | `npx playwright test snapshots --update-snapshots=missing` |
-| 12:30–15:00 | 18–19 | **הקלטת וידאו** | `npx playwright test --project=video` ולפתוח את `video.webm` מ-test-results |
-| 15:00–20:00 | 20–23 | **WebMCP** | `npx playwright test --project=webmcp` |
-| 20:00–23:00 | 24–26 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test get-by-ref include-shadow request-cookies` |
-| 23:00–26:15 | 27–28 | **4 Breaking Changes** | `npx playwright test breaking-changes` |
-| 26:15–28:00 | 29–31 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
+| 11:30–13:15 | 17–18 | WebP, ומה קורה כשאין צילום (`default` מול `missing`) | למחוק את ה-`.webp`, להריץ `npx playwright test snapshots` (נכשל), ואז עם `--update-snapshots=missing` (עובר) |
+| 13:15–15:00 | 19–21 | **הקלטת וידאו** (כולל פריים אמיתי שמראה point / highlight / title) | `npx playwright test --project=video` ולפתוח את `video.webm` מ-test-results |
+| 15:00–20:00 | 22–26 | **WebMCP** | `npx playwright test --project=webmcp` |
+| 20:00–23:00 | 27–28 | `getByRef`, `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test get-by-ref include-shadow request-cookies` |
+| 23:00–26:15 | 29–30 | **4 Breaking Changes** | `npx playwright test breaking-changes` |
+| 26:15–28:00 | 31–33 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
 
 ## מפת קבצים לפי פיצ'ר
 
