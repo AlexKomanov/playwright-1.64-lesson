@@ -136,6 +136,12 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .snap-modes .term { font-size: 14px; padding: 30px 16px 12px; margin: 6px 0; }
 .ci-tip { margin-top: 16px; padding: 14px 20px; border: 2px solid var(--warn); border-radius: 14px; background: rgba(255,181,71,.1); font-size: 18px; color: #f3e6d0; }
 .ci-tip b { color: var(--warn); }
+.wm-compare .card { padding: 18px 22px; font-size: 17px; }
+.wm-compare .card p { margin: 10px 0; }
+.wm-steps { margin: 6px 0; padding-inline-start: 22px; line-height: 1.8; color: #c9d8d0; }
+.wm-call { font-size: 15px; padding: 32px 16px 12px; margin: 8px 0; }
+.wm-why { border-color: var(--accent); background: rgba(69,224,111,.08); color: #dcefe3; }
+.wm-why b { color: var(--accent); }
 .snapfiles { list-style: none; margin: 6px 0 8px; padding: 8px 12px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; font-size: 14px; }
 .snapfiles li { display: flex; align-items: center; gap: 10px; padding: 4px 0; color: #c9d8d0; }
 .snapfiles [dir="ltr"] { font-family: var(--mono); font-size: 12.5px; }
@@ -962,34 +968,29 @@ test('switch theme to light', async ({ request }) =&gt; {
 <!-- 18 · webmcp what -->
 <section class="slide">
   <div class="eyebrow">WHAT IS WEBMCP</div>
-  <h2>האתר מגדיר <span class="accent">כלים</span>, הדפדפן מציג אותם, וסוכן ה-AI מפעיל אותם</h2>
-  <svg class="flow" viewBox="0 0 1100 260">
-    <rect class="box" x="20" y="60" width="300" height="140" rx="18"/>
-    <text class="lbl" x="170" y="118" text-anchor="middle">Web page</text>
-    <text class="sub" x="170" y="150" text-anchor="middle">registerTool({ name,</text>
-    <text class="sub" x="170" y="172" text-anchor="middle">inputSchema, execute })</text>
-    <rect class="box" x="400" y="60" width="300" height="140" rx="18"/>
-    <text class="lbl" x="550" y="118" text-anchor="middle">Browser</text>
-    <text class="sub" x="550" y="150" text-anchor="middle">navigator.modelContext</text>
-    <text class="sub" x="550" y="172" text-anchor="middle">(experimental)</text>
-    <rect class="box" x="780" y="20" width="300" height="100" rx="18"/>
-    <text class="lbl" x="930" y="65" text-anchor="middle">AI agent</text>
-    <text class="sub" x="930" y="92" text-anchor="middle">Playwright MCP: webmcp_&lt;tool&gt;</text>
-    <rect class="box" x="780" y="140" width="300" height="100" rx="18" style="stroke:#45e06f"/>
-    <text class="lbl" x="930" y="185" text-anchor="middle">Playwright test</text>
-    <text class="sub" x="930" y="212" text-anchor="middle">page.webmcp.callTool()</text>
-    <path class="wire" id="w1" d="M320 130 L400 130"/>
-    <path class="wire" id="w2" d="M700 110 C740 110 740 70 780 70"/>
-    <path class="wire" id="w3" d="M700 150 C740 150 740 190 780 190"/>
-    <circle class="pkt" r="6"><animateMotion dur="2.4s" repeatCount="indefinite" path="M780 190 C740 190 740 150 700 150 L400 130 L320 130"/></circle>
-    <circle class="pkt" r="6" style="fill:#5cc8ff"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M320 130 L400 130 L700 110 C740 110 740 70 780 70"/></circle>
-  </svg>
-  <div class="grid g3" style="margin-top:10px">
-    <div class="card frag"><p>המפתחים של האתר בוחרים אילו פעולות לחשוף. לכל כלי יש שם, תיאור, <span dir="ltr">JSON Schema</span> ופונקציה שמבצעת אותו.</p></div>
-    <div class="card frag"><p>עדיין <b>ניסיוני</b>: ב-Chromium מפעילים עם <code>--enable-features=WebMCP</code>, ב-Firefox דרך prefs, וב-WebKit אין תמיכה.</p></div>
-    <div class="card frag"><p>אין LLM בטסט. קוראים לכלי עם קלט קבוע ובודקים את התוצאה — כמו טסט ל-API.</p></div>
+  <h2>WebMCP: האתר נותן לסוכן AI <span class="accent">פעולות מוכנות</span></h2>
+  <p class="snap-why"><b dir="ltr">MCP</b> (<span dir="ltr">Model Context Protocol</span>) הוא הדרך שבה סוכן AI מקבל "כלים", כלומר פונקציות שהוא יכול להפעיל. <b dir="ltr">WebMCP</b> הוא אותו רעיון, אבל הכלים מגיעים <b>מתוך דף אינטרנט</b>. נניח שסוכן AI צריך להוסיף 2 בננות לעגלה בחנות הדמו שלנו:</p>
+  <div class="grid g2 wm-compare">
+    <div class="card">
+      <span class="tag he dimtag">בלי WebMCP</span>
+      <p>הסוכן משתמש באתר כמו אדם: מסתכל על הדף, מחפש את הכפתור הנכון ולוחץ.</p>
+      <ol class="wm-steps">
+        <li>קורא את הדף ומחפש את המוצר</li>
+        <li>מוצא את הכפתור <span dir="ltr">Add to cart</span> ולוחץ</li>
+        <li>מנחש מהמסך אם זה הצליח</li>
+      </ol>
+      <p class="dim">כל שינוי בעיצוב הדף יכול לבלבל אותו.</p>
+    </div>
+    <div class="card frag" style="border-color:var(--accent)">
+      <span class="tag he">עם WebMCP</span>
+      <p>האתר עצמו מכריז: "יש לי פעולה בשם <code>add_to_cart</code>, והיא מקבלת מוצר וכמות". הסוכן קורא לה ישירות, כמו לפונקציה:</p>
+      <div class="term wm-call">add_to_cart({ productId: 2, quantity: 2 })
+<span class="ok-t">→ { totalItems: 2, totalPrice: 15 }</span></div>
+      <p class="dim">תשובה מסודרת, בלי לנחש מהמסך.</p>
+    </div>
   </div>
-  <aside class="notes" data-t="16:15 – 17:30">המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. להדגיש: תיאורים ותוצאות של כלים מגיעים מהעמוד — Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
+  <div class="ci-tip frag wm-why"><b>ומה הקשר ל-Playwright?</b> אם האתר שלנו חושף כלים כאלה, צריך לבדוק שהם עובדים. ב-1.64 יש <code dir="ltr">page.webmcp</code>: מקבלים את רשימת הכלים של הדף וקוראים לכלי עם קלט קבוע, <b>בלי מודל AI בטסט</b>, כמו טסט ל-API. התכונה עדיין ניסיונית: ב-Chromium צריך את הדגל <code dir="ltr">--enable-features=WebMCP</code>.</div>
+  <aside class="notes" data-t="16:15 – 17:30">הדוגמה אמיתית: הכלי add_to_cart מוגדר ב-demo-app/public/index.html, והתוצאה { totalItems: 2, totalPrice: 15 } היא מה שהטסט ב-tests/webmcp/with-1-64/webmcp.spec.ts בודק. המקורות: התיעוד הרשמי של class WebMCP, והמאמר של awesome-testing על WebMCP עם Playwright. ב-Playwright MCP הכלים של הדף מוצעים לסוכן כ-webmcp_&lt;tool&gt;. Firefox דרך prefs, WebKit בלי תמיכה. תיאורים ותוצאות של כלים מגיעים מהעמוד, ולכן Playwright ממליץ להתייחס אליהם כקלט לא אמין.</aside>
 </section>
 
 <!-- 19 · webmcp page code -->
