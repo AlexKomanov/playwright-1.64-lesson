@@ -45,6 +45,15 @@ npx playwright test with-lock --project=locks --workers=2      # עם lock: שנ
 npx playwright test --project=webmcp             # page.webmcp (Chromium עם --enable-features=WebMCP)
 npx @playwright/cli@latest open http://localhost:3164/   # playwright-cli: הדפדפן מהטרמינל (הדגל של WebMCP נקרא מ-.playwright/cli.config.json)
 npx @playwright/cli@latest webmcp-list            # אילו כלי WebMCP הדף חושף
+```
+
+בלי Playwright (macOS): פותחים Chrome עם הדגל בפרופיל נפרד, ובקונסול של DevTools מריצים `await document.modelContext.getTools()`:
+
+```bash
+open -na "Google Chrome" --args --enable-features=WebMCP --user-data-dir=/tmp/chrome-webmcp http://localhost:3164/
+```
+
+```bash
 npx playwright test --project=video              # וידאו ב-60fps עם עיצוב CSS
 npx playwright test --project=video-before       # אותה הקלטה עם האפשרות של לפני 1.64 (fontSize)
 npx playwright test before-1-64                  # רק הקוד של לפני 1.64
