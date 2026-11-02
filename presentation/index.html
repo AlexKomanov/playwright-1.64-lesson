@@ -136,6 +136,13 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .snap-modes .term { font-size: 14px; padding: 30px 16px 12px; margin: 6px 0; }
 .ci-tip { margin-top: 16px; padding: 14px 20px; border: 2px solid var(--warn); border-radius: 14px; background: rgba(255,181,71,.1); font-size: 18px; color: #f3e6d0; }
 .ci-tip b { color: var(--warn); }
+.snapfiles { list-style: none; margin: 6px 0 8px; padding: 8px 12px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; font-size: 14px; }
+.snapfiles li { display: flex; align-items: center; gap: 10px; padding: 4px 0; color: #c9d8d0; }
+.snapfiles [dir="ltr"] { font-family: var(--mono); font-size: 12.5px; }
+.sf-ico { width: 22px; height: 22px; flex: none; border-radius: 6px; text-align: center; font: 700 15px/22px var(--mono); }
+.sf-ico.add { background: rgba(69,224,111,.18); color: var(--accent); }
+.sf-ico.keep { background: rgba(143,168,156,.18); color: var(--dim); }
+.sf-what { margin-inline-start: auto; white-space: nowrap; }
 .vframe { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); margin: 4px 0 14px; }
 .vframe img { display: block; width: 100%; }
 .vr { position: absolute; border: 3px solid var(--warn); border-radius: 8px; opacity: 0; transition: opacity .3s; box-shadow: 0 0 18px rgba(255,181,71,.6); }
@@ -843,6 +850,11 @@ test('switch theme to light', async ({ request }) =&gt; {
     </div>
     <div>
       <span class="tag warn">עם הדגל</span>
+      <p class="ba-line"><b>בשביל מה הדגל?</b> כתבנו טסט חדש ורוצים ליצור לו את הצילום הראשון. <code dir="ltr">missing</code> יוצר <b>רק</b> צילומים שעוד לא קיימים, ולא נוגע בצילומים שכבר שמורים:</p>
+      <ul class="snapfiles">
+        <li><span class="sf-ico add">+</span><span dir="ltr">promo-banner-looks-right-1-chromium-darwin.webp</span><span class="sf-what">לא היה, <b>נוצר</b></span></li>
+        <li><span class="sf-ico keep">=</span><span class="sf-name">צילום שכבר שמור ולא תואם</span><span class="sf-what"><b>לא משתנה</b>, והטסט נכשל</span></li>
+      </ul>
       <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> גם עם הדגל הזה הטסט <b>נכשל</b>, בדיוק כמו בריצה בלי הדגל.</p>
       <p class="ba-line"><span class="tag he">ב-1.64</span> הצילום נשמר והטסט <b>עובר</b>:</p>
       <div class="term"><span class="pr">$</span> npx playwright test snapshots --update-snapshots=missing
@@ -854,7 +866,7 @@ test('switch theme to light', async ({ request }) =&gt; {
   <div class="ci-tip frag">
     <b>⚠️ טיפ ל-CI:</b> ב-CI נריץ <b>בלי</b> <code dir="ltr">--update-snapshots=missing</code>. ככה טסט חדש שאין לו צילום שמור ב-repo ייכשל, ולא יעבור בירוק עם צילום שנוצר על שרת ה-CI ואף אחד לא בדק.
   </div>
-  <aside class="notes" data-t="12:30 – 13:15">שני הפלטים אמיתיים מהריצה על הדמו (קיצרנו רק את הנתיב). "Running tests without the flag defaults to 'default'" – מתוך npx playwright test --help. ההתנהגות של missing עד 1.64 לפי ה-release notes של 1.64. להדגים: למחוק את קובץ ה-webp, להריץ בלי דגל (נכשל), שוב (עובר).</aside>
+  <aside class="notes" data-t="12:30 – 13:15">שני הפלטים אמיתיים מהריצה על הדמו (קיצרנו רק את הנתיב). "Running tests without the flag defaults to 'default'" – מתוך npx playwright test --help. ההתנהגות של missing עד 1.64 לפי ה-release notes של 1.64. להדגים: למחוק את קובץ ה-webp, להריץ בלי דגל (נכשל), שוב (עובר). מטרת missing מתוך התיעוד (updateSnapshots ב-types של 1.64): "Missing snapshots are created, for example when authoring a new test". בדקנו: צילום קיים שלא תואם לא נדרס עם missing, והטסט נכשל.</aside>
 </section>
 
 <!-- 15 · DIVIDER video -->
