@@ -348,6 +348,62 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .js1, .js2 { opacity: .12; }
 .slide[data-k="2"] .js1, .slide[data-k="3"] .js1, .slide[data-k="3"] .js2 { opacity: 1; }
 .slide[data-k="2"] .js0, .slide[data-k="3"] .js0, .slide[data-k="3"] .js1 { opacity: .45; }
+.fp-demo { font-size: 14px; }
+.fp-cmd { font: 14px var(--mono); background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 8px 12px; text-align: left; margin-bottom: 8px; }
+.fp-cmd .pr { color: var(--accent); margin-right: 8px; }
+.fp-flag { color: var(--warn); opacity: 0; transition: opacity .4s; }
+.fp-row { display: grid; grid-template-columns: 1fr; gap: 3px; margin: 6px 0; }
+.fp-lbl { font: 12px var(--mono); color: var(--dim); text-align: left; }
+.fp-chips { display: flex; flex-wrap: wrap; gap: 5px; direction: ltr; }
+.pj { font: 12px var(--mono); padding: 3px 8px; border-radius: 7px; border: 1px solid var(--line); color: #c9d8d0; transition: all .45s; }
+.fp-chips.sel .pj { opacity: .15; transform: scale(.92); }
+.fp-chips.sel .pj:not(.off) { opacity: 1; transform: none; border-color: var(--accent); color: var(--accent); background: rgba(69,224,111,.1); }
+.slide[data-k="1"] .fp-flag, .slide[data-k="2"] .fp-flag, .slide[data-k="3"] .fp-flag { opacity: 1; }
+.slide[data-k="1"] .fp-chips.sel .pj, .slide[data-k="2"] .fp-chips.sel .pj, .slide[data-k="3"] .fp-chips.sel .pj { opacity: .15; transform: scale(.92); border-color: var(--line); color: #c9d8d0; background: none; }
+.slide[data-k="1"] .fp-chips.sel .pj-firefox, .slide[data-k="2"] .fp-chips.sel .pj-firefox, .slide[data-k="3"] .fp-chips.sel .pj-firefox { opacity: 1; transform: none; border-color: var(--accent); color: var(--accent); background: rgba(69,224,111,.1); }
+.fp-note { font-size: 13.5px; color: var(--dim); margin-top: 4px; }
+.fp-b { display: none; }
+.slide[data-k="1"] .fp-a, .slide[data-k="2"] .fp-a, .slide[data-k="3"] .fp-a { display: none; }
+.slide[data-k="1"] .fp-b, .slide[data-k="2"] .fp-b, .slide[data-k="3"] .fp-b { display: inline; }
+.sc-demo { display: grid; gap: 8px; }
+.sc-site { font-size: 15px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--info); color: #d6eefc; background: rgba(92,200,255,.08); }
+.sc-site b { color: var(--info); font-family: var(--mono); }
+.sc-line { display: grid; grid-template-columns: 1.3fr .6fr 1fr; gap: 8px; align-items: center; font-size: 14px; background: #050807; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 7px 12px; opacity: .12; transition: opacity .4s; }
+.sc-k, .sc-n { font-family: var(--mono); font-size: 13px; color: #e4efe9; }
+.sc-line { direction: ltr; text-align: left; }
+.sc-r { direction: rtl; text-align: right; }
+.sc-r.bad { color: var(--bad); } .sc-r.ok { color: var(--accent); }
+.slide[data-k="2"] .sc-no, .slide[data-k="3"] .sc-no, .slide[data-k="3"] .sc-yes { opacity: 1; }
+.slide[data-k="3"] .sc-no { opacity: .45; }
+.bk-grid { gap: 12px; }
+.bk-grid .card.bk { padding: 12px 18px; }
+.bk h3 { font-size: 18px; margin: 0 0 6px; }
+.bk-row { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: 14.5px; line-height: 1.5; padding: 4px 0; border-top: 1px solid rgba(255,255,255,.06); }
+.bk-k { color: var(--warn); font-weight: 700; font-size: 13.5px; }
+.bk-v { color: #c9d8d0; }
+.bkc .tag.warn { margin-bottom: 6px; }
+.scr-demo { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: center; margin: 4px 0 8px; min-height: 150px; }
+.monitor { position: relative; width: 147px; height: 83px; border: 3px solid var(--info); border-radius: 8px; transition: width .7s ease, height .7s ease; justify-self: center; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0; box-sizing: content-box; }
+.mon-lbl { position: absolute; top: -22px; left: 0; font: 12px var(--mono); color: var(--info); white-space: nowrap; }
+.browser { width: 147px; height: 83px; background: rgba(69,224,111,.12); border: 2px solid var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; font: 11px var(--mono); color: var(--accent); box-sizing: border-box; }
+.s-new, .s-new-t { display: none; }
+.slide[data-k="1"] .monitor, .slide[data-k="2"] .monitor { width: 220px; height: 124px; }
+.slide[data-k="1"] .s-old, .slide[data-k="2"] .s-old, .slide[data-k="1"] .s-old-t, .slide[data-k="2"] .s-old-t { display: none; }
+.slide[data-k="1"] .s-new, .slide[data-k="2"] .s-new, .slide[data-k="1"] .s-new-t, .slide[data-k="2"] .s-new-t { display: inline; }
+.slide[data-k="1"] .s-new-t, .slide[data-k="2"] .s-new-t { display: block; }
+.scr-text p { font-size: 14.5px; margin: 3px 0; color: #c9d8d0; }
+.bkc .code { font-size: 12.5px; }
+.ifr-demo { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: center; margin: 4px 0 8px; }
+.ifr-page { background: #f5f7fb; border-radius: 10px; padding: 10px 12px; color: #1d2433; }
+.ifr-h { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.ifr-box { border: 2px dashed #a8b0c2; border-radius: 8px; padding: 6px; display: grid; gap: 5px; }
+.ifr-tag { font: 10px var(--mono); color: #6b7489; }
+.ifr-btn { justify-self: start; font-size: 13px; padding: 4px 10px; border-radius: 7px; border: 1px solid #d9dee8; background: #fff; opacity: .25; }
+.ifr-r { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); color: #c9d8d0; }
+.ifr-r b { white-space: nowrap; }
+.ok-c { color: var(--accent); }
+.v-old { color: var(--accent); } .v-new { color: var(--bad); display: none; }
+.slide[data-k="2"] .v-old { display: none; } .slide[data-k="2"] .v-new { display: inline; }
 .sub-done { opacity: 0; transition: opacity .4s .4s; color: #1b7a33; font-weight: 700; font-size: 14px; }
 
 /* ---------- breaking ---------- */
@@ -1190,66 +1246,105 @@ await expect(page.locator('#subscribed'))
 </section>
 
 <!-- 22b · more APIs: filteredProjects + signCount -->
-<section class="slide" data-files="tests/filtered-projects/with-1-64/global-setup.ts">
+<section class="slide" data-files="tests/filtered-projects/with-1-64/global-setup.ts|playwright.config.ts">
   <div class="eyebrow">MORE NEW APIs</div>
   <h2>ועוד שניים: <span dir="ltr">filteredProjects</span> ו-<span dir="ltr">signCount</span></h2>
-  <div class="grid g2">
-    <div class="card frag"><span class="tag">fullConfig.filteredProjects</span>
-      <pre class="code" data-title="tests/filtered-projects/with-1-64/global-setup.ts" data-src="tests/filtered-projects/with-1-64/global-setup.ts#6-7"><code>const selected = config.filteredProjects.map(p =&gt; p.name);
-const all = config.projects.map(p =&gt; p.name);</code></pre>
-      <p class="ba-line" style="margin-top:10px"><span class="tag he">ב-1.64</span> <code>filteredProjects</code>: רק הפרויקטים שנשארו אחרי <code>--project</code> ו-<code>default: false</code>.</p>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> היה רק <code>config.projects</code>: כל הפרויקטים בקונפיג, גם אלה שלא ירוצו.</p>
-      <div class="term" style="margin-top:8px"><span class="pr">$</span> npx playwright test
-<span class="out">[global-setup] projects selected: chromium, webmcp  (configured: chromium, webmcp, firefox, …)</span></div></div>
-    <div class="card frag"><span class="tag">credentials.create({ signCount })</span>
-      <p>קובע מאיזה ערך מתחיל מונה החתימות של passkey וירטואלי. <code>credentials.create()</code> ו-<code>credentials.get()</code> מחזירים את הערך הנוכחי, והוא נשמר ונטען יחד עם ה-storage state.</p>
-      <p class="dim" style="margin-top:10px;font-size:15px">אין לזה דמו בריפו, כי זה דורש הגדרת passkey.</p></div>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <div class="api2">
+    <div class="card">
+      <span class="tag" dir="ltr">fullConfig.filteredProjects</span>
+      <div class="api2-row">
+        <div class="api2-text">
+          <p><code dir="ltr">globalSetup</code> רץ פעם אחת לפני כל הטסטים, ומקבל את הקונפיג. <span class="tag he dimtag">עד 1.64</span> היה בו רק <code dir="ltr">config.projects</code>: <b>כל</b> הפרויקטים בקונפיג, גם כאלה שלא ירוצו עכשיו.</p>
+          <p><span class="tag he">ב-1.64</span> <code dir="ltr">config.filteredProjects</code>: רק הפרויקטים ש<b>באמת ירוצו</b>, אחרי <code dir="ltr">--project</code> ו-<code dir="ltr">default: false</code>. ככה ה-setup מכין רק מה שצריך, ויכול להיכשל מהר ב-CI אם דפדפן נשמט מהריצה.</p>
+        </div>
+        <div class="fp-demo">
+          <div class="fp-cmd" dir="ltr"><span class="pr">$</span> npx playwright test<span class="fp-flag"> --project=firefox</span></div>
+          <div class="fp-row"><span class="fp-lbl" dir="ltr">config.projects</span><div class="fp-chips all"><span class="pj pj-chromium" dir="ltr">chromium</span><span class="pj pj-webmcp" dir="ltr">webmcp</span><span class="pj pj-firefox off" dir="ltr">firefox</span><span class="pj pj-webkit off" dir="ltr">webkit</span><span class="pj pj-locks off" dir="ltr">locks</span><span class="pj pj-shuffle off" dir="ltr">shuffle</span><span class="pj pj-video-before off" dir="ltr">video-before</span><span class="pj pj-video off" dir="ltr">video</span></div></div>
+          <div class="fp-row"><span class="fp-lbl" dir="ltr">filteredProjects</span><div class="fp-chips sel"><span class="pj pj-chromium" dir="ltr">chromium</span><span class="pj pj-webmcp" dir="ltr">webmcp</span><span class="pj pj-firefox off" dir="ltr">firefox</span><span class="pj pj-webkit off" dir="ltr">webkit</span><span class="pj pj-locks off" dir="ltr">locks</span><span class="pj pj-shuffle off" dir="ltr">shuffle</span><span class="pj pj-video-before off" dir="ltr">video-before</span><span class="pj pj-video off" dir="ltr">video</span></div></div>
+          <div class="fp-note"><span class="fp-a">עם <code dir="ltr">default: false</code> לא רצים בלי <code dir="ltr">--project</code></span><span class="fp-b"><code dir="ltr">--project</code> בוחר בדיוק את מה שביקשנו</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag" dir="ltr">credentials.create({ signCount })</span>
+      <div class="api2-row">
+        <div class="api2-text">
+          <p><b dir="ltr">passkey</b> הוא התחברות בלי סיסמה, למשל עם טביעת אצבע. בכל התחברות הוא שולח לאתר <b>מונה חתימות</b> שעולה ב-1, והאתר זוכר את המספר האחרון. מספר שלא עלה הוא סימן ש-passkey הועתק.</p>
+          <p>ב-Playwright יש passkey וירטואלי לטסטים (<code dir="ltr">context.credentials</code>). <span class="tag he">ב-1.64</span> <code dir="ltr">signCount</code> קובע מאיזה מספר המונה מתחיל, כדי להמשיך ממה שהאתר כבר ראה. אין לזה דמו בריפו.</p>
+        </div>
+        <div class="sc-demo">
+          <div class="sc-site">🌐 האתר זוכר: <b dir="ltr">5</b></div>
+          <div class="sc-line sc-no"><span class="sc-k" dir="ltr">create()</span><span class="sc-n" dir="ltr">0 → 1</span><span class="sc-r bad">1 לא גדול מ-5 ✘</span></div>
+          <div class="sc-line sc-yes"><span class="sc-k" dir="ltr">create({ signCount: 5 })</span><span class="sc-n" dir="ltr">5 → 6</span><span class="sc-r ok">6 גדול מ-5 ✓</span></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <aside class="notes" data-t="">filteredProjects: הקוד ב-global-setup מדפיס את שתי הרשימות בתחילת כל ריצה — זה בדיוק ההבדל בין לפני לאחרי. signCount: רק להזכיר.</aside>
+  <aside class="notes" data-t="22:30 – 23:30">filteredProjects: שתי השורות הן פלט אמיתי של global-setup בריפו: "npx playwright test" → chromium, webmcp; "--project=firefox" → firefox (configured: כל ה-8). signCount מהתיעוד של 1.64: "The counter is incremented by one on every successful navigator.credentials.get() assertion, so the first assertion reports signCount + 1", ו-"continue from the signature counter the relying party has already seen". המטרה של המונה (זיהוי passkey מועתק) מתקן WebAuthn. לחיצה 1: --project=firefox. לחיצה 2: create() בלי signCount. לחיצה 3: עם signCount.</aside>
 </section>
 
 <!-- 23 · breaking -->
 <section class="slide brk" data-files="tests/breaking-changes/with-1-64/breaking-changes.spec.ts|tests/snapshots/with-1-64/webp.spec.ts">
   <div class="eyebrow">BREAKING CHANGES ⚠️</div>
-  <h2>4 <span dir="ltr">Breaking Changes</span> — כדאי לבדוק לפני שמשדרגים</h2>
-  <div class="grid g2">
-    <div class="card frag"><h3>📐 <span dir="ltr">screen</span> נלקח מהגדרות המכשיר</h3><p>מי שמשתמש ב-<code>devices['Desktop Chrome']</code> יקבל עכשיו גם גודל מסך של <b dir="ltr">1920×1080</b>, וה-viewport נשאר <span dir="ltr">1280×720</span>. כדי לוותר על זה מגדירים <code>screen: undefined</code>.</p></div>
-    <div class="card frag"><h3>👻 iframe מוסתר</h3><p>אלמנט שנמצא בתוך iframe מוסתר, למשל עם <code>visibility: hidden</code>, נחשב עכשיו לא נראה. זה משפיע על פעולות, על <code>isVisible()</code> ועל <code>toBeVisible()</code>.</p></div>
-    <div class="card frag"><h3>📸 <span dir="ltr">--update-snapshots=missing</span></h3><p>טסט שרק יוצר snapshot חסר עובר עכשיו בהצלחה. המצב הרגיל נקרא מעכשיו <code>'default'</code>.</p></div>
-    <div class="card frag"><h3>⚛️ JSX בטסטים</h3><p>JSX בקבצי הטסט מתקמפל עכשיו לפי <code>tsconfig.json</code>, כולל ההגדרות <code>jsx</code> ו-<code>jsxImportSource</code>. ברירת המחדל היא <span dir="ltr">automatic runtime</span> של <code>react/jsx-runtime</code>.</p></div>
+  <h2>4 שינויים שיכולים לשבור טסטים קיימים</h2>
+  <div class="grid g2 bk-grid">
+    <div class="card frag bk"><h3>📐 גודל המסך מגיע מהמכשיר (<span dir="ltr">screen</span>)</h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">יש שני גדלים: <b>viewport</b> הוא החלון שבו הדף מוצג, ו-<b>screen</b> הוא גודל המסך כולו (<code dir="ltr">window.screen</code>). עם <code dir="ltr">devices['Desktop Chrome']</code> ה-screen הוא עכשיו <b dir="ltr">1920×1080</b>, ולא כמו ה-viewport (<span dir="ltr">1280×720</span>).</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v">דף שמתאים את עצמו לגודל המסך יכול להיראות אחרת, וצילומי השוואה להשתנות.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">בודקים את הצילומים. כדי לחזור להתנהגות הקודמת: <code dir="ltr">screen: undefined</code>.</span></div></div>
+    <div class="card frag bk"><h3>👻 אלמנט בתוך iframe מוסתר נחשב מוסתר</h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">אם ה-iframe עצמו מוסתר (למשל <code dir="ltr">visibility: hidden</code>), גם כל מה שבתוכו נחשב עכשיו <b>לא נראה</b>. קודם Playwright בדק רק את האלמנט ולא את ה-iframe שמסביבו.</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v"><code dir="ltr">toBeVisible()</code> שעבר מתחיל להיכשל, ו-<code dir="ltr">click()</code> על אלמנט כזה מחכה עד timeout.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">בדרך כלל זה נכון: משתמש לא יכול לראות את הכפתור. אם הטסט צריך אותו, קודם מציגים את ה-iframe.</span></div></div>
+    <div class="card frag bk"><h3>📸 <span dir="ltr">--update-snapshots=missing</span> עובר</h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">טסט שרק יצר צילום חסר <b>עובר</b> עכשיו, במקום להיכשל. ריצה רגילה, בלי הדגל, עדיין נכשלת.</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v">סקריפט CI שרץ עם <code dir="ltr">missing</code> יוצא ירוק גם כשנוצרו צילומים חדשים.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">ב-CI מריצים בלי הדגל (ראינו בשקופית של צילומי המסך).</span></div></div>
+    <div class="card frag bk"><h3>⚛️ JSX בטסטים לפי <span dir="ltr">tsconfig.json</span></h3><div class="bk-row"><span class="bk-k">מה השתנה</span><span class="bk-v">JSX הוא התחביר של React (<code dir="ltr">&lt;Button /&gt;</code>). Playwright מקמפל אותו עכשיו לפי <code dir="ltr">jsx</code> ו-<code dir="ltr">jsxImportSource</code> שב-<code dir="ltr">tsconfig.json</code>. בלי הגדרה: <code dir="ltr">react/jsx-runtime</code>.</span></div><div class="bk-row"><span class="bk-k">איך נשים לב</span><span class="bk-v">רלוונטי רק למי שכותב JSX בקבצי הטסט, למשל ב-component testing. מי שלא, לא מושפע.</span></div><div class="bk-row"><span class="bk-k">מה עושים</span><span class="bk-v">בודקים שההגדרות ב-<code dir="ltr">tsconfig.json</code> מתאימות לספרייה שלנו.</span></div></div>
   </div>
-  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים ב-tests/breaking-changes/with-1-64/breaking-changes.spec.ts. בדמו: הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי.</aside>
+  <aside class="notes" data-t="23:30 – 26:00">את שני הראשונים מדגימים בשקופית הבאה (tests/breaking-changes/with-1-64/breaking-changes.spec.ts). בדמו: window.screen הוא 1920×1080 וה-viewport 1280×720; הכפתור ב-iframe נמצא ב-DOM (count 1) אבל toBeHidden עובר. טיפ מ-currents: אפשר להגדיר זמנית screen: undefined, כדי להבדיל בין שינוי ויזואלי בגלל גודל המסך לבין באג אמיתי. ה-JSX: לפי ה-release notes של 1.64; אין לזה דמו בריפו.</aside>
 </section>
 
 <!-- 24 · breaking code -->
 <section class="slide" data-files="tests/breaking-changes/with-1-64/breaking-changes.spec.ts|demo-app/public/widgets.html">
   <div class="eyebrow">tests/breaking-changes/with-1-64/breaking-changes.spec.ts</div>
   <h2>איך זה נראה בטסט</h2>
-  <div class="grid g2">
-    <div><span class="tag warn">screen</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> <span dir="ltr">window.screen</span> היה בגודל ה-viewport, <span dir="ltr">1280×720</span>.</p>
-      <p class="ba-line"><span class="tag he">ב-1.64</span> הוא מגיע מהגדרות המכשיר, <span dir="ltr">1920×1080</span>. כדי לחזור להתנהגות הקודמת: <code>screen: undefined</code>.</p>
-      <pre class="code" data-title="tests/breaking-changes/with-1-64/breaking-changes.spec.ts" data-src="tests/breaking-changes/with-1-64/breaking-changes.spec.ts#6-8,15-19"><code>await page.goto('/widgets');
+  <span class="frag" style="display:none"></span>
+  <span class="frag" style="display:none"></span>
+  <div class="grid g2 bkc">
+    <div>
+      <span class="tag warn" dir="ltr">screen</span>
+      <div class="scr-demo">
+        <div class="monitor"><span class="mon-lbl" dir="ltr">screen <b class="s-old">1280×720</b><b class="s-new">1920×1080</b></span>
+          <div class="browser"><span dir="ltr">viewport 1280×720</span></div></div>
+        <div class="scr-text">
+          <p><b>viewport</b>: השטח שבו הדף מוצג, בתוך חלון הדפדפן.</p>
+          <p><b>screen</b>: כל המסך של המכשיר המדומה. הדף קורא אותו מ-<code dir="ltr">window.screen</code>.</p>
+          <p class="s-old-t"><span class="tag he dimtag">עד 1.64</span> שניהם באותו גודל.</p>
+          <p class="s-new-t"><span class="tag he">ב-1.64</span> המסך גדול מהחלון, כמו במחשב אמיתי.</p>
+        </div>
+      </div>
+      <p class="ba-line">דף הדמו <code dir="ltr">/widgets</code> מציג על המסך את שני הגדלים, והטסט בודק את מה שהוא מציג:</p>
+      <pre class="code" data-title="tests/breaking-changes/with-1-64/breaking-changes.spec.ts" data-src="tests/breaking-changes/with-1-64/breaking-changes.spec.ts#6-8"><code>await page.goto('/widgets');
 await expect(page.locator('#screen-size')).toHaveText('1920×1080');
-await expect(page.locator('#viewport-size')).toHaveText('1280×720');
-// …
-const context = await browser.newContext({
-  ...devices['Desktop Chrome'],
-  screen: undefined,
-  baseURL,
-});</code></pre></div>
-    <div><span class="tag warn">hidden iframe</span>
-      <p class="ba-line"><span class="tag he dimtag">עד 1.64</span> כפתור בתוך iframe מוסתר נחשב <b>visible</b>.</p>
-      <p class="ba-line"><span class="tag he">ב-1.64</span> הוא נחשב <b>hidden</b>.</p>
+await expect(page.locator('#viewport-size')).toHaveText('1280×720');</code></pre>
+      <p class="ba-note">רוצים את ההתנהגות הקודמת? מוסיפים <code dir="ltr">screen: undefined</code> אחרי <code dir="ltr">...devices['Desktop Chrome']</code>, ואז <code dir="ltr">window.screen</code> חוזר להיות <span dir="ltr">1280×720</span>.</p>
+    </div>
+    <div>
+      <span class="tag warn" dir="ltr">hidden iframe</span>
+      <div class="ifr-demo">
+        <div class="ifr-page"><div class="ifr-h">Hidden iframe</div>
+          <div class="ifr-box"><span class="ifr-tag" dir="ltr">&lt;iframe style="visibility:hidden"&gt;</span><span class="ifr-btn" dir="ltr">Chat with us</span></div></div>
+        <div class="ifr-res">
+          <div class="ifr-r"><span>הכפתור קיים ב-DOM?</span><b class="ok-c">כן</b></div>
+          <div class="ifr-r"><span>Playwright חושב שהוא נראה?</span><b class="v-old">כן <span class="tag he dimtag">עד 1.64</span></b><b class="v-new">לא <span class="tag he">ב-1.64</span></b></div>
+        </div>
+      </div>
+      <p class="ba-line">בדף הדמו יש iframe מוסתר, ובתוכו כפתור צ'אט. משתמש לא רואה אותו, ועכשיו גם Playwright מסכים:</p>
       <pre class="code" data-title="tests/breaking-changes/with-1-64/breaking-changes.spec.ts" data-src="tests/breaking-changes/with-1-64/breaking-changes.spec.ts#29-35"><code>const chatButton = page
   .frameLocator('#hidden-frame')
   .getByRole('button', { name: 'Chat with us' });
 
 await expect(chatButton).toHaveCount(1); // in the DOM…
 await expect(chatButton).toBeHidden();   // …but hidden
-expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
+expect(await chatButton.isVisible()).toBe(false);</code></pre>
+    </div>
   </div>
-  <aside class="notes" data-t="26:00 – 26:45">ערכי המסך פה הם מה שראינו בפועל בהרצה של הדמו.</aside>
+  <aside class="notes" data-t="">לחיצה 1: המסך גדל ל-1920×1080 (ההתנהגות של 1.64). לחיצה 2: הכפתור ב-iframe עובר ל"לא נראה". הערכים אמיתיים: הטסט עובר ב-1.64 עם 1920×1080 ו-1280×720, ועם screen: undefined מקבלים 1280×720 (הטסט השני בקובץ).</aside>
 </section>
 
 <!-- 25 · upgrade checklist -->
@@ -1259,7 +1354,7 @@ expect(await chatButton.isVisible()).toBe(false);</code></pre></div>
   <div class="steps">
     <div class="card frag"><p><b>נשדרג קודם בלי shuffle</b> — כדי שכישלונות בגלל ה-Breaking Changes לא יתערבבו עם כישלונות בגלל סדר הטסטים.</p></div>
     <div class="card frag"><p><b>נריץ פעם אחת בדיוק כמו ב-CI</b> ונשווה לריצה הקודמת: אותו מספר טסטים? אותם פרויקטים?</p></div>
-    <div class="card frag"><p><b>כשהכול ירוק</b> — נוסיף ריצת לילה עם <code>--shuffle</code> ונשמור את ה-seed.</p></div>
+    <div class="card frag"><p><b>כשהכול ירוק</b> — נוסיף ריצת לילה עם <code dir="ltr">--shuffle</code>. כל לילה ירוץ בסדר אקראי <b>אחר</b>, וזו בדיוק המטרה. ה-seed נדפס בלוג של הריצה: אם משהו נכשל, נריץ <code dir="ltr">--shuffle &lt;seed&gt;</code> ונקבל בדיוק את אותו סדר כדי לשחזר את הכישלון.</p></div>
     <div class="card frag"><p><b>נוסיף locks</b> רק במקומות שבהם טסטים חולקים משאב שאי אפשר לשכפל.</p></div>
   </div>
   <aside class="notes" data-t="26:45 – 27:45">סיכום מעשי.</aside>
