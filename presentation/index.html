@@ -140,9 +140,9 @@ ul.clean li::before { content: '▸'; position: absolute; inset-inline-start: 0;
 .wm-compare .card p { margin: 6px 0; }
 .wm-steps { margin: 4px 0; padding-inline-start: 22px; line-height: 1.55; color: #c9d8d0; }
 .wm-call { font-size: 14px; padding: 28px 14px 8px; margin: 6px 0; }
-.wm-why { border-color: var(--accent); background: rgba(69,224,111,.08); color: #dcefe3; }
+.wm-why { border-color: var(--accent); background: rgba(69,224,111,.08); color: #dcefe3; margin-top: 10px; padding: 9px 20px; }
 .wm-why b { color: var(--accent); }
-.wm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; align-items: center; margin-top: 10px; padding: 10px 18px; font-size: 15.5px; color: #c9d8d0; }
+.wm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; align-items: center; margin-top: 10px; padding: 10px 18px; font-size: 14.5px; color: #c9d8d0; }
 .wm-list .term { font-size: 12.5px; padding: 28px 14px 10px; margin: 0; white-space: pre; }
 .wm-list b { color: #fff; }
 .wm-list .wm-open { grid-column: 1 / -1; font-size: 12px; padding: 26px 14px 8px; white-space: pre; }
@@ -602,7 +602,7 @@ aside.notes { display: none; }
     <div class="card frag"><div><h3>מרימים את השרת של אפליקציית הדמו</h3><div class="term"><span class="pr">$</span> npm run demo
 <span class="out">PW Shop running at http://localhost:3164</span></div><p class="dim" style="margin-top:8px">ופותחים בדפדפן את <span dir="ltr">http://localhost:3164</span></p></div></div>
     <div class="card frag"><div><h3>מריצים את הטסטים, בטרמינל נוסף</h3><div class="term"><span class="pr">$</span> npx playwright test
-<span class="out">28 passed</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
+<span class="out">  19 passed (3.1s)</span></div><p class="dim" style="margin-top:8px">אם השרת לא רץ, Playwright ירים אותו לבד (<span dir="ltr">webServer</span> בקונפיג).</p></div></div>
   </div>
   <aside class="notes" data-t="2:45 – 3:15">להראות את הריפו ב-GitHub. להדגיש: npm run demo רק בשביל לראות את האפליקציה בדפדפן — הטסטים מרימים את השרת לבד.</aside>
 </section>
@@ -624,7 +624,7 @@ aside.notes { display: none; }
 <span class="out">PW Shop running at http://localhost:3164</span>
 <span class="pr">$</span> npx playwright test
 <span class="out">[global-setup] projects selected: chromium, webmcp</span>
-<span class="out">  28 passed (5.3s)</span></div>
+<span class="out">  19 passed (3.1s)</span></div>
   </div>
   <aside class="notes" data-t="3:15 – 4:00">להראות את התיקייה. הקונפיג מרים את השרת לבד (webServer), אז לא חייבים להריץ npm run demo — זה רק כדי לראות את האפליקציה בדפדפן.</aside>
 </section>
