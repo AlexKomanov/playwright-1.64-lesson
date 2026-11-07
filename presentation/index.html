@@ -978,16 +978,16 @@ test('switch theme to light', async ({ request }) =&gt; {
     <div class="fr-row fr2">
       <div class="fr-how"><code dir="ltr">--update-snapshots=missing</code><span><span class="tag he dimtag">עד 1.64</span></span></div>
       <div class="fr-flow"><span class="fr-step">📸 שומר תמונה</span><span class="fr-arrow">←</span><span class="fr-res bad">✘ נכשל</span></div>
-      <div class="fr-why">הדגל אומר "צור את התמונות שחסרות", ובכל זאת הטסט נכשל.</div>
+      <div class="fr-why">הדגל קיים מזמן, ועד 1.64 זה בכלל היה מצב ברירת המחדל: ריצה רגילה <b>הייתה</b> <code dir="ltr">missing</code>. לכן שתי השורות התנהגו אותו דבר.</div>
     </div>
     <div class="fr-row fr3">
       <div class="fr-how"><code dir="ltr">--update-snapshots=missing</code><span><span class="tag he">ב-1.64</span></span></div>
       <div class="fr-flow"><span class="fr-step">📸 שומר תמונה</span><span class="fr-arrow">←</span><span class="fr-res ok">✓ עובר</span></div>
-      <div class="fr-why"><b>זה השינוי:</b> ביקשנו ליצור תמונות חסרות, הוא יצר, והטסט עובר.</div>
+      <div class="fr-why"><b>זה השינוי:</b> הפרידו בין השניים. ריצה רגילה קיבלה מצב חדש משלה, <code dir="ltr">default</code>, שעדיין נכשל, ו-<code dir="ltr">missing</code> עכשיו עובר.</div>
     </div>
   </div>
   <div class="ci-tip frag">⚠️ <b>ב-CI לא משתמשים בדגל הזה.</b> אחרת טסט בלי תמונה שמורה יעבור בירוק, עם תמונה שאף אחד לא בדק.</div>
-  <aside class="notes" data-t="12:30 – 13:15">שלוש השורות נבדקו בריצה אמיתית על tests/snapshots (בלי דגל: "A snapshot doesn't exist ... writing actual" ו-1 failed; עם missing ב-1.64: 1 passed). השורה של עד 1.64 לפי ה-release notes של 1.64. התיעוד של updateSnapshots: missing = "Missing snapshots are created, for example when authoring a new test". הדגל גם לא נוגע בתמונות שכבר שמורות (בדקנו). השם 'default' לריצה בלי דגל קיים מ-1.64, לא צריך להזכיר.</aside>
+  <aside class="notes" data-t="12:30 – 13:15">שלוש השורות נבדקו בריצה אמיתית על tests/snapshots (בלי דגל: "A snapshot doesn't exist ... writing actual" ו-1 failed; עם missing ב-1.64: 1 passed). השורה של עד 1.64 לפי ה-release notes של 1.64. בדקנו בקבצי ה-types של גרסאות קודמות: missing קיים לפחות מ-1.20 (all/none/missing), changed נוסף ב-1.50, ומ-1.40 עד 1.63 ברירת המחדל הייתה 'missing' ("This is the default"). ב-1.64 ברירת המחדל היא 'default'. התיעוד של updateSnapshots: missing = "Missing snapshots are created, for example when authoring a new test". הדגל גם לא נוגע בתמונות שכבר שמורות (בדקנו). השם 'default' לריצה בלי דגל קיים מ-1.64, לא צריך להזכיר.</aside>
 </section>
 
 <!-- 14c · working with saved snapshots -->
