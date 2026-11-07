@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 // A BAD test file on purpose: tests #3 and #4 silently depend on tests #1 and #2.
 // In declaration order it is green. With --shuffle it fails in many runs.
 //
-//   npm run test:shuffle                    # random order — often red
-//   npm run test:shuffle -- <seed>          # replay the order of a failed run
+//   npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle          # often red
+//   npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle <seed>   # replay
 //
 // Note: --shuffle reorders test files and tests in parallel mode (fullyParallel is on in the config).
 // Compare with cart-order-beforeall.spec.ts: the same tests with a shared beforeAll are never reordered.

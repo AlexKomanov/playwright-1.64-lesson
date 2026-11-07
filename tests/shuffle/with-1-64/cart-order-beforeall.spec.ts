@@ -6,8 +6,8 @@ import { test, expect } from '@playwright/test';
 // Playwright keeps tests that share a beforeAll/afterAll together, in the order they are written,
 // so --shuffle never moves #3 or #4 ahead of #1 and #2, and the dependency stays hidden.
 //
-//   npm run test:shuffle:beforeall    # green every time — shuffle can't catch this one
-//   npm run test:shuffle              # the version without beforeAll — often red
+//   npx playwright test cart-order-beforeall --project=shuffle --workers=1 --shuffle   # always green
+//   npx playwright test cart-order.spec --project=shuffle --workers=1 --shuffle        # often red
 
 test.beforeAll(async ({ request }) => {
   await request.delete('/api/cart');
