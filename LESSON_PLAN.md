@@ -35,7 +35,7 @@ npx playwright test                    # ריצת בדיקה: 19 טסטים אמ
 | 10:15–12:00 | 15–16 | **Test Locks** (`describe.configure({ lock })`) | `npx playwright test without-lock --project=locks --workers=2` ואז `with-lock` |
 | 12:00–14:00 | 17–19 | WebP, הריצה הראשונה של טסט עם צילום (השינוי ב-`missing`), ואיך עובדים עם תמונות שמורות | לשנות זמנית $50 ל-$40 ב-`widgets.html`, להריץ `npx playwright test snapshots` (נכשל), `npx playwright show-report` (expected / actual / diff), להחזיר |
 | 14:00–16:00 | 20–22 | **הקלטת וידאו** (כולל פריים אמיתי שמראה point / highlight / title) | `npx playwright test --project=video` ולפתוח את `video.webm` מ-test-results |
-| 16:00–20:30 | 23–27 | **WebMCP** ו-`getByRef` | `npx playwright test --project=webmcp`, `playwright-cli webmcp-list`, `getTools()` ב-DevTools |
+| 16:00–20:30 | 23–27 | **WebMCP** ו-`getByRef` | `npx playwright test --project=webmcp`, `npx @playwright/cli@latest webmcp-list`, `getTools()` ב-DevTools |
 | 20:30–22:45 | 28–29 | `includeShadow`, cookies ב-request, `filteredProjects`, `signCount` | `npx playwright test include-shadow request-cookies` |
 | 22:45–25:30 | 30–31 | **4 Breaking Changes** | `npx playwright test breaking-changes` |
 | 25:30–27:15 | 32–34 | איך משדרגים בלי הפתעות, מקורות, סגירה (עם קישור לריפו) | — |
@@ -56,13 +56,13 @@ npx playwright test                    # ריצת בדיקה: 19 טסטים אמ
 | `getByRef`, `includeShadow`, cookies של APIRequestContext, צילום WebP | `tests/get-by-ref/`, `tests/include-shadow/`, `tests/request-cookies/`, `tests/snapshots/` |
 | `screen` מתיאור המכשיר, iframe מוסתר | `tests/breaking-changes/` |
 
-## מה נבדק בפועל (2 בנובמבר 2026, עם @playwright/test 1.64.1 על macOS)
+## מה נבדק בפועל (2 בנובמבר 2026, עם @playwright/test 1.64.1 על macOS; 19/19, 31/31, 5/5 ו-tsc נבדקו שוב ב-8 בנובמבר 2026)
 - `npx playwright test`: 19/19 עברו (פרויקטים `chromium` ו-`webmcp`). `npm run test:all`: 31/31. `npx playwright test before-1-64`: 5/5. `tsc --noEmit`: בלי שגיאות.
 - `--project=firefox`: 3/3 עברו. `--project=video`: 3/3 עברו ונוצרו קבצי `video.webm`.
 - `--shuffle` (4 טסטים בכל קובץ): בלי `beforeAll` 9 מתוך 10 ריצות נכשלו, ו-seed `354875837` משחזר את הכישלון (התפוח עובר, 4 ו-3 נכשלים, הבננה עוברת). עם `beforeAll` משותף 10 מתוך 10 ריצות עברו.
 - Locks (`without-lock` / `with-lock`, 2 workers): בלי lock אחד משני הטסטים נכשל בכל אחת מ-5 ריצות. עם lock שניהם עברו בכל 5 הריצות. גם בלי שום המתנה בקוד ההתנגשות קורית, כי שני הטסטים מתחילים באותו רגע.
 - צילומי מסך: בלי דגל, טסט בלי תמונה שמורה נכשל ("A snapshot doesn't exist ... writing actual"); עם `--update-snapshots=missing` הוא עובר. תמונה שמורה שלא תואמת לא נדרסת עם `missing`. שינוי של $50 ל-$40 בבאנר נותן "42 pixels (ratio 0.01 of all image pixels) are different" ו-expected / actual / diff ב-test-results. `--update-snapshots` מעדכן אותה והריצה הבאה עוברת.
-- WebMCP: `playwright-cli webmcp-list` (גרסה 0.1.23) מחזיר את 3 הכלים. ב-Google Chrome 156 עם `--enable-features=WebMCP --no-first-run`, `document.modelContext.getTools()` מחזיר אותם; בלי הדגל אין `modelContext`.
+- WebMCP: `npx @playwright/cli@latest webmcp-list` (גרסה 0.1.23; ל-`playwright-cli` הגלובלי הישן, 0.1.6, אין את הפקודה) מחזיר את 3 הכלים. ב-Google Chrome 156 עם `--enable-features=WebMCP --no-first-run`, `document.modelContext.getTools()` מחזיר אותם; בלי הדגל אין `modelContext`.
 - `getByRef`: ה-ref של Subscribe הוא `e27` בכל ריצה, ו-`getByRef` עובד רק אחרי `ariaSnapshot({ mode: 'ai' })`.
 - צילום המסך נשמר כ-`promo-banner-looks-right-1-chromium-darwin.webp`. על Linux/Windows הוא ייווצר מחדש בריצה הראשונה עם `--update-snapshots=missing`.
 
