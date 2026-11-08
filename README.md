@@ -43,8 +43,25 @@ npx playwright test cart-order-beforeall --project=shuffle --workers=1 --shuffle
 npx playwright test without-lock --project=locks --workers=2   # בלי lock: אחד הטסטים נכשל
 npx playwright test with-lock --project=locks --workers=2      # עם lock: שניהם עוברים
 npx playwright test --project=webmcp             # page.webmcp (Chromium עם --enable-features=WebMCP)
-npx @playwright/cli@latest open http://localhost:3164/   # playwright-cli: הדפדפן מהטרמינל (הדגל של WebMCP נקרא מ-.playwright/cli.config.json)
-npx @playwright/cli@latest webmcp-list            # אילו כלי WebMCP הדף חושף
+```
+
+`playwright-cli` שולט בדפדפן מהטרמינל (את הדגל של WebMCP הוא קורא מ-`.playwright/cli.config.json`). יש שתי דרכים להריץ אותו.
+
+אפשרות 1: מתקינים פעם אחת. אם כבר התקנו פעם, אותה פקודה מעדכנת. בגרסה ישנה (למשל 0.1.6) עוד אין `webmcp-list`:
+
+```bash
+npm install -g @playwright/cli@latest
+playwright-cli --version                          # הדמו נבדק עם 0.1.23
+playwright-cli open http://localhost:3164/        # הדפדפן מהטרמינל
+playwright-cli webmcp-list                        # אילו כלי WebMCP הדף חושף
+playwright-cli close
+```
+
+אפשרות 2: בלי התקנה, תמיד הגרסה האחרונה:
+
+```bash
+npx @playwright/cli@latest open http://localhost:3164/
+npx @playwright/cli@latest webmcp-list
 ```
 
 בלי Playwright: פותחים Chrome עם הדגל בפרופיל נפרד (בלי `--no-first-run` Chrome מציג מסך פתיחה ולא פותח את הדף), ובקונסול של DevTools מריצים `await document.modelContext.getTools()`:

@@ -1203,13 +1203,14 @@ await expect(page.locator('#cart-count')).toHaveText('2');</code></pre>
       <div class="term"><span class="pr">$</span> npx playwright test --project=webmcp</div>
     </div>
     <div class="frag">
-      <p class="ba-line"><b dir="ltr">playwright-cli</b>: שולטים בדפדפן מהטרמינל, פקודה אחרי פקודה, בלי לכתוב טסט. נוח כדי לראות אילו כלים האתר חושף ולנסות אחד מהם לפני שכותבים טסט. את הדגל של WebMCP הוא קורא מ-<code dir="ltr">.playwright/cli.config.json</code> שבריפו:</p>
-      <div class="term"><span class="pr">$</span> npx @playwright/cli@latest open http://localhost:3164/
-<span class="pr">$</span> npx @playwright/cli@latest webmcp-list
-<span class="pr">$</span> npx @playwright/cli@latest webmcp-call search_products --params '{"query":"ban"}'</div>
+      <p class="ba-line"><b dir="ltr">playwright-cli</b>: שולטים בדפדפן מהטרמינל בלי לכתוב טסט, ורואים אילו כלים האתר חושף. גרסה ישנה (למשל 0.1.6) לא מכירה את <code dir="ltr">webmcp-list</code>, אז קודם מעדכנים, או מריצים עם <code dir="ltr">npx</code> בלי התקנה. את הדגל של WebMCP הוא קורא מ-<code dir="ltr">.playwright/cli.config.json</code> שבריפו:</p>
+      <div class="term"><span class="pr">$</span> npm install -g @playwright/cli@latest   <span class="cm"># install or update</span>
+<span class="pr">$</span> playwright-cli open http://localhost:3164/
+<span class="pr">$</span> playwright-cli webmcp-list   <span class="cm"># or: npx @playwright/cli@latest webmcp-list</span>
+<span class="pr">$</span> playwright-cli webmcp-call search_products --params '{"query":"ban"}'</div>
     </div>
   </div>
-  <aside class="notes" data-t="18:15 – 19:30">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: הכלי add_to_cart קיים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל. playwright-cli (גרסה 0.1.23) קורא את הדגל של WebMCP מ-.playwright/cli.config.json שבריפו. webmcp-list מחזיר את 3 הכלים עם התיאור וה-schema, ו-webmcp-call search_products עם "ban" מחזיר את Banana (נבדק). close סוגר את הדפדפן.</aside>
+  <aside class="notes" data-t="18:15 – 19:30">להריץ npx playwright test --project=webmcp. להראות את 3 הטסטים: הכלי add_to_cart קיים, add_to_cart + בדיקת UI ו-backend, ושגיאה עם isError. ב-Playwright MCP הכלים מוצעים לסוכן כ-webmcp_&lt;tool&gt; כברירת מחדל; --no-webmcp כדי לבטל. שתי דרכים: npm install -g @playwright/cli@latest (מי שכבר התקין פעם, אותה פקודה מעדכנת; ב-0.1.6 עוד אין webmcp-list) ואז playwright-cli, או npx @playwright/cli@latest בלי התקנה. נבדקו שתיהן עם 0.1.23. playwright-cli קורא את הדגל של WebMCP מ-.playwright/cli.config.json שבריפו. webmcp-list מחזיר את 3 הכלים עם התיאור וה-schema, ו-webmcp-call search_products עם "ban" מחזיר את Banana (נבדק). close סוגר את הדפדפן.</aside>
 </section>
 
 <!-- 21 · getByRef -->
